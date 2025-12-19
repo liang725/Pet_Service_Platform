@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="53215d4e-4e01-4a30-b63d-7034f553b555" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/deepseek_html_20251218_a543f9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/components/TheWelcome.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/components/WelcomeItem.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-pet-platform/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/stores/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/my-pet-platform/src/stores/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/views/AboutView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/views/AuthView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/my-pet-platform/src/views/AuthView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/my-pet-platform/src/views/HomeView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-pet-platform/宠物之家用户端需求文档.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/my-pet-platform" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="372otNyREkNFp3PzOD3OjTuAdpl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/asus/Desktop/pet",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-84258761d1cc-intellij.indexing.shared.core-IU-243.28141.18" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.28141.18" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="53215d4e-4e01-4a30-b63d-7034f553b555" name="更改" comment="" />
+      <created>1766110741615</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1766110741615</updated>
+      <workItem from="1766110743198" duration="573000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
