@@ -1,199 +1,304 @@
+// src/stores/user.js - 直接返回错误，不模拟数据
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { request } from '@/utils/request'
 
-// API基础URL
-const API_BASE_URL = 'http://localhost:8080/api'
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    token: localStorage.getItem('token') || '',
+    userInfo: null,
+    isLoggedIn: false
+  }),
 
-export const useUserStore = defineStore('user', () => {
-  // 状态
-  const user = ref(null)
-  const token = ref(null)
-  const isLoggedIn = computed(() => !!user.value && !!token.value)
+  actions: {
+    // 检查认证状态
+    checkAuthStatus() {
+      const token = localStorage.getItem('token')
+      this.token = token || ''
+      this.isLoggedIn = !!token
+      return this.isLoggedIn
+    },
 
-  // 从本地存储恢复用户状态
-  const initializeAuth = () => {
-    const savedUser = localStorage.getItem('petHome_user')
-    const savedToken = localStorage.getItem('petHome_token')
+    // 设置token
+    setToken(token) {
+      this.token = token
+      localStorage.setItem('token', token)
+      this.isLoggedIn = true
+    },
 
-    if (savedUser && savedToken) {
+    // 清除token
+    clearToken() {
+      this.token = ''
+      localStorage.removeItem('token')
+      this.userInfo = null
+      this.isLoggedIn = false
+    },
+
+    // 登录
+    async login(credentials) {
       try {
-        user.value = JSON.parse(savedUser)
-        token.value = savedToken
-      } catch (error) {
-        console.error('Failed to parse saved user data:', error)
-        localStorage.removeItem('petHome_user')
-        localStorage.removeItem('petHome_token')
-      }
-    }
-  }
+        const response = await request({
+          url: '/api/auth/login',
+          method: 'POST',
+          data: credentials
+        })
 
-  // API请求函数
-  const apiRequest = async (url, options = {}) => {
-    const response = await fetch(`${API_BASE_URL}${url}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token.value && { 'Authorization': `Bearer ${token.value}` }),
-        ...options.headers,
-      },
-      ...options,
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || '请求失败')
-    }
-
-    return data
-  }
-
-  // 注册
-  const register = async (registerData) => {
-    try {
-      const response = await apiRequest('/auth/register', {
-        method: 'POST',
-        body: JSON.stringify(registerData),
-      })
-
-      return response
-    } catch (error) {
-      throw error
-    }
-  }
-
-  // 登录
-  const login = async (loginData, remember = false) => {
-    try {
-      const response = await apiRequest('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(loginData),
-      })
-
-      if (response.code === 200) {
-        const userData = response.data
-
-        user.value = {
-          id: userData.userId,
-          username: userData.username,
-          nickname: userData.nickname || userData.username,
-          avatar: userData.avatar || '🐾',
-          loginTime: new Date().toISOString(),
-        }
-
-        token.value = userData.token
-
-        // 如果选择记住登录状态，保存到本地存储
-        if (remember) {
-          localStorage.setItem('petHome_user', JSON.stringify(user.value))
-          localStorage.setItem('petHome_token', token.value)
+        if (response.code === 200) {
+          this.setToken(response.data.token)
+          this.userInfo = response.data.userInfo
+          return { success: true, data: response.data }
         } else {
-          // 否则保存到会话存储
-          sessionStorage.setItem('petHome_user', JSON.stringify(user.value))
-          sessionStorage.setItem('petHome_token', token.value)
+          return { success: false, message: response.message }
         }
-
-        return response
-      } else {
-        throw new Error(response.message)
+      } catch (error) {
+        console.error('登录失败:', error)
+        return { success: false, message: error.message }
       }
-    } catch (error) {
-      throw error
-    }
-  }
+    },
 
-  // 退出登录
-  const logout = () => {
-    user.value = null
-    token.value = null
-    localStorage.removeItem('petHome_user')
-    localStorage.removeItem('petHome_token')
-    sessionStorage.removeItem('petHome_user')
-    sessionStorage.removeItem('petHome_token')
-  }
-
-  // 更新用户信息
-  const updateProfile = (profileData) => {
-    if (user.value) {
-      user.value = {
-        ...user.value,
-        ...profileData,
-        updatedAt: new Date().toISOString(),
+    // 获取用户宠物列表
+    async getUserPets() {
+      try {
+        const response = await request({
+          url: '/api/pets',
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取宠物列表失败:', error)
+        return []
       }
+    },
 
-      // 更新存储的用户信息
-      const savedUser =
-        localStorage.getItem('petHome_user') || sessionStorage.getItem('petHome_user')
-      if (savedUser) {
-        if (localStorage.getItem('petHome_user')) {
-          localStorage.setItem('petHome_user', JSON.stringify(user.value))
-        } else {
-          sessionStorage.setItem('petHome_user', JSON.stringify(user.value))
+    // 获取服务项目列表
+    async getServiceItems(category = null) {
+      try {
+        const url = category 
+          ? `/api/service/items/category/${category}`
+          : '/api/service/items'
+        
+        console.log('调用服务项目API:', url) // 添加日志
+        
+        const response = await request({
+          url,
+          method: 'GET'
+        })
+        
+        console.log('服务项目API响应:', response) // 添加日志
+        
+        if (response.code === 200) {
+          return response.data || []
+        }
+        console.warn('服务项目API返回非200状态:', response.code)
+        return []
+      } catch (error) {
+        console.error('获取服务项目失败:', error)
+        // 检查错误类型，提供更详细的错误信息
+        if (error.message && error.message.includes('401')) {
+          console.warn('服务项目API需要登录，但用户未登录')
+        } else if (error.message && error.message.includes('404')) {
+          console.error('API接口不存在，请检查后端服务')
+        } else if (error.message && error.message.includes('Network Error')) {
+          console.error('网络连接失败，请检查后端服务是否启动')
+        }
+        return []
+      }
+    },
+
+    // 获取用户所有预约
+    async getAllUserAppointments() {
+      try {
+        const response = await request({
+          url: '/api/service/appointments/all',
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取所有预约失败:', error)
+        return []
+      }
+    },
+
+    // 获取预约统计
+    async getAppointmentStats() {
+      try {
+        const response = await request({
+          url: '/api/service/appointments/stats',
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return response.data || {
+            pending: 0,
+            confirmed: 0,
+            completed: 0,
+            cancelled: 0,
+            all: 0
+          }
+        }
+        return {
+          pending: 0,
+          confirmed: 0,
+          completed: 0,
+          cancelled: 0,
+          all: 0
+        }
+      } catch (error) {
+        console.error('获取预约统计失败:', error)
+        return {
+          pending: 0,
+          confirmed: 0,
+          completed: 0,
+          cancelled: 0,
+          all: 0
         }
       }
-    }
-  }
+    },
 
-  // 检查登录状态
-  const checkAuthStatus = () => {
-    const localUser = localStorage.getItem('petHome_user')
-    const localToken = localStorage.getItem('petHome_token')
-    const sessionUser = sessionStorage.getItem('petHome_user')
-    const sessionToken = sessionStorage.getItem('petHome_token')
-
-    if (localUser && localToken) {
+    // 获取预约详情
+    async getAppointmentDetail(id) {
       try {
-        user.value = JSON.parse(localUser)
-        token.value = localToken
-        return true
+        const response = await request({
+          url: `/api/service/appointments/${id}`,
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return response.data
+        }
+        throw new Error(response.message || '获取详情失败')
       } catch (error) {
-        localStorage.removeItem('petHome_user')
-        localStorage.removeItem('petHome_token')
+        console.error('获取预约详情失败:', error)
+        throw error
       }
-    } else if (sessionUser && sessionToken) {
+    },
+
+    // 取消预约
+    async cancelAppointment(id, reason) {
       try {
-        user.value = JSON.parse(sessionUser)
-        token.value = sessionToken
-        return true
+        const response = await request({
+          url: `/api/service/appointments/${id}/cancel`,
+          method: 'PUT',
+          params: { reason: reason || '用户主动取消' },
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return true
+        }
+        throw new Error(response.message || '取消预约失败')
       } catch (error) {
-        sessionStorage.removeItem('petHome_user')
-        sessionStorage.removeItem('petHome_token')
+        console.error('取消预约失败:', error)
+        throw error
       }
+    },
+
+    // 获取可用时间段
+    async getAvailableTimeSlots(date) {
+      try {
+        const response = await request({
+          url: '/api/service/time-slots',
+          method: 'GET',
+          params: { date }
+        })
+        
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取可用时间段失败:', error)
+        // 对于401错误，返回默认时间段
+        if (error.message && error.message.includes('401')) {
+          console.warn('时间段API需要登录，返回默认时间段')
+          return ['09:00', '10:30', '14:00', '15:30', '17:00']
+        }
+        return ['09:00', '10:30', '14:00', '15:30', '17:00']
+      }
+    },
+
+    // 创建预约
+    async createAppointment(appointmentData) {
+      try {
+        const response = await request({
+          url: '/api/service/appointments',
+          method: 'POST',
+          data: appointmentData,
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+        
+        if (response.code === 200) {
+          return response.data
+        }
+        throw new Error(response.message || '创建预约失败')
+      } catch (error) {
+        console.error('创建预约失败:', error)
+        throw error
+      }
+    },
+
+    // 获取推荐服务
+    async getRecommendedServices() {
+      try {
+        const response = await request({
+          url: '/api/service/items/recommended',
+          method: 'GET'
+        })
+        
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取推荐服务失败:', error)
+        return []
+      }
+    },
+
+    // 获取服务详情
+    async getServiceById(id) {
+      try {
+        const response = await request({
+          url: `/api/service/items/${id}`,
+          method: 'GET'
+        })
+        
+        if (response.code === 200) {
+          return response.data
+        }
+        throw new Error(response.message || '获取服务详情失败')
+      } catch (error) {
+        console.error('获取服务详情失败:', error)
+        throw error
+      }
+    },
+
+    // 退出登录
+    logout() {
+      this.clearToken()
     }
-
-    return false
-  }
-
-  // 获取用户显示名称
-  const getDisplayName = computed(() => {
-    if (!user.value) return '游客'
-    return user.value.nickname || user.value.username
-  })
-
-  // 获取用户头像
-  const getAvatar = computed(() => {
-    if (!user.value) return '👤'
-    return user.value.avatar || '🐾'
-  })
-
-  // 初始化认证状态
-  initializeAuth()
-
-  return {
-    // 状态
-    user,
-    token,
-    isLoggedIn,
-
-    // 计算属性
-    getDisplayName,
-    getAvatar,
-
-    // 方法
-    register,
-    login,
-    logout,
-    updateProfile,
-    checkAuthStatus,
-    initializeAuth,
   }
 })

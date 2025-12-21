@@ -6,12 +6,18 @@
         <h2 class="user-name">{{ userStore.getDisplayName }}</h2>
         <p class="user-title">宠物爱好者</p>
       </div>
-      <button @click="handleLogout" class="logout-btn">退出登录</button>
+      <button @click="handleLogout" class="logout-btn">
+        <Icon icon="mdi:logout" class="logout-icon" />
+        退出登录
+      </button>
     </div>
 
     <div class="profile-content">
       <div class="welcome-message">
-        <h3>欢迎来到宠物之家！🏠</h3>
+        <h3>
+          <Icon icon="mdi:home" class="welcome-icon" />
+          欢迎来到宠物之家！
+        </h3>
         <p>
           在这里，您可以为您的爱宠创建档案、预约洗护服务、购买宠物用品，还能获得专业的AI宠物咨询。
         </p>
@@ -19,28 +25,36 @@
 
       <div class="quick-actions">
         <div class="action-card">
-          <div class="action-icon">📋</div>
+          <div class="action-icon">
+            <Icon icon="mdi:file-document-multiple" />
+          </div>
           <h4>宠物档案</h4>
           <p>管理您的宠物信息</p>
           <button class="action-btn">创建档案</button>
         </div>
 
         <div class="action-card">
-          <div class="action-icon">🛁</div>
+          <div class="action-icon">
+            <Icon icon="mdi:shower-head" />
+          </div>
           <h4>预约洗护</h4>
           <p>为爱宠预约专业服务</p>
           <button class="action-btn">立即预约</button>
         </div>
 
         <div class="action-card">
-          <div class="action-icon">🛒</div>
+          <div class="action-icon">
+            <Icon icon="mdi:cart" />
+          </div>
           <h4>宠物商店</h4>
           <p>购买优质宠物用品</p>
-          <button class="action-btn">去购物</button>
+          <button class="action-btn" @click="router.push('/products')">去购物</button>
         </div>
 
         <div class="action-card">
-          <div class="action-icon">🤖</div>
+          <div class="action-icon">
+            <Icon icon="mdi:robot" />
+          </div>
           <h4>AI咨询</h4>
           <p>获得专业宠物建议</p>
           <button class="action-btn">开始咨询</button>
@@ -123,6 +137,15 @@ const handleLogout = () => {
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-icon :deep(svg) {
+  width: 16px;
+  height: 16px;
+  color: white;
 }
 
 .logout-btn:hover {
@@ -142,6 +165,17 @@ const handleLogout = () => {
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+
+.welcome-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.welcome-icon :deep(svg) {
+  width: 24px;
+  height: 24px;
+  color: #ffd93d;
 }
 
 .welcome-message h3 {
@@ -180,6 +214,14 @@ const handleLogout = () => {
 .action-icon {
   font-size: 48px;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.action-icon :deep(svg) {
+  width: 48px;
+  height: 48px;
+  color: #ffd93d;
 }
 
 .action-card h4 {
@@ -251,6 +293,11 @@ const handleLogout = () => {
   .action-card {
     padding: 25px 20px;
   }
+
+  .action-icon :deep(svg) {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -287,6 +334,11 @@ const handleLogout = () => {
 
   .action-icon {
     font-size: 40px;
+  }
+
+  .action-icon :deep(svg) {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>
