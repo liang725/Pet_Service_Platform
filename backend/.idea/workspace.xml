@@ -4,11 +4,78 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a21d63e5-d0e0-45a8-b0d9-b53c4060349e" name="更改" comment="" />
+    <list default="true" id="a21d63e5-d0e0-45a8-b0d9-b53c4060349e" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/JwtInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/PetController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/ServiceAppointmentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceAppointmentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceAppointmentResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceItemResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/Pet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceAppointment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceCareItems.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceOrderItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/PetMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceAppointmentMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceCareItemsMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceItemMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceOrderItemMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/PetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceAppointmentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceCareItemsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/PetServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceAppointmentServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceCareItemsServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/deepseek_html_20251218_a543f9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/HelloWorld.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/TheWelcome.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/WelcomeItem.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/icons/IconCommunity.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/icons/IconDocumentation.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/icons/IconEcosystem.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/icons/IconSupport.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/components/icons/IconTooling.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/stores/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/stores/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/views/AboutView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/views/AuthView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/views/AuthView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/views/HomeView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/views/HomeView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/views/ProfileView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/views/ProfileView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform/宠物之家用户端需求文档.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_home_2025-12-19_135138.sql" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -25,33 +92,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.BackendApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.BackendApplication.executor": "Run",
-    "dart.analysis.tool.window.visible": "false",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/13711/宠物之家/pet/pet/backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;xyyzhang__works&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/asus/Desktop/pet3.0/pet/backend/pom.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql_aurora"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql_aurora&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected="Application.BackendApplication">
+}</component>
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
     <configuration name="BackendApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.ddliang.backend.BackendApplication" />
       <module name="backend" />
@@ -72,17 +141,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.BackendApplication" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+        <option value="bundled-jdk-9823dce3aa75-84258761d1cc-intellij.indexing.shared.core-IU-243.28141.18" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.28141.18" />
       </set>
     </attachedChunks>
   </component>
@@ -96,6 +160,11 @@
       <updated>1766110741440</updated>
       <workItem from="1766110742182" duration="910000" />
       <workItem from="1766113133502" duration="4121000" />
+      <workItem from="1766124728268" duration="6007000" />
+      <workItem from="1766153511029" duration="5851000" />
+      <workItem from="1766206640796" duration="5126000" />
+      <workItem from="1766232382459" duration="6167000" />
+      <workItem from="1766304900501" duration="12299000" />
     </task>
     <servers />
   </component>
