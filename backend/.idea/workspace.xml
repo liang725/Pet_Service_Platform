@@ -4,11 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a21d63e5-d0e0-45a8-b0d9-b53c4060349e" name="更改" comment="" />
+    <list default="true" id="a21d63e5-d0e0-45a8-b0d9-b53c4060349e" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/common/AuthCheck.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/common/GenderEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/PetController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/Pet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/PetMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/PetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/PetServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../my-pet-platform" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_home_2025-12-19_135138.sql" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -34,8 +59,10 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.BackendApplication.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "xyyzhang__works",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/13711/宠物之家/pet/pet/backend",
     "node.js.detected.package.eslint": "true",
@@ -96,6 +123,7 @@
       <updated>1766110741440</updated>
       <workItem from="1766110742182" duration="910000" />
       <workItem from="1766113133502" duration="4121000" />
+      <workItem from="1766124728268" duration="6007000" />
     </task>
     <servers />
   </component>
