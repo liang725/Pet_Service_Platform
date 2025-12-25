@@ -1,0 +1,1381 @@
+{
+  "total": 30,
+  "categories": [
+    "food",
+    "supply",
+    "toy"
+  ],
+  "products": [
+    {
+      "id": 1,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "皇家小型犬成犬粮 2kg",
+      "short_description": "优质皇家小型犬成犬粮 2kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "皇家",
+        "类型": "小型犬成犬粮",
+        "净含量": "2kg",
+        "保质期": "18个月",
+        "产地": "法国",
+        "适用对象": "成犬",
+        "主要成分": "鸭肉、玉米、南瓜、维生素、钙"
+      },
+      "price": 124.87,
+      "original_price": 140.07,
+      "discount": 10,
+      "currency": "CNY",
+      "rating": 4.7,
+      "rating_count": 6729,
+      "rating_distribution": {
+        "5_star": 88.2,
+        "4_star": 9.2,
+        "3_star": 4.2,
+        "2_star": 0.4,
+        "1_star": 0.6
+      },
+      "stock": 1907,
+      "sales": 33249,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1663045476550-6ecee3c164da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1663045476550-6ecee3c164da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1663045476550-6ecee3c164da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_1_GhY3ECDrwUw.jpg"
+      },
+      "tags": [
+        "food",
+        "皇家"
+      ],
+      "brand": "皇家",
+      "created_at": "2025-12-20T17:38:52.261537",
+      "updated_at": "2025-12-20T17:38:52.261537"
+    },
+    {
+      "id": 2,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "冠能大型犬幼犬粮 3kg",
+      "short_description": "优质冠能大型犬幼犬粮 3kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "冠能",
+        "类型": "大型犬幼犬粮",
+        "净含量": "3kg",
+        "保质期": "18个月",
+        "产地": "加拿大",
+        "适用对象": "成猫",
+        "主要成分": "三文鱼、红薯、蓝莓、益生菌"
+      },
+      "price": 179.47,
+      "original_price": 221.64,
+      "discount": 19,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 5234,
+      "rating_distribution": {
+        "5_star": 87.1,
+        "4_star": 9.2,
+        "3_star": 3.9,
+        "2_star": 0.1,
+        "1_star": 0.9
+      },
+      "stock": 1239,
+      "sales": 22322,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1684882726821-2999db517441?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1684882726821-2999db517441?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1684882726821-2999db517441?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_2_CRN2fR9NRE8.jpg"
+      },
+      "tags": [
+        "food",
+        "冠能"
+      ],
+      "brand": "冠能",
+      "created_at": "2025-12-20T17:38:53.089800",
+      "updated_at": "2025-12-20T17:38:53.089800"
+    },
+    {
+      "id": 3,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "渴望六种鱼全犬粮 1.8kg",
+      "short_description": "优质渴望六种鱼全犬粮 1.8kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "渴望",
+        "类型": "六种鱼全犬粮",
+        "净含量": "1.8kg",
+        "保质期": "18个月",
+        "产地": "中国",
+        "适用对象": "成猫",
+        "主要成分": "牛肉、燕麦、胡萝卜、海藻、矿物质"
+      },
+      "price": 325.65,
+      "original_price": 359.6,
+      "discount": 9,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 3836,
+      "rating_distribution": {
+        "5_star": 87.6,
+        "4_star": 9.0,
+        "3_star": 3.0,
+        "2_star": 0.7,
+        "1_star": 1.0
+      },
+      "stock": 896,
+      "sales": 12022,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1646483420147-6b940b15436e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1646483420147-6b940b15436e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1646483420147-6b940b15436e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_3_vkXJP8UiVoU.jpg"
+      },
+      "tags": [
+        "food",
+        "渴望"
+      ],
+      "brand": "渴望",
+      "created_at": "2025-12-20T17:38:53.872110",
+      "updated_at": "2025-12-20T17:38:53.872110"
+    },
+    {
+      "id": 4,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "比瑞吉天然粮 10kg",
+      "short_description": "优质比瑞吉天然粮 10kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "比瑞吉",
+        "类型": "天然粮",
+        "净含量": "10kg",
+        "保质期": "18个月",
+        "产地": "德国",
+        "适用对象": "成犬",
+        "主要成分": "三文鱼、红薯、蓝莓、益生菌"
+      },
+      "price": 368.02,
+      "original_price": 448.92,
+      "discount": 18,
+      "currency": "CNY",
+      "rating": 4.5,
+      "rating_count": 4471,
+      "rating_distribution": {
+        "5_star": 85.9,
+        "4_star": 9.3,
+        "3_star": 4.5,
+        "2_star": 0.2,
+        "1_star": 0.0
+      },
+      "stock": 1365,
+      "sales": 3797,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1596491123074-fd69f1b7c12d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1596491123074-fd69f1b7c12d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1596491123074-fd69f1b7c12d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_4_yUr_afmmRR0.jpg"
+      },
+      "tags": [
+        "food",
+        "比瑞吉"
+      ],
+      "brand": "比瑞吉",
+      "created_at": "2025-12-20T17:38:54.684414",
+      "updated_at": "2025-12-20T17:38:54.684414"
+    },
+    {
+      "id": 5,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "麦富迪冻干双拼粮 2kg",
+      "short_description": "优质麦富迪冻干双拼粮 2kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "麦富迪",
+        "类型": "冻干双拼粮",
+        "净含量": "2kg",
+        "保质期": "18个月",
+        "产地": "法国",
+        "适用对象": "全猫种",
+        "主要成分": "鸭肉、玉米、南瓜、维生素、钙"
+      },
+      "price": 90.2,
+      "original_price": 104.78,
+      "discount": 13,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 1267,
+      "rating_distribution": {
+        "5_star": 80.7,
+        "4_star": 9.3,
+        "3_star": 3.7,
+        "2_star": 0.0,
+        "1_star": 0.7
+      },
+      "stock": 835,
+      "sales": 2932,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1683134382202-aac458a92c19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1683134382202-aac458a92c19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1683134382202-aac458a92c19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_5_fnDFy-BSoxg.jpg"
+      },
+      "tags": [
+        "food",
+        "麦富迪"
+      ],
+      "brand": "麦富迪",
+      "created_at": "2025-12-20T17:38:55.449245",
+      "updated_at": "2025-12-20T17:38:55.449245"
+    },
+    {
+      "id": 6,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "伯纳天纯无谷鸡肉粮 5kg",
+      "short_description": "优质伯纳天纯无谷鸡肉粮 5kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "伯纳天纯",
+        "类型": "无谷鸡肉粮",
+        "净含量": "5kg",
+        "保质期": "18个月",
+        "产地": "美国",
+        "适用对象": "全犬种",
+        "主要成分": "牛肉、燕麦、胡萝卜、海藻、矿物质"
+      },
+      "price": 248.81,
+      "original_price": 316.82,
+      "discount": 21,
+      "currency": "CNY",
+      "rating": 5.0,
+      "rating_count": 1503,
+      "rating_distribution": {
+        "5_star": 79.7,
+        "4_star": 13.9,
+        "3_star": 4.5,
+        "2_star": 1.1,
+        "1_star": 0.8
+      },
+      "stock": 1587,
+      "sales": 38512,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1601758228006-964e41e5e8eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1601758228006-964e41e5e8eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1601758228006-964e41e5e8eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_6_NOBRu2TAqcs.jpg"
+      },
+      "tags": [
+        "food",
+        "伯纳天纯"
+      ],
+      "brand": "伯纳天纯",
+      "created_at": "2025-12-20T17:38:56.281853",
+      "updated_at": "2025-12-20T17:38:56.281853"
+    },
+    {
+      "id": 7,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "爱肯拿鸭肉梨配方 2kg",
+      "short_description": "优质爱肯拿鸭肉梨配方 2kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "爱肯拿",
+        "类型": "鸭肉梨配方",
+        "净含量": "2kg",
+        "保质期": "18个月",
+        "产地": "法国",
+        "适用对象": "全犬种",
+        "主要成分": "鸡肉、糙米、蔬菜、鱼油、维生素"
+      },
+      "price": 258.32,
+      "original_price": 340.26,
+      "discount": 24,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 1706,
+      "rating_distribution": {
+        "5_star": 79.9,
+        "4_star": 12.1,
+        "3_star": 3.5,
+        "2_star": 0.8,
+        "1_star": 0.2
+      },
+      "stock": 711,
+      "sales": 6018,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1714068691210-073dc52c6c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1714068691210-073dc52c6c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1714068691210-073dc52c6c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_7_Qvbr5Uxgz_Q.jpg"
+      },
+      "tags": [
+        "food",
+        "爱肯拿"
+      ],
+      "brand": "爱肯拿",
+      "created_at": "2025-12-20T17:38:57.055901",
+      "updated_at": "2025-12-20T17:38:57.055901"
+    },
+    {
+      "id": 8,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "素力高金装成犬粮 3kg",
+      "short_description": "优质素力高金装成犬粮 3kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "素力高",
+        "类型": "金装成犬粮",
+        "净含量": "3kg",
+        "保质期": "18个月",
+        "产地": "加拿大",
+        "适用对象": "成犬",
+        "主要成分": "鸡肉、糙米、蔬菜、鱼油、维生素"
+      },
+      "price": 163.57,
+      "original_price": 195.41,
+      "discount": 16,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 6322,
+      "rating_distribution": {
+        "5_star": 85.2,
+        "4_star": 14.5,
+        "3_star": 3.6,
+        "2_star": 0.1,
+        "1_star": 0.5
+      },
+      "stock": 1347,
+      "sales": 27819,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1596490479153-68cd194d1aeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1596490479153-68cd194d1aeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1596490479153-68cd194d1aeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_8_qevdiAV9H8M.jpg"
+      },
+      "tags": [
+        "food",
+        "素力高"
+      ],
+      "brand": "素力高",
+      "created_at": "2025-12-20T17:38:57.818856",
+      "updated_at": "2025-12-20T17:38:57.818856"
+    },
+    {
+      "id": 9,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "皇家英短成猫粮 2kg",
+      "short_description": "优质皇家英短成猫粮 2kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "皇家",
+        "类型": "英短成猫粮",
+        "净含量": "2kg",
+        "保质期": "18个月",
+        "产地": "法国",
+        "适用对象": "成犬",
+        "主要成分": "牛肉、燕麦、胡萝卜、海藻、矿物质"
+      },
+      "price": 131.89,
+      "original_price": 175.79,
+      "discount": 24,
+      "currency": "CNY",
+      "rating": 4.7,
+      "rating_count": 810,
+      "rating_distribution": {
+        "5_star": 88.7,
+        "4_star": 14.2,
+        "3_star": 4.3,
+        "2_star": 0.1,
+        "1_star": 0.1
+      },
+      "stock": 896,
+      "sales": 12526,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1726761692986-6bcde87fc2b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1726761692986-6bcde87fc2b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1726761692986-6bcde87fc2b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwZm9vZCUyMGJhZ3xlbnwwfHx8fDE3NjYyMjM0MzF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_9__AJyvVIzSWE.jpg"
+      },
+      "tags": [
+        "food",
+        "皇家"
+      ],
+      "brand": "皇家",
+      "created_at": "2025-12-20T17:38:58.600991",
+      "updated_at": "2025-12-20T17:38:58.600991"
+    },
+    {
+      "id": 10,
+      "category": "food",
+      "category_name": "宠物食品",
+      "name": "渴望六种鱼猫粮 1.8kg",
+      "short_description": "优质渴望六种鱼猫粮 1.8kg，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 精选优质原料，科学配比，营养均衡全面\n✓ 天然健康配方，不含人工色素和防腐剂\n✓ 添加益生菌和益生元，呵护肠道健康\n✓ 富含优质蛋白质，易消化吸收\n✓ 添加深海鱼油，亮泽毛发，保护皮肤\n✓ 低盐配方，保护肾脏健康\n\n【适用对象】\n适合各年龄段宠物，根据体重和年龄选择合适规格\n\n【喂养建议】\n每日2-3次，根据宠物体重调整喂食量，保证充足饮水\n\n【储存方式】\n请存放于阴凉干燥处，开封后请密封保存，建议30天内食用完毕",
+      "specifications": {
+        "品牌": "渴望",
+        "类型": "六种鱼猫粮",
+        "净含量": "1.8kg",
+        "保质期": "18个月",
+        "产地": "加拿大",
+        "适用对象": "幼猫",
+        "主要成分": "牛肉、燕麦、胡萝卜、海藻、矿物质"
+      },
+      "price": 309.55,
+      "original_price": 366.8,
+      "discount": 15,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 6462,
+      "rating_distribution": {
+        "5_star": 77.0,
+        "4_star": 10.0,
+        "3_star": 4.0,
+        "2_star": 0.9,
+        "1_star": 0.7
+      },
+      "stock": 1192,
+      "sales": 40786,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1714068691256-cd3d65f97795?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMGZvb2QlMjBiYWd8ZW58MHx8fHwxNzY2MjIzNDMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1714068691256-cd3d65f97795?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMGZvb2QlMjBiYWd8ZW58MHx8fHwxNzY2MjIzNDMxfDA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1714068691256-cd3d65f97795?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMGZvb2QlMjBiYWd8ZW58MHx8fHwxNzY2MjIzNDMxfDA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\food_10_4amQU28yNyg.jpg"
+      },
+      "tags": [
+        "food",
+        "渴望"
+      ],
+      "brand": "渴望",
+      "created_at": "2025-12-20T17:38:59.383041",
+      "updated_at": "2025-12-20T17:38:59.383041"
+    },
+    {
+      "id": 11,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物航空箱 L号",
+      "short_description": "优质宠物航空箱 L号，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物航空箱",
+        "规格": "L号",
+        "材质": "牛津布",
+        "颜色": "多色可选",
+        "适用": "大型犬",
+        "产地": "美国"
+      },
+      "price": 173.93,
+      "original_price": 209.16,
+      "discount": 16,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 7159,
+      "rating_distribution": {
+        "5_star": 86.3,
+        "4_star": 9.1,
+        "3_star": 4.8,
+        "2_star": 0.6,
+        "1_star": 0.1
+      },
+      "stock": 1651,
+      "sales": 4755,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1661962315505-73a395784b37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1661962315505-73a395784b37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1661962315505-73a395784b37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_1_ZKY7_gzHlOI.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物航空箱"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:12.273153",
+      "updated_at": "2025-12-20T17:39:12.273153"
+    },
+    {
+      "id": 12,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "智能宠物饮水机 2L容量",
+      "short_description": "优质智能宠物饮水机 2L容量，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "智能宠物饮水机",
+        "规格": "2L容量",
+        "材质": "ABS塑料",
+        "颜色": "粉色",
+        "适用": "中型犬",
+        "产地": "美国"
+      },
+      "price": 237.45,
+      "original_price": 288.78,
+      "discount": 17,
+      "currency": "CNY",
+      "rating": 4.5,
+      "rating_count": 6313,
+      "rating_distribution": {
+        "5_star": 78.8,
+        "4_star": 9.2,
+        "3_star": 2.0,
+        "2_star": 1.1,
+        "1_star": 0.2
+      },
+      "stock": 829,
+      "sales": 42966,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1608060375223-c5ab552bc9a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1608060375223-c5ab552bc9a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1608060375223-c5ab552bc9a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_2_IHZdiqWOgBk.jpg"
+      },
+      "tags": [
+        "supply",
+        "智能宠物饮水机"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:13.204517",
+      "updated_at": "2025-12-20T17:39:13.204517"
+    },
+    {
+      "id": 13,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物智能定时喂食器 4L容量",
+      "short_description": "优质宠物智能定时喂食器 4L容量，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物智能定时喂食器",
+        "规格": "4L容量",
+        "材质": "棉麻",
+        "颜色": "多色可选",
+        "适用": "猫咪专用",
+        "产地": "德国"
+      },
+      "price": 519.11,
+      "original_price": 586.51,
+      "discount": 11,
+      "currency": "CNY",
+      "rating": 4.5,
+      "rating_count": 7414,
+      "rating_distribution": {
+        "5_star": 77.6,
+        "4_star": 13.3,
+        "3_star": 4.3,
+        "2_star": 2.0,
+        "1_star": 1.0
+      },
+      "stock": 220,
+      "sales": 17223,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1608060434411-0c3fa9049e7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1608060434411-0c3fa9049e7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1608060434411-0c3fa9049e7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_3_FFtx3AlDkr4.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物智能定时喂食器"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:14.490436",
+      "updated_at": "2025-12-20T17:39:14.490436"
+    },
+    {
+      "id": 14,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物GPS定位器 防水款",
+      "short_description": "优质宠物GPS定位器 防水款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物GPS定位器",
+        "规格": "防水款",
+        "材质": "ABS塑料",
+        "颜色": "白色",
+        "适用": "猫咪专用",
+        "产地": "日本"
+      },
+      "price": 239.63,
+      "original_price": 301.36,
+      "discount": 20,
+      "currency": "CNY",
+      "rating": 4.8,
+      "rating_count": 3167,
+      "rating_distribution": {
+        "5_star": 77.9,
+        "4_star": 13.6,
+        "3_star": 2.7,
+        "2_star": 1.6,
+        "1_star": 0.1
+      },
+      "stock": 456,
+      "sales": 3842,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1765182272682-c1e8edf6251e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1765182272682-c1e8edf6251e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1765182272682-c1e8edf6251e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_4_jeIVe5L4bgg.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物GPS定位器"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:15.462608",
+      "updated_at": "2025-12-20T17:39:15.462608"
+    },
+    {
+      "id": 15,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物美容洗澡盆 可折叠",
+      "short_description": "优质宠物美容洗澡盆 可折叠，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物美容洗澡盆",
+        "规格": "可折叠",
+        "材质": "不锈钢",
+        "颜色": "米色",
+        "适用": "猫咪专用",
+        "产地": "中国"
+      },
+      "price": 158.94,
+      "original_price": 196.01,
+      "discount": 18,
+      "currency": "CNY",
+      "rating": 5.0,
+      "rating_count": 4712,
+      "rating_distribution": {
+        "5_star": 80.9,
+        "4_star": 14.1,
+        "3_star": 2.7,
+        "2_star": 1.0,
+        "1_star": 0.8
+      },
+      "stock": 596,
+      "sales": 37963,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1663050701598-4e75c3175eae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1663050701598-4e75c3175eae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1663050701598-4e75c3175eae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_5_pD7SpU1H7zU.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物美容洗澡盆"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:16.994712",
+      "updated_at": "2025-12-20T17:39:16.994712"
+    },
+    {
+      "id": 16,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物专用吹水机 大功率",
+      "short_description": "优质宠物专用吹水机 大功率，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物专用吹水机",
+        "规格": "大功率",
+        "材质": "混合材质",
+        "颜色": "绿色",
+        "适用": "猫狗通用",
+        "产地": "美国"
+      },
+      "price": 365.93,
+      "original_price": 442.76,
+      "discount": 17,
+      "currency": "CNY",
+      "rating": 4.8,
+      "rating_count": 4613,
+      "rating_distribution": {
+        "5_star": 85.8,
+        "4_star": 12.1,
+        "3_star": 4.9,
+        "2_star": 0.5,
+        "1_star": 0.8
+      },
+      "stock": 598,
+      "sales": 20088,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1765045952615-9e28d239f053?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1765045952615-9e28d239f053?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1765045952615-9e28d239f053?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_6_w-eUGI_5bJU.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物专用吹水机"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:18.402532",
+      "updated_at": "2025-12-20T17:39:18.402532"
+    },
+    {
+      "id": 17,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物豪华别墅窝 L号",
+      "short_description": "优质宠物豪华别墅窝 L号，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物豪华别墅窝",
+        "规格": "L号",
+        "材质": "不锈钢",
+        "颜色": "绿色",
+        "适用": "大型犬",
+        "产地": "中国"
+      },
+      "price": 470.28,
+      "original_price": 616.63,
+      "discount": 23,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 3135,
+      "rating_distribution": {
+        "5_star": 85.2,
+        "4_star": 13.9,
+        "3_star": 4.5,
+        "2_star": 1.9,
+        "1_star": 0.8
+      },
+      "stock": 1450,
+      "sales": 1018,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1764813824215-4afa03d1a011?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1764813824215-4afa03d1a011?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1764813824215-4afa03d1a011?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_7_L08FlzZm3eg.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物豪华别墅窝"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:19.926125",
+      "updated_at": "2025-12-20T17:39:19.926125"
+    },
+    {
+      "id": 18,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物外出背包 透气款",
+      "short_description": "优质宠物外出背包 透气款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物外出背包",
+        "规格": "透气款",
+        "材质": "混合材质",
+        "颜色": "绿色",
+        "适用": "中型犬",
+        "产地": "中国"
+      },
+      "price": 115.01,
+      "original_price": 148.66,
+      "discount": 22,
+      "currency": "CNY",
+      "rating": 4.5,
+      "rating_count": 4056,
+      "rating_distribution": {
+        "5_star": 75.3,
+        "4_star": 13.8,
+        "3_star": 2.1,
+        "2_star": 1.2,
+        "1_star": 0.5
+      },
+      "stock": 949,
+      "sales": 13555,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1761614282055-29e039aac354?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1761614282055-29e039aac354?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1761614282055-29e039aac354?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_8_OBu_nabEpAw.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物外出背包"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:20.863582",
+      "updated_at": "2025-12-20T17:39:20.863582"
+    },
+    {
+      "id": 19,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物自动饮水器 循环过滤",
+      "short_description": "优质宠物自动饮水器 循环过滤，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物自动饮水器",
+        "规格": "循环过滤",
+        "材质": "PP食品级",
+        "颜色": "多色可选",
+        "适用": "小型犬",
+        "产地": "中国"
+      },
+      "price": 183.56,
+      "original_price": 217.05,
+      "discount": 15,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 4877,
+      "rating_distribution": {
+        "5_star": 80.9,
+        "4_star": 9.3,
+        "3_star": 2.1,
+        "2_star": 0.3,
+        "1_star": 0.8
+      },
+      "stock": 1038,
+      "sales": 34982,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1663133698547-660d78434cdd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1663133698547-660d78434cdd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1663133698547-660d78434cdd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8cGV0JTIwY2FycmllcnxlbnwwfHx8fDE3NjYyMjM0NTZ8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_9_kU17SsEoATo.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物自动饮水器"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:21.793542",
+      "updated_at": "2025-12-20T17:39:21.793542"
+    },
+    {
+      "id": 20,
+      "category": "supply",
+      "category_name": "宠物用品",
+      "name": "宠物牵引绳 反光款",
+      "short_description": "优质宠物牵引绳 反光款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 优质材料制作，安全环保无异味\n✓ 人性化设计，使用方便快捷\n✓ 做工精细，经久耐用\n✓ 多功能设计，实用性强\n✓ 易清洗，方便日常打理\n✓ 时尚外观，美观大方\n\n【使用说明】\n详细使用方法请参考产品说明书\n\n【注意事项】\n首次使用前请清洗，定期清洁保持卫生\n\n【售后服务】\n支持7天无理由退换，质量问题免费换新",
+      "specifications": {
+        "产品名称": "宠物牵引绳",
+        "规格": "反光款",
+        "材质": "混合材质",
+        "颜色": "蓝色",
+        "适用": "中型犬",
+        "产地": "德国"
+      },
+      "price": 36.57,
+      "original_price": 45.87,
+      "discount": 20,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 5180,
+      "rating_distribution": {
+        "5_star": 88.8,
+        "4_star": 10.7,
+        "3_star": 3.3,
+        "2_star": 1.2,
+        "1_star": 0.1
+      },
+      "stock": 1387,
+      "sales": 48037,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1763798709003-f1ac7af27e5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fHBldCUyMGNhcnJpZXJ8ZW58MHx8fHwxNzY2MjIzNDU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1763798709003-f1ac7af27e5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fHBldCUyMGNhcnJpZXJ8ZW58MHx8fHwxNzY2MjIzNDU2fDA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1763798709003-f1ac7af27e5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fHBldCUyMGNhcnJpZXJ8ZW58MHx8fHwxNzY2MjIzNDU2fDA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\supply_10_bXwPUdSxe_E.jpg"
+      },
+      "tags": [
+        "supply",
+        "宠物牵引绳"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:23.374715",
+      "updated_at": "2025-12-20T17:39:23.374715"
+    },
+    {
+      "id": 21,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "逗猫棒 羽毛款",
+      "short_description": "优质逗猫棒 羽毛款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "逗猫棒",
+        "规格": "羽毛款",
+        "材质": "毛绒",
+        "尺寸": "小号",
+        "颜色": "红色",
+        "适用": "猫狗通用",
+        "特点": "益智"
+      },
+      "price": 20.48,
+      "original_price": 23.87,
+      "discount": 14,
+      "currency": "CNY",
+      "rating": 4.7,
+      "rating_count": 1822,
+      "rating_distribution": {
+        "5_star": 88.0,
+        "4_star": 8.3,
+        "3_star": 4.9,
+        "2_star": 1.1,
+        "1_star": 0.0
+      },
+      "stock": 1680,
+      "sales": 3136,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1668918112517-8ebe0f3eb1f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1668918112517-8ebe0f3eb1f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1668918112517-8ebe0f3eb1f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_1_ZpXl0sMEzmM.jpg"
+      },
+      "tags": [
+        "toy",
+        "逗猫棒"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:34.999952",
+      "updated_at": "2025-12-20T17:39:34.999952"
+    },
+    {
+      "id": 22,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "耐咬磨牙球 发声款",
+      "short_description": "优质耐咬磨牙球 发声款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "耐咬磨牙球",
+        "规格": "发声款",
+        "材质": "塑料",
+        "尺寸": "均码",
+        "颜色": "彩色",
+        "适用": "猫咪专用",
+        "特点": "可清洗"
+      },
+      "price": 37.31,
+      "original_price": 42.81,
+      "discount": 12,
+      "currency": "CNY",
+      "rating": 4.9,
+      "rating_count": 6267,
+      "rating_distribution": {
+        "5_star": 81.8,
+        "4_star": 13.2,
+        "3_star": 4.5,
+        "2_star": 0.9,
+        "1_star": 0.3
+      },
+      "stock": 1718,
+      "sales": 47324,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1535294435445-d7249524ef2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1535294435445-d7249524ef2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1535294435445-d7249524ef2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_2_NOLrgL3hUJg.jpg"
+      },
+      "tags": [
+        "toy",
+        "耐咬磨牙球"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:35.787987",
+      "updated_at": "2025-12-20T17:39:35.787987"
+    },
+    {
+      "id": 23,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物漏食球 益智款",
+      "short_description": "优质宠物漏食球 益智款，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物漏食球",
+        "规格": "益智款",
+        "材质": "TPR环保材质",
+        "尺寸": "中号",
+        "颜色": "蓝色",
+        "适用": "大型犬",
+        "特点": "可漂浮"
+      },
+      "price": 49.67,
+      "original_price": 55.75,
+      "discount": 10,
+      "currency": "CNY",
+      "rating": 4.8,
+      "rating_count": 2373,
+      "rating_distribution": {
+        "5_star": 87.4,
+        "4_star": 12.9,
+        "3_star": 3.5,
+        "2_star": 0.4,
+        "1_star": 0.4
+      },
+      "stock": 1448,
+      "sales": 48361,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1591946614720-90a587da4a36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1591946614720-90a587da4a36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1591946614720-90a587da4a36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_3_g2FtlFrc164.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物漏食球"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:36.908343",
+      "updated_at": "2025-12-20T17:39:36.908343"
+    },
+    {
+      "id": 24,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物尖叫鸡 橡胶材质",
+      "short_description": "优质宠物尖叫鸡 橡胶材质，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物尖叫鸡",
+        "规格": "橡胶材质",
+        "材质": "纯棉",
+        "尺寸": "中号",
+        "颜色": "绿色",
+        "适用": "猫狗通用",
+        "特点": "益智"
+      },
+      "price": 26.33,
+      "original_price": 32.37,
+      "discount": 18,
+      "currency": "CNY",
+      "rating": 4.5,
+      "rating_count": 1984,
+      "rating_distribution": {
+        "5_star": 82.7,
+        "4_star": 14.2,
+        "3_star": 3.0,
+        "2_star": 1.3,
+        "1_star": 0.7
+      },
+      "stock": 1593,
+      "sales": 16003,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1618397360709-9dd900837411?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1618397360709-9dd900837411?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1618397360709-9dd900837411?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_4_oD8uurkrH4c.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物尖叫鸡"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:37.763226",
+      "updated_at": "2025-12-20T17:39:37.763226"
+    },
+    {
+      "id": 25,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "猫抓板 瓦楞纸",
+      "short_description": "优质猫抓板 瓦楞纸，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "猫抓板",
+        "规格": "瓦楞纸",
+        "材质": "纯棉",
+        "尺寸": "中号",
+        "颜色": "绿色",
+        "适用": "大型犬",
+        "特点": "可漂浮"
+      },
+      "price": 54.59,
+      "original_price": 67.32,
+      "discount": 18,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 629,
+      "rating_distribution": {
+        "5_star": 79.3,
+        "4_star": 8.2,
+        "3_star": 4.2,
+        "2_star": 0.3,
+        "1_star": 0.9
+      },
+      "stock": 1013,
+      "sales": 21551,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1665296633416-8317f7526c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1665296633416-8317f7526c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1665296633416-8317f7526c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_5_pUF0_9-A_rc.jpg"
+      },
+      "tags": [
+        "toy",
+        "猫抓板"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:38.865713",
+      "updated_at": "2025-12-20T17:39:38.865713"
+    },
+    {
+      "id": 26,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物互动激光笔 USB充电",
+      "short_description": "优质宠物互动激光笔 USB充电，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物互动激光笔",
+        "规格": "USB充电",
+        "材质": "纯棉",
+        "尺寸": "均码",
+        "颜色": "绿色",
+        "适用": "猫狗通用",
+        "特点": "益智"
+      },
+      "price": 31.38,
+      "original_price": 36.85,
+      "discount": 14,
+      "currency": "CNY",
+      "rating": 5.0,
+      "rating_count": 4721,
+      "rating_distribution": {
+        "5_star": 80.8,
+        "4_star": 14.0,
+        "3_star": 4.6,
+        "2_star": 1.0,
+        "1_star": 0.2
+      },
+      "stock": 729,
+      "sales": 9350,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1587559070757-f72a388edbba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1587559070757-f72a388edbba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1587559070757-f72a388edbba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Nnx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_6_-Elf7vDV7Rk.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物互动激光笔"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:39.628294",
+      "updated_at": "2025-12-20T17:39:39.628294"
+    },
+    {
+      "id": 27,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物飞盘 软胶材质",
+      "short_description": "优质宠物飞盘 软胶材质，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物飞盘",
+        "规格": "软胶材质",
+        "材质": "剑麻",
+        "尺寸": "小号",
+        "颜色": "绿色",
+        "适用": "猫狗通用",
+        "特点": "可漂浮"
+      },
+      "price": 23.09,
+      "original_price": 29.0,
+      "discount": 20,
+      "currency": "CNY",
+      "rating": 4.7,
+      "rating_count": 854,
+      "rating_distribution": {
+        "5_star": 82.9,
+        "4_star": 9.1,
+        "3_star": 2.2,
+        "2_star": 1.2,
+        "1_star": 0.2
+      },
+      "stock": 499,
+      "sales": 40657,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1589924749359-9697080c3577?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1589924749359-9697080c3577?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1589924749359-9697080c3577?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8N3x8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_7_ZnHEa8mHOxw.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物飞盘"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:40.408291",
+      "updated_at": "2025-12-20T17:39:40.408291"
+    },
+    {
+      "id": 28,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物拔河绳 棉绳编织",
+      "short_description": "优质宠物拔河绳 棉绳编织，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物拔河绳",
+        "规格": "棉绳编织",
+        "材质": "毛绒",
+        "尺寸": "中号",
+        "颜色": "绿色",
+        "适用": "大型犬",
+        "特点": "耐咬"
+      },
+      "price": 15.43,
+      "original_price": 19.78,
+      "discount": 21,
+      "currency": "CNY",
+      "rating": 4.7,
+      "rating_count": 3107,
+      "rating_distribution": {
+        "5_star": 81.3,
+        "4_star": 8.7,
+        "3_star": 4.4,
+        "2_star": 1.5,
+        "1_star": 0.1
+      },
+      "stock": 480,
+      "sales": 14019,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1535294533130-c1a6b771aa9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1535294533130-c1a6b771aa9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1535294533130-c1a6b771aa9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OHx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_8_VQy7AxjWsIE.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物拔河绳"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:41.173389",
+      "updated_at": "2025-12-20T17:39:41.173389"
+    },
+    {
+      "id": 29,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "猫隧道 可折叠",
+      "short_description": "优质猫隧道 可折叠，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "猫隧道",
+        "规格": "可折叠",
+        "材质": "TPR环保材质",
+        "尺寸": "大号",
+        "颜色": "黄色",
+        "适用": "大型犬",
+        "特点": "耐咬"
+      },
+      "price": 67.28,
+      "original_price": 77.39,
+      "discount": 13,
+      "currency": "CNY",
+      "rating": 4.8,
+      "rating_count": 6715,
+      "rating_distribution": {
+        "5_star": 84.9,
+        "4_star": 11.2,
+        "3_star": 2.6,
+        "2_star": 1.0,
+        "1_star": 0.0
+      },
+      "stock": 157,
+      "sales": 48539,
+      "status": "in_stock",
+      "images": {
+        "main": "https://plus.unsplash.com/premium_photo-1676479611799-9702f72f36d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://plus.unsplash.com/premium_photo-1676479611799-9702f72f36d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://plus.unsplash.com/premium_photo-1676479611799-9702f72f36d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8OXx8ZG9nJTIwdG95fGVufDB8fHx8MTc2NjIyMzQ4MXww&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_9_Imgk3SzeRxU.jpg"
+      },
+      "tags": [
+        "toy",
+        "猫隧道"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:41.957853",
+      "updated_at": "2025-12-20T17:39:41.957853"
+    },
+    {
+      "id": 30,
+      "category": "toy",
+      "category_name": "宠物玩具",
+      "name": "宠物弹力球 橡胶",
+      "short_description": "优质宠物弹力球 橡胶，品质保证，宠物喜爱",
+      "full_description": "【产品特点】\n✓ 安全环保材质，可放心让宠物啃咬\n✓ 耐咬耐磨，经久耐用不易损坏\n✓ 互动性强，增进主宠之间的感情\n✓ 益智设计，开发宠物智力\n✓ 磨牙洁齿，保护口腔健康\n✓ 色彩鲜艳，吸引宠物注意力\n\n【使用建议】\n每天陪伴宠物玩耍15-30分钟，增加运动量\n\n【清洁保养】\n定期清洗消毒，保持玩具清洁卫生\n\n【注意事项】\n如玩具出现破损请及时更换，避免宠物误食",
+      "specifications": {
+        "产品名称": "宠物弹力球",
+        "规格": "橡胶",
+        "材质": "天然橡胶",
+        "尺寸": "小号",
+        "颜色": "混色",
+        "适用": "大型犬",
+        "特点": "可清洗"
+      },
+      "price": 16.92,
+      "original_price": 22.49,
+      "discount": 24,
+      "currency": "CNY",
+      "rating": 4.6,
+      "rating_count": 2700,
+      "rating_distribution": {
+        "5_star": 85.7,
+        "4_star": 14.6,
+        "3_star": 5.0,
+        "2_star": 0.1,
+        "1_star": 0.5
+      },
+      "stock": 164,
+      "sales": 32005,
+      "status": "in_stock",
+      "images": {
+        "main": "https://images.unsplash.com/photo-1549297161-14f79605a74c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMHRveXxlbnwwfHx8fDE3NjYyMjM0ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+        "thumbnail": "https://images.unsplash.com/photo-1549297161-14f79605a74c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMHRveXxlbnwwfHx8fDE3NjYyMjM0ODF8MA&ixlib=rb-4.1.0&q=80&w=200",
+        "small": "https://images.unsplash.com/photo-1549297161-14f79605a74c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTB8fGRvZyUyMHRveXxlbnwwfHx8fDE3NjYyMjM0ODF8MA&ixlib=rb-4.1.0&q=80&w=400",
+        "local_path": "pet_products_data\\images\\toy_10_9lVdutKM9vg.jpg"
+      },
+      "tags": [
+        "toy",
+        "宠物弹力球"
+      ],
+      "brand": "",
+      "created_at": "2025-12-20T17:39:42.773133",
+      "updated_at": "2025-12-20T17:39:42.773133"
+    }
+  ],
+  "generated_at": "2025-12-20T17:39:44.786007"
+}
