@@ -66,4 +66,16 @@ public interface ProductMapper {
      */
     @Select("SELECT * FROM product_reviews WHERE product_id = #{productId} ORDER BY created_at DESC LIMIT #{limit}")
     List<ProductReview> findReviewsByProductId(@Param("productId") Integer productId, @Param("limit") Integer limit);
+
+    /**
+     * 搜索商品
+     */
+    @Select("SELECT * FROM products WHERE (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) AND status = 'in_stock' ORDER BY sales DESC LIMIT #{offset}, #{pageSize}")
+    List<Product> searchProducts(@Param("keyword") String keyword, @Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
+
+    /**
+     * 获取所有商品（分页）
+     */
+    @Select("SELECT * FROM products WHERE status = 'in_stock' ORDER BY created_at DESC LIMIT #{offset}, #{pageSize}")
+    List<Product> findAllProducts(@Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
 }

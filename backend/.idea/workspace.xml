@@ -5,38 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a21d63e5-d0e0-45a8-b0d9-b53c4060349e" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/JwtInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/PetController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/ServiceAppointmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/PetResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceAppointmentRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceAppointmentResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/dto/ServiceItemResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/Pet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceAppointment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceCareItems.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/entity/ServiceOrderItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/PetMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceAppointmentMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceCareItemsMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceItemMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ServiceOrderItemMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/PetService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceAppointmentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceCareItemsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ServiceItemService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/PetServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceAppointmentServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceCareItemsServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ServiceItemServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/mapper/ProductMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ddliang/backend/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../my-pet-platform" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../my-pet-platform/deepseek_html_20251218_a543f9.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../my-pet-platform/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/package-lock.json" afterDir="false" />
@@ -59,7 +36,8 @@
       <change beforePath="$PROJECT_DIR$/../my-pet-platform/src/views/ProfileView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/src/views/ProfileView.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../my-pet-platform/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../my-pet-platform/vite.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../my-pet-platform/宠物之家用户端需求文档.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_home_2025-12-19_135138.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_home_2025-12-21_221140.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_products_data/pet_image.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +82,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;xyyzhang__works&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/asus/Desktop/pet3.0/pet/backend/pom.xml&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -165,6 +143,10 @@
       <workItem from="1766206640796" duration="5126000" />
       <workItem from="1766232382459" duration="6167000" />
       <workItem from="1766304900501" duration="12299000" />
+      <workItem from="1766677604068" duration="577000" />
+      <workItem from="1766678231518" duration="287000" />
+      <workItem from="1766710279619" duration="6347000" />
+      <workItem from="1766726665644" duration="13336000" />
     </task>
     <servers />
   </component>

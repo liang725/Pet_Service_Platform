@@ -19,6 +19,23 @@ public interface ProductService {
     List<ProductResponse> getProductsByCategory(String category, Integer limit);
 
     /**
+     * 搜索商品
+     * @param keyword 搜索关键词
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @return 商品列表
+     */
+    List<ProductResponse> searchProducts(String keyword, Integer page, Integer pageSize);
+
+    /**
+     * 获取所有商品（分页）
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @return 商品列表
+     */
+    List<ProductResponse> getAllProducts(Integer page, Integer pageSize);
+
+    /**
      * 根据ID获取商品详情
      * @param id 商品ID
      * @return 商品详情

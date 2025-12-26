@@ -24,14 +24,32 @@ public class ProductController {
      * 获取商品列表
      * @param category 分类: hot/food/supply/toy
      * @param limit 返回数量限制，默认5
+     * @param keyword 搜索关键词
+     * @param page 页码，默认1
+     * @param pageSize 每页数量，默认10
      * @return 商品列表
      */
     @GetMapping
     public Result<List<ProductResponse>> getProductList(
-            @RequestParam String category,
-            @RequestParam(defaultValue = "5") Integer limit) {
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "5") Integer limit,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
         try {
-            List<ProductResponse> products = productService.getProductsByCategory(category, limit);
+            List<ProductResponse> products;
+            
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                // 如果有搜索关键词，进行搜索
+                products = productService.searchProducts(keyword, page, pageSize);
+            } else if (category != null) {
+                // 按分类获取商品
+                products = productService.getProductsByCategory(category, limit);
+            } else {
+                // 获取所有商品（分页）
+                products = productService.getAllProducts(page, pageSize);
+            }
+            
             return Result.success(products);
         } catch (IllegalArgumentException e) {
             return Result.error(400, e.getMessage());

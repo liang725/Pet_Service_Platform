@@ -82,6 +82,32 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductResponse> searchProducts(String keyword, Integer page, Integer pageSize) {
+        // 计算偏移量
+        int offset = (page - 1) * pageSize;
+        
+        // 搜索商品
+        List<Product> products = productMapper.searchProducts(keyword, offset, pageSize);
+        
+        return products.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts(Integer page, Integer pageSize) {
+        // 计算偏移量
+        int offset = (page - 1) * pageSize;
+        
+        // 获取所有商品
+        List<Product> products = productMapper.findAllProducts(offset, pageSize);
+        
+        return products.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 将Product实体转换为ProductResponse DTO
      */
