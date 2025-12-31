@@ -131,6 +131,79 @@ public class AdminController {
     }
 
     /**
+     * 创建新商品
+     */
+    @PostMapping("/products")
+    public Result<?> createProduct(HttpServletRequest request, @RequestBody Product product) {
+        
+        // 验证管理员权限
+        if (!isAdmin(request)) {
+            return Result.error(403, "无权访问管理员功能");
+        }
+
+        try {
+            // 验证必填字段
+            if (product.getName() == null || product.getName().trim().isEmpty()) {
+                return Result.error(400, "商品名称不能为空");
+            }
+            if (product.getPrice() == null) {
+                return Result.error(400, "商品价格不能为空");
+            }
+
+            // 设置默认值
+            if (product.getStatus() == null) {
+                product.setStatus("in_stock");
+            }
+            if (product.getStock() == null) {
+                product.setStock(0);
+            }
+            if (product.getSales() == null) {
+                product.setSales(0);
+            }
+
+            int rows = productMapper.insert(product);
+            if (rows > 0) {
+                return Result.success(product);
+            }
+            return Result.error(500, "创建商品失败");
+        } catch (Exception e) {
+            return Result.error(500, "创建商品失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 更新商品信息
+     */
+    @PutMapping("/products/{id}")
+    public Result<?> updateProduct(HttpServletRequest request, @PathVariable Integer id, @RequestBody Product product) {
+        
+        // 验证管理员权限
+        if (!isAdmin(request)) {
+            return Result.error(403, "无权访问管理员功能");
+        }
+
+        try {
+            // 检查商品是否存在
+            Product existing = productMapper.findById(id);
+            if (existing == null) {
+                return Result.error(404, "商品不存在");
+            }
+
+            // 设置商品ID
+            product.setId(id);
+            
+            int rows = productMapper.update(product);
+            if (rows > 0) {
+                // 返回更新后的商品信息
+                return Result.success(productMapper.findById(id));
+            }
+            return Result.error(500, "更新商品失败");
+        } catch (Exception e) {
+            return Result.error(500, "更新商品失败：" + e.getMessage());
+        }
+    }
+
+    /**
      * 删除商品
      */
     @DeleteMapping("/products/{id}")

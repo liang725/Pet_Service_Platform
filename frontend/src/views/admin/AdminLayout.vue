@@ -98,7 +98,7 @@ watch(() => route.name, (newRouteName) => {
   else if (newRouteName === 'adminUsers') activeNav.value = 'users'
   else if (newRouteName === 'adminPets') activeNav.value = 'pets'
   else if (newRouteName === 'adminAppointments') activeNav.value = 'appointments'
-  else if (newRouteName === 'adminProducts') activeNav.value = 'products'
+  else if (newRouteName === 'adminProducts' || newRouteName === 'adminProductAdd' || newRouteName === 'adminProductEdit') activeNav.value = 'products'
 })
 
 const handleLogout = () => {

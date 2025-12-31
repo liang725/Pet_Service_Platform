@@ -205,6 +205,19 @@ const router = createRouter({
           name: 'adminProducts',
           component: () => import('@/views/admin/ProductManagementView.vue'),
           meta: { title: '商城管理' }
+        },
+        {
+          path: 'products/add',
+          name: 'adminProductAdd',
+          component: () => import('@/views/admin/AddProductView.vue'),
+          meta: { title: '添加商品' }
+        },
+        {
+          path: 'products/edit/:id',
+          name: 'adminProductEdit',
+          component: () => import('@/views/admin/AddProductView.vue'),
+          meta: { title: '编辑商品' },
+          props: true
         }
       ]
     },

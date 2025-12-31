@@ -12,6 +12,9 @@
         <input v-model="searchKeyword" placeholder="搜索商品名称..." @keyup.enter="searchProducts" />
         <button class="search-btn" @click="searchProducts">搜索</button>
       </div>
+      <button class="add-btn" @click="goToAddProduct">
+        <Icon icon="mdi:plus" /> 添加商品
+      </button>
     </div>
 
     <!-- 商品列表 -->
@@ -66,6 +69,9 @@
             </td>
             <td>
               <div class="actions">
+                <button class="action-btn edit" @click="goToEditProduct(product)" title="编辑">
+                  <Icon icon="mdi:pencil" />
+                </button>
                 <button class="action-btn toggle" @click="toggleStatus(product)" :title="product.status === 'in_stock' ? '下架' : '上架'">
                   <Icon :icon="product.status === 'in_stock' ? 'mdi:eye-off' : 'mdi:eye'" />
                 </button>
@@ -148,6 +154,14 @@ function searchProducts() {
 function changePage(newPage) {
   page.value = newPage
   loadProducts()
+}
+
+function goToAddProduct() {
+  router.push('/admin/products/add')
+}
+
+function goToEditProduct(product) {
+  router.push(`/admin/products/edit/${product.id}`)
 }
 
 async function toggleStatus(product) {
@@ -250,6 +264,24 @@ async function confirmDelete(product) {
   border-radius: 6px;
   cursor: pointer;
   margin-left: 8px;
+}
+
+.add-btn {
+  background: #e17055;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  background: #d35400;
 }
 
 .content-card {
