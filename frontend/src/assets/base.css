@@ -1,0 +1,112 @@
+/* 宠物之家主题色彩系统 */
+:root {
+  /* 主色调 - 淡淡的橙黄色系 */
+  --pet-primary: #ffcc80; /* 主要橙黄色 */
+  --pet-primary-light: #fff3e0; /* 浅橙黄色 */
+  --pet-primary-lighter: #fff8f0; /* 更浅的橙黄色 */
+  --pet-primary-dark: #ff9800; /* 深橙黄色 */
+  --pet-primary-darker: #f57c00; /* 更深的橙黄色 */
+
+  /* 辅助色 */
+  --pet-secondary: #ffb74d; /* 辅助橙色 */
+  --pet-accent: #ffd54f; /* 强调黄色 */
+
+  /* 中性色 */
+  --pet-white: #ffffff;
+  --pet-white-soft: #fafafa;
+  --pet-white-mute: #f5f5f5;
+  --pet-gray-light: #e0e0e0;
+  --pet-gray: #9e9e9e;
+  --pet-gray-dark: #616161;
+  --pet-black-soft: #424242;
+  --pet-black: #212121;
+
+  /* 功能色 */
+  --pet-success: #4caf50;
+  --pet-warning: #ff9800;
+  --pet-error: #f44336;
+  --pet-info: #2196f3;
+
+  /* 文本色 */
+  --pet-text-primary: #2d3436;
+  --pet-text-secondary: #636e72;
+  --pet-text-light: #b2bec3;
+
+  /* 边框和分割线 */
+  --pet-border-light: rgba(255, 204, 128, 0.2);
+  --pet-border: rgba(255, 204, 128, 0.4);
+  --pet-border-dark: rgba(255, 204, 128, 0.6);
+
+  /* 阴影 */
+  --pet-shadow-light: 0 2px 8px rgba(255, 204, 128, 0.1);
+  --pet-shadow: 0 4px 16px rgba(255, 204, 128, 0.2);
+  --pet-shadow-dark: 0 8px 32px rgba(255, 204, 128, 0.3);
+}
+
+/* 语义化颜色变量 */
+:root {
+  --color-background: var(--pet-primary-lighter);
+  --color-background-soft: var(--pet-white-soft);
+  --color-background-mute: var(--pet-white-mute);
+
+  --color-border: var(--pet-border-light);
+  --color-border-hover: var(--pet-border);
+
+  --color-heading: var(--pet-text-primary);
+  --color-text: var(--pet-text-primary);
+
+  --section-gap: 160px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    'Noto Sans SC',
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
