@@ -47,20 +47,32 @@
           <tr v-for="product in products" :key="product.id">
             <td>
               <div class="product-image">
-                <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" />
-                <Icon v-else icon="mdi:image" class="no-image" />
+                <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" @error="handleImageError" />
+                <div v-else class="no-image">
+                  <Icon icon="mdi:image" />
+                  <span>暂无图片</span>
+                </div>
               </div>
             </td>
             <td>
               <div class="product-name">{{ product.name }}</div>
-              <div class="product-desc">{{ product.shortDescription }}</div>
+              <div class="product-desc" v-if="product.shortDescription">{{ product.shortDescription }}</div>
             </td>
-            <td>{{ getCategoryName(product.categoryId) }}</td>
-            <td class="price">
-              <div class="current-price">¥{{ product.price }}</div>
-              <div v-if="product.originalPrice" class="original-price">¥{{ product.originalPrice }}</div>
+            <td>
+              <span class="category-tag">{{ getCategoryName(product.categoryId) }}</span>
             </td>
-            <td :class="{ 'low-stock': product.stock < 10 }">{{ product.stock }}</td>
+            <td class="price-cell">
+              <div class="current-price">¥{{ formatPrice(product.price) }}</div>
+              <div v-if="product.originalPrice && product.originalPrice > product.price" class="original-price">
+                ¥{{ formatPrice(product.originalPrice) }}
+              </div>
+            </td>
+            <td :class="{ 'low-stock': product.stock < 10 }">
+              <div class="stock-info">
+                <span class="stock-number">{{ product.stock }}</span>
+                <Icon v-if="product.stock < 10" icon="mdi:alert" class="warning-icon" title="库存不足" />
+              </div>
+            </td>
             <td>{{ product.sales || 0 }}</td>
             <td>
               <span class="status-tag" :class="product.status">
@@ -121,6 +133,17 @@ const getCategoryName = (categoryId) => {
     5: '宠物医疗'
   }
   return categories[categoryId] || '-'
+}
+
+// 价格格式化
+const formatPrice = (price) => {
+  return price ? parseFloat(price).toFixed(2) : '0.00'
+}
+
+// 图片加载错误处理
+const handleImageError = (event) => {
+  event.target.style.display = 'none'
+  event.target.nextElementSibling.style.display = 'flex'
 }
 
 onMounted(() => {
@@ -341,14 +364,15 @@ async function confirmDelete(product) {
 }
 
 .product-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 6px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
   overflow: hidden;
-  background: #f0f0f0;
+  background: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #eee;
 }
 
 .product-image img {
@@ -358,8 +382,17 @@ async function confirmDelete(product) {
 }
 
 .no-image {
-  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: #ccc;
+  font-size: 12px;
+}
+
+.no-image .iconify {
+  font-size: 24px;
+  margin-bottom: 4px;
 }
 
 .product-name {
@@ -371,11 +404,23 @@ async function confirmDelete(product) {
   font-size: 12px;
   color: #999;
   margin-top: 4px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.price {
-  color: #e17055;
-  font-weight: 600;
+.category-tag {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.price-cell {
+  min-width: 100px;
 }
 
 .current-price {
@@ -388,10 +433,29 @@ async function confirmDelete(product) {
   font-size: 12px;
   color: #999;
   text-decoration: line-through;
+  margin-top: 2px;
+}
+
+.stock-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stock-number {
+  font-weight: 500;
+}
+
+.warning-icon {
+  color: #ff9800;
+  font-size: 16px;
 }
 
 .low-stock {
   color: #e74c3c;
+}
+
+.low-stock .stock-number {
   font-weight: 600;
 }
 
@@ -414,36 +478,52 @@ async function confirmDelete(product) {
 .actions {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 .action-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.action-btn.edit {
-  background: #e3f2fd;
-  color: #1976d2;
-}
-
-.action-btn.toggle {
-  background: #fff3e0;
-  color: #f57c00;
-}
-
-.action-btn.delete {
-  background: #ffebee;
-  color: #c62828;
+  transition: all 0.3s ease;
+  font-size: 16px;
 }
 
 .action-btn:hover {
-  opacity: 0.8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-btn.edit {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1976d2;
+}
+
+.action-btn.edit:hover {
+  background: linear-gradient(135deg, #bbdefb, #90caf9);
+}
+
+.action-btn.toggle {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  color: #f57c00;
+}
+
+.action-btn.toggle:hover {
+  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
+}
+
+.action-btn.delete {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  color: #c62828;
+}
+
+.action-btn.delete:hover {
+  background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
 }
 
 .pagination {
