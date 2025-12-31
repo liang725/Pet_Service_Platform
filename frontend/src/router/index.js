@@ -162,7 +162,6 @@ const router = createRouter({
     // 管理后台路由
     {
       path: '/admin',
-      name: 'AdminLayout',
       component: () => import('@/views/admin/AdminLayout.vue'),
       meta: {
         requiresAuth: true,
@@ -174,10 +173,6 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: '/admin/dashboard'
-        },
-        {
-          path: 'dashboard',
           name: 'adminDashboard',
           component: () => import('@/views/admin/AdminHome.vue'),
           meta: { title: '控制面板' }
