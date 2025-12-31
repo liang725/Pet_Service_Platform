@@ -1,114 +1,83 @@
 <template>
   <div class="add-product">
     <div class="page-header">
-      <div class="header-left">
-        <button class="back-btn" @click="goBack">
-          <Icon icon="mdi:arrow-left" />
-          返回商品列表
-        </button>
-        <div class="title-section">
-          <h1>{{ isEdit ? '编辑商品' : '添加商品' }}</h1>
-          <p>{{ isEdit ? '修改商品信息' : '创建新的商品信息' }}</p>
-        </div>
-      </div>
+      <button class="back-btn" @click="goBack">
+        <Icon icon="mdi:arrow-left" />
+        返回商品列表
+      </button>
+      <h1>{{ isEdit ? '编辑商品' : '添加商品' }}</h1>
     </div>
 
     <div class="form-container">
       <form @submit.prevent="saveProduct" class="product-form">
-        <!-- 基本信息 -->
-        <div class="form-card">
-          <div class="card-header">
-            <Icon icon="mdi:information" class="card-icon" />
-            <h3>基本信息</h3>
-          </div>
-          <div class="card-body">
+
+        <!-- 商品基本信息 -->
+        <div class="form-section">
+          <div class="form-row">
             <div class="form-group">
               <label>商品名称 <span class="required">*</span></label>
               <input v-model="form.name" required placeholder="请输入商品名称" />
             </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label>商品分类 <span class="required">*</span></label>
-                <select v-model.number="form.categoryId" required>
-                  <option :value="null">请选择分类</option>
-                  <option :value="1">宠物食品</option>
-                  <option :value="2">宠物用品</option>
-                  <option :value="3">宠物玩具</option>
-                  <option :value="4">宠物服饰</option>
-                  <option :value="5">宠物医疗</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>商品标签</label>
-                <input v-model="form.tag" placeholder="如：限时特惠、爆款" />
-              </div>
+            <div class="form-group">
+              <label>商品分类 <span class="required">*</span></label>
+              <select v-model.number="form.categoryId" required>
+                <option :value="null">请选择分类</option>
+                <option :value="1">宠物食品</option>
+                <option :value="2">宠物用品</option>
+                <option :value="3">宠物玩具</option>
+                <option :value="4">宠物服饰</option>
+                <option :value="5">宠物医疗</option>
+              </select>
             </div>
           </div>
-        </div>
 
-        <!-- 价格库存 -->
-        <div class="form-card">
-          <div class="card-header">
-            <Icon icon="mdi:currency-usd" class="card-icon" />
-            <h3>价格库存</h3>
-          </div>
-          <div class="card-body">
-            <div class="form-row">
-              <div class="form-group">
-                <label>当前价格 <span class="required">*</span></label>
-                <div class="price-input">
-                  <span class="currency">¥</span>
-                  <input v-model.number="form.price" type="number" step="0.01" required placeholder="0.00" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label>原价</label>
-                <div class="price-input">
-                  <span class="currency">¥</span>
-                  <input v-model.number="form.originalPrice" type="number" step="0.01" placeholder="0.00" />
-                </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>当前价格 <span class="required">*</span></label>
+              <div class="price-input">
+                <span class="currency">¥</span>
+                <input v-model.number="form.price" type="number" step="0.01" required placeholder="0.00" />
               </div>
             </div>
-
+            <div class="form-group">
+              <label>原价</label>
+              <div class="price-input">
+                <span class="currency">¥</span>
+                <input v-model.number="form.originalPrice" type="number" step="0.01" placeholder="0.00" />
+              </div>
+            </div>
             <div class="form-group">
               <label>库存数量 <span class="required">*</span></label>
               <input v-model.number="form.stock" type="number" required placeholder="0" />
             </div>
           </div>
-        </div>
 
-        <!-- 商品图片 -->
-        <div class="form-card">
-          <div class="card-header">
-            <Icon icon="mdi:image" class="card-icon" />
-            <h3>商品图片</h3>
-          </div>
-          <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>商品标签</label>
+              <input v-model="form.tag" placeholder="如：限时特惠、爆款推荐" />
+            </div>
             <div class="form-group">
               <label>图片URL</label>
-              <input v-model="form.imageUrl" placeholder="请输入图片URL" />
-              <div v-if="form.imageUrl" class="image-preview">
-                <img :src="form.imageUrl" alt="商品预览" />
-              </div>
+              <input v-model="form.imageUrl" placeholder="请输入商品图片链接" />
             </div>
           </div>
-        </div>
 
-        <!-- 商品描述 -->
-        <div class="form-card">
-          <div class="card-header">
-            <Icon icon="mdi:text" class="card-icon" />
-            <h3>商品描述</h3>
+          <div class="form-group">
+            <label>简短描述</label>
+            <input v-model="form.shortDescription" placeholder="一句话描述商品特点" />
           </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label>简短描述</label>
-              <input v-model="form.shortDescription" placeholder="一句话描述商品特点" />
-            </div>
-            <div class="form-group">
-              <label>详细描述</label>
-              <textarea v-model="form.description" rows="6" placeholder="请输入详细描述"></textarea>
+
+          <div class="form-group">
+            <label>详细描述</label>
+            <textarea v-model="form.description" rows="4" placeholder="请输入商品的详细描述信息"></textarea>
+          </div>
+
+          <!-- 图片预览 -->
+          <div v-if="form.imageUrl" class="image-preview">
+            <label>图片预览</label>
+            <div class="preview-container">
+              <img :src="form.imageUrl" alt="商品预览" @error="handleImageError" />
             </div>
           </div>
         </div>
@@ -117,6 +86,7 @@
         <div class="form-actions">
           <button type="button" class="cancel-btn" @click="goBack">取消</button>
           <button type="submit" class="submit-btn" :disabled="saving">
+            <Icon v-if="saving" icon="mdi:loading" class="spin" />
             {{ saving ? '保存中...' : (isEdit ? '更新商品' : '创建商品') }}
           </button>
         </div>
@@ -220,96 +190,65 @@ async function saveProduct() {
 function goBack() {
   router.push('/admin/products')
 }
+
+function handleImageError(event) {
+  event.target.style.display = 'none'
+}
 </script>
 
 <style scoped>
 .add-product {
   padding: 20px;
-  background: #f8f9fa;
   min-height: 100vh;
 }
 
 .page-header {
-  margin-bottom: 24px;
-}
-
-.header-left {
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-bottom: 24px;
 }
 
 .back-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
-  color: #666;
-  transition: all 0.3s;
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .back-btn:hover {
-  background: #f8f9fa;
-  color: #333;
+  background: #e9ecef;
+  border-color: #adb5bd;
+  color: #212529;
 }
 
-.title-section h1 {
-  margin: 0 0 4px 0;
+.page-header h1 {
+  margin: 0;
   color: #333;
   font-size: 24px;
 }
 
-.title-section p {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
-}
-
 .form-container {
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .product-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.form-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  overflow: hidden;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 20px 24px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #eee;
-}
-
-.card-icon {
-  font-size: 20px;
-  color: #e17055;
-}
-
-.card-header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
-
-.card-body {
-  padding: 24px;
+.form-section {
+  margin-bottom: 32px;
 }
 
 .form-row {
@@ -326,7 +265,7 @@ function goBack() {
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 500;
+  font-weight: 600;
   color: #333;
   font-size: 14px;
 }
@@ -339,12 +278,13 @@ function goBack() {
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 14px;
   box-sizing: border-box;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
+  background: #fff;
 }
 
 .form-group input:focus,
@@ -357,7 +297,8 @@ function goBack() {
 
 .form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 100px;
+  font-family: inherit;
 }
 
 .price-input {
@@ -368,72 +309,108 @@ function goBack() {
 
 .currency {
   position: absolute;
-  left: 12px;
+  left: 16px;
   color: #666;
-  font-weight: 500;
+  font-weight: 600;
   z-index: 1;
 }
 
 .price-input input {
-  padding-left: 32px;
+  padding-left: 40px;
 }
 
 .image-preview {
-  margin-top: 16px;
-  text-align: center;
+  margin-top: 20px;
 }
 
-.image-preview img {
+.preview-container {
+  margin-top: 12px;
+  text-align: center;
+  padding: 20px;
+  border: 2px dashed #e9ecef;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.preview-container img {
   max-width: 300px;
   max-height: 200px;
   border-radius: 8px;
   object-fit: cover;
-  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e9ecef;
 }
 
 .cancel-btn {
   padding: 12px 32px;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  background: #f8f9fa;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s;
+  color: #495057;
+  transition: all 0.2s ease;
 }
 
 .cancel-btn:hover {
-  background: #f8f9fa;
+  background: #e9ecef;
+  border-color: #adb5bd;
 }
 
 .submit-btn {
   padding: 12px 32px;
   border: none;
-  background: #e17055;
+  background: #007bff;
   color: white;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .submit-btn:hover {
-  background: #d35400;
+  background: #0056b3;
 }
 
 .submit-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-container {
+    max-width: 100%;
+  }
+
+  .product-form {
+    padding: 20px;
+  }
 }
 </style>
