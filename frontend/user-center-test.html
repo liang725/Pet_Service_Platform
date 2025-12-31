@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心样式测试</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 项目CSS变量 */
+        :root {
+          --pet-primary: #ffcc80;
+          --pet-primary-light: #fff3e0;
+          --pet-primary-lighter: #fff8f0;
+          --pet-primary-dark: #ff9800;
+          --pet-primary-darker: #f57c00;
+          --pet-text-primary: #2d3436;
+          --pet-text-secondary: #636e72;
+          --pet-text-light: #b2bec3;
+          --pet-success: #4caf50;
+          --pet-error: #f44336;
+          --pet-warning: #ff9800;
+          --pet-info: #2196f3;
+          
+          /* 兼容性映射 */
+          --primary-color: var(--pet-primary-dark);
+          --primary-light: var(--pet-primary-light);
+          --primary-dark: var(--pet-primary-darker);
+          --text-color: var(--pet-text-primary);
+          --text-light: var(--pet-text-secondary);
+          --success-color: var(--pet-success);
+          --warning-color: var(--pet-warning);
+          --danger-color: var(--pet-error);
+          --info-color: var(--pet-info);
+        }
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          color: #333;
+          line-height: 1.6;
+          min-height: 100vh;
+          padding: 20px;
+        }
+
+        .page-title-section {
+          background: linear-gradient(135deg, var(--pet-primary-dark) 0%, var(--pet-primary-darker) 100%);
+          color: white;
+          padding: 40px 0;
+          margin-bottom: 30px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+          border-radius: 15px;
+          text-align: center;
+        }
+
+        .main-title {
+          font-size: 2.5rem;
+          font-weight: bold;
+          margin: 0 0 10px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+        }
+
+        .main-title i {
+          font-size: 2.2rem;
+          opacity: 0.9;
+        }
+
+        .main-subtitle {
+          font-size: 1.1rem;
+          opacity: 0.9;
+          margin: 0;
+        }
+
+        .container {
+          width: 1200px;
+          margin: 0 auto;
+          padding: 0 15px;
+          max-width: 100%;
+        }
+
+        .user-center {
+          display: flex;
+          gap: 25px;
+          padding: 0 0 30px 0;
+        }
+
+        .user-sidebar {
+          flex: 0 0 250px;
+          background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+          border-radius: 15px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+          overflow: hidden;
+          border: 1px solid rgba(255, 204, 128, 0.2);
+        }
+
+        .user-profile {
+          background: linear-gradient(135deg, var(--pet-primary), var(--pet-primary-light));
+          padding: 30px 20px;
+          text-align: center;
+          color: white;
+        }
+
+        .user-avatar {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background-color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 15px;
+          font-size: 36px;
+          color: var(--pet-primary-dark);
+          border: 3px solid white;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .user-name {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        .user-level {
+          font-size: 14px;
+          opacity: 0.9;
+        }
+
+        .user-menu {
+          padding: 20px 0;
+        }
+
+        .menu-item {
+          display: flex;
+          align-items: center;
+          padding: 15px 25px;
+          color: var(--text-color);
+          text-decoration: none;
+          transition: all 0.3s;
+          border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+          background-color: rgba(255, 204, 128, 0.15);
+          color: var(--pet-primary-darker);
+        }
+
+        .menu-item.active {
+          background-color: rgba(255, 204, 128, 0.2);
+          color: var(--pet-primary-darker);
+          border-left-color: var(--pet-primary-dark);
+          font-weight: bold;
+        }
+
+        .menu-item i {
+          margin-right: 12px;
+          font-size: 18px;
+          width: 24px;
+          text-align: center;
+          transition: all 0.3s ease;
+        }
+
+        .menu-item:hover i {
+          transform: scale(1.1);
+          color: var(--pet-primary-dark);
+        }
+
+        .menu-badge {
+          background-color: var(--danger-color);
+          color: white;
+          font-size: 12px;
+          padding: 2px 8px;
+          border-radius: 10px;
+          margin-left: auto;
+        }
+
+        .user-main {
+          flex: 1;
+        }
+
+        .order-detail-card {
+          background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+          border-radius: 15px;
+          margin-bottom: 25px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+          overflow: hidden;
+          border: 1px solid rgba(255, 204, 128, 0.2);
+          transition: all 0.3s ease;
+        }
+
+        .order-detail-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .order-preview {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 30px;
+          border-bottom: 1px solid #eee;
+        }
+
+        .preview-product {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+
+        .preview-product:hover {
+          transform: translateY(-2px);
+        }
+
+        .preview-product .product-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 8px;
+          overflow: hidden;
+          margin-right: 15px;
+          flex-shrink: 0;
+          background: #f0f0f0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #999;
+        }
+
+        .product-info .product-name {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: var(--text-color);
+        }
+
+        .product-info .product-spec {
+          font-size: 14px;
+          color: var(--text-light);
+        }
+
+        .order-summary-info {
+          text-align: right;
+        }
+
+        .total-items {
+          font-size: 14px;
+          color: var(--text-light);
+          margin-bottom: 5px;
+        }
+
+        .total-amount {
+          font-size: 18px;
+          font-weight: bold;
+          color: var(--primary-dark);
+        }
+
+        .action-btn {
+          padding: 12px 25px;
+          border-radius: 8px;
+          font-size: 15px;
+          font-weight: bold;
+          cursor: pointer;
+          border: none;
+          transition: all 0.3s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin: 10px 5px;
+        }
+
+        .action-btn-primary {
+          background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+          color: white;
+        }
+
+        .action-btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(255, 179, 71, 0.3);
+        }
+
+        .action-btn-secondary {
+          background-color: white;
+          color: var(--primary-dark);
+          border: 2px solid var(--primary-color);
+        }
+
+        .action-btn-secondary:hover {
+          background-color: rgba(255, 179, 71, 0.1);
+        }
+
+        @media (max-width: 992px) {
+          .user-center {
+            flex-direction: column;
+          }
+          .user-sidebar {
+            flex: none;
+            width: 100%;
+          }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title-section">
+        <div class="container">
+            <h1 class="main-title">
+                <i class="fas fa-user-circle"></i>
+                用户中心
+            </h1>
+            <p class="main-subtitle">管理您的订单、购物车和个人信息</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="user-center">
+            <!-- 用户侧边栏 -->
+            <div class="user-sidebar">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-name">爱宠人士张先生</div>
+                    <div class="user-level">黄金会员</div>
+                </div>
+
+                <div class="user-menu">
+                    <a href="#" class="menu-item active">
+                        <i class="fas fa-clipboard-list"></i> 我的订单
+                        <span class="menu-badge">3</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-shopping-cart"></i> 购物车
+                        <span class="menu-badge">5</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-heart"></i> 我的收藏
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-map-marker-alt"></i> 收货地址
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-calendar-check"></i> 我的预约
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-cog"></i> 账户设置
+                    </a>
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="user-main">
+                <!-- 示例订单卡片 -->
+                <div class="order-detail-card">
+                    <div class="order-preview">
+                        <div class="preview-product">
+                            <div class="product-image">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">皇家宠物狗粮 成犬专用</div>
+                                <div class="product-spec">规格：5kg装 | 口味：鸡肉味</div>
+                            </div>
+                        </div>
+                        <div class="order-summary-info">
+                            <div class="total-items">共 3 件商品</div>
+                            <div class="total-amount">实付：¥299.00</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px 30px; border-top: 1px solid #eee;">
+                        <button class="action-btn action-btn-secondary">
+                            <i class="fas fa-eye"></i> 查看详情
+                        </button>
+                        <button class="action-btn action-btn-primary">
+                            <i class="fas fa-redo"></i> 再次购买
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 第二个示例订单 -->
+                <div class="order-detail-card">
+                    <div class="order-preview">
+                        <div class="preview-product">
+                            <div class="product-image">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-name">宠物洗护套装</div>
+                                <div class="product-spec">包含：洗发水、护毛素、指甲剪</div>
+                            </div>
+                        </div>
+                        <div class="order-summary-info">
+                            <div class="total-items">共 1 件商品</div>
+                            <div class="total-amount">实付：¥158.00</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px 30px; border-top: 1px solid #eee;">
+                        <button class="action-btn action-btn-secondary">
+                            <i class="fas fa-eye"></i> 查看详情
+                        </button>
+                        <button class="action-btn action-btn-primary">
+                            <i class="fas fa-credit-card"></i> 立即支付
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('用户中心样式测试页面加载完成');
+        
+        // 测试CSS变量
+        const rootStyles = getComputedStyle(document.documentElement);
+        console.log('主色调:', rootStyles.getPropertyValue('--pet-primary-dark'));
+        console.log('兼容变量:', rootStyles.getPropertyValue('--primary-color'));
+        
+        // 添加交互效果
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        document.querySelectorAll('.preview-product').forEach(product => {
+            product.addEventListener('click', function() {
+                alert('跳转到商品详情页面');
+            });
+        });
+    </script>
+</body>
+</html>
