@@ -160,6 +160,13 @@ public class AdminController {
             if (product.getSales() == null) {
                 product.setSales(0);
             }
+            // 添加评分相关字段的默认值
+            if (product.getRating() == null) {
+                product.setRating(0.0);
+            }
+            if (product.getRatingCount() == null) {
+                product.setRatingCount(0);
+            }
 
             int rows = productMapper.insert(product);
             if (rows > 0) {
