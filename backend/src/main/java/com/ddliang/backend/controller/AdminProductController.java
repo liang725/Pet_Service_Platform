@@ -123,10 +123,24 @@ public class AdminProductController {
             }
             // 添加评分相关字段的默认值
             if (product.getRating() == null) {
-                product.setRating(BigDecimal.valueOf(0.0));
+                product.setRating(BigDecimal.valueOf(5.00));
             }
             if (product.getRatingCount() == null) {
                 product.setRatingCount(0);
+            }
+            // 添加布尔字段的默认值
+            if (product.getIsRecommended() == null) {
+                product.setIsRecommended(false);
+            }
+            if (product.getIsHot() == null) {
+                product.setIsHot(false);
+            }
+            if (product.getIsNew() == null) {
+                product.setIsNew(false);
+            }
+            // 添加排序字段的默认值
+            if (product.getSortOrder() == null) {
+                product.setSortOrder(0);
             }
 
             int rows = productMapper.insert(product);
