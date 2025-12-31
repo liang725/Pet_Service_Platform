@@ -55,7 +55,7 @@
           </div>
           <div v-if="!isLoginMode" class="feature">
             <Icon icon="mdi:account-group" class="feature-icon" />
-            <span>活跃的宠物爱好者社区</span>
+            <span>个人宠物档案管理</span>
           </div>
           <div v-if="!isLoginMode" class="feature">
             <Icon icon="mdi:cart" class="feature-icon" />
@@ -259,18 +259,6 @@
               </div>
             </div>
 
-            <div class="form-group terms-group">
-              <div class="checkbox-group">
-                <input v-model="registerForm.agreeTerms" type="checkbox" id="agreeTerms" required />
-                <label for="agreeTerms" class="checkbox-label">
-                  我已阅读并同意
-                  <a href="#" class="link">《用户服务协议》</a>
-                  和
-                  <a href="#" class="link">《隐私政策》</a>
-                </label>
-              </div>
-            </div>
-
             <button type="submit" class="submit-btn" :disabled="isLoading">
               <Icon v-if="isLoading" icon="mdi:loading" class="spinner" spin />
               {{ registerButtonText }}
@@ -319,7 +307,6 @@ const registerForm = reactive({
   email: '',
   password: '',
   confirmPassword: '',
-  agreeTerms: false,
 
   usernameError: false,
   usernameSuccess: false,
@@ -388,7 +375,6 @@ const resetRegisterForm = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    agreeTerms: false,
 
     usernameError: false,
     usernameSuccess: false,
@@ -486,11 +472,19 @@ const handleLogin = async () => {
 
     // 登录成功，根据角色跳转
     if (result.success) {
-      if (userStore.isAdmin) {
-        router.push('/admin/dashboard')
-      } else {
-        router.push('/')
-      }
+      console.log('登录成功，当前用户角色:', userStore.userRole) // 添加调试日志
+      console.log('是否为管理员:', userStore.isAdmin) // 添加调试日志
+
+      // 稍微延迟一下，确保状态更新完成
+      setTimeout(() => {
+        if (userStore.isAdmin) {
+          console.log('跳转到管理后台')
+          router.push('/admin')
+        } else {
+          console.log('跳转到用户首页')
+          router.push('/')
+        }
+      }, 100)
     } else {
       alert(result.message || '登录失败，请检查用户名和密码')
       isLoading.value = false
@@ -547,12 +541,6 @@ const handleRegister = async () => {
   } else {
     registerForm.confirmPasswordError = false
     registerForm.confirmPasswordSuccess = true
-  }
-
-  // 验证条款同意
-  if (!registerForm.agreeTerms) {
-    alert('请同意用户服务协议和隐私政策')
-    isValid = false
   }
 
   if (!isValid) return
@@ -1100,10 +1088,6 @@ const handleRegister = async () => {
 
 .form-group-half .input-with-icon {
   width: 100%;
-}
-
-.terms-group {
-  margin: 10px 0 15px;
 }
 
 /* 响应式设计 */

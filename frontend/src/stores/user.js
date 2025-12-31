@@ -55,6 +55,7 @@ export const useUserStore = defineStore('user', {
         this.userInfo = userInfo
         this.userRole = userInfo.role || 'user'
         localStorage.setItem('userRole', this.userRole)
+        console.log('设置用户角色:', this.userRole) // 添加调试日志
       }
     },
 
@@ -78,13 +79,39 @@ export const useUserStore = defineStore('user', {
         })
 
         if (response.code === 200) {
-          this.setToken(response.data.token, response.data.userInfo || response.data)
+          // 确保正确传递用户信息，包括角色
+          const userInfo = response.data.userInfo || response.data
+          console.log('登录成功，用户信息:', userInfo) // 添加调试日志
+
+          this.setToken(response.data.token, userInfo)
           return { success: true, data: response.data }
         } else {
           return { success: false, message: response.message }
         }
       } catch (error) {
         console.error('登录失败:', error)
+        return { success: false, message: error.message }
+      }
+    },
+
+    // 注册
+    async register(credentials) {
+      try {
+        const response = await request({
+          url: '/api/auth/register',
+          method: 'POST',
+          data: credentials
+        })
+
+        if (response.code === 200) {
+          // 注册成功后自动登录
+          this.setToken(response.data.token, response.data.userInfo || response.data)
+          return { success: true, data: response.data }
+        } else {
+          return { success: false, message: response.message }
+        }
+      } catch (error) {
+        console.error('注册失败:', error)
         return { success: false, message: error.message }
       }
     },
