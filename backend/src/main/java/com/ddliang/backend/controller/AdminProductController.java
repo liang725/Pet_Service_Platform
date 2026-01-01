@@ -174,6 +174,37 @@ public class AdminProductController {
             // 设置商品ID
             product.setId(id);
             
+            // 如果没有设置status，使用现有的status
+            if (product.getStatus() == null) {
+                product.setStatus(existing.getStatus());
+            }
+            
+            // 为其他可能为null的字段设置默认值
+            if (product.getStock() == null) {
+                product.setStock(existing.getStock());
+            }
+            if (product.getSales() == null) {
+                product.setSales(existing.getSales());
+            }
+            if (product.getRating() == null) {
+                product.setRating(existing.getRating());
+            }
+            if (product.getRatingCount() == null) {
+                product.setRatingCount(existing.getRatingCount());
+            }
+            if (product.getIsRecommended() == null) {
+                product.setIsRecommended(existing.getIsRecommended());
+            }
+            if (product.getIsHot() == null) {
+                product.setIsHot(existing.getIsHot());
+            }
+            if (product.getIsNew() == null) {
+                product.setIsNew(existing.getIsNew());
+            }
+            if (product.getSortOrder() == null) {
+                product.setSortOrder(existing.getSortOrder());
+            }
+            
             int rows = productMapper.update(product);
             if (rows > 0) {
                 // 返回更新后的商品信息
