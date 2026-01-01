@@ -2,7 +2,9 @@
 package com.ddliang.backend.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,27 +14,20 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private JwtInterceptor jwtInterceptor;
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(
-                        // 认证相关接口
+                        // 仅保留认证相关接口
                         "/api/auth/login",
                         "/api/auth/register",
-                        "/api/auth/refresh-token",
-
-                        // 服务项目相关公开接口
-                        "/api/service/items",
-                        "/api/service/items/**",  // 这个通配符很重要！
-                        "/api/service/time-slots",
-
-                        // 商品相关公开接口（无需登录）
-                        "/api/products",
-                        "/api/products/**",
-
-                        // 其他可能需要公开的接口
-                        "/api/public/**"
+                        "/api/auth/refresh-token"
                 );
     }
 }

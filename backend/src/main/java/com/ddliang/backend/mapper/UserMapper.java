@@ -54,7 +54,7 @@ public interface UserMapper {
     /**
      * 查询用户列表（分页）
      */
-    @Select("SELECT id, username, nickname, avatar, phone, email, role, status, " +
+    @Select("SELECT id, username, role, status, " +
             "created_at, updated_at, last_login_at " +
             "FROM users " +
             "ORDER BY created_at DESC " +
@@ -64,13 +64,10 @@ public interface UserMapper {
     /**
      * 搜索用户（分页）
      */
-    @Select("SELECT id, username, nickname, avatar, phone, email, role, status, " +
+    @Select("SELECT id, username, role, status, " +
             "created_at, updated_at, last_login_at " +
             "FROM users " +
             "WHERE username LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR nickname LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR phone LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR email LIKE CONCAT('%', #{keyword}, '%') " +
             "ORDER BY created_at DESC " +
             "LIMIT #{offset}, #{limit}")
     List<User> searchUsersForAdmin(@Param("keyword") String keyword,
@@ -87,20 +84,13 @@ public interface UserMapper {
      * 统计搜索结果数量
      */
     @Select("SELECT COUNT(*) FROM users " +
-            "WHERE username LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR nickname LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR phone LIKE CONCAT('%', #{keyword}, '%') " +
-            "   OR email LIKE CONCAT('%', #{keyword}, '%')")
+            "WHERE username LIKE CONCAT('%', #{keyword}, '%')")
     int countSearchUsers(@Param("keyword") String keyword);
 
     /**
-     * 更新用户信息
+     * 更新用户信息（只更新角色和状态）
      */
     @Update("UPDATE users SET " +
-            "nickname = #{nickname}, " +
-            "avatar = #{avatar}, " +
-            "phone = #{phone}, " +
-            "email = #{email}, " +
             "role = #{role}, " +
             "status = #{status} " +
             "WHERE id = #{id}")

@@ -52,20 +52,6 @@ public class AdminController {
     }
 
     /**
-     * 获取用户列表
-     */
-    @GetMapping("/users")
-    public Result<?> getUserList(HttpServletRequest request) {
-        if (!isAdmin(request)) {
-            return Result.error(403, "无权访问管理员功能");
-        }
-        List<User> userList = List.of();
-        return Result.success(userList);
-    }
-
-    // 商品管理相关接口已删除，准备重新构建
-
-    /**
      * 检查是否为管理员
      */
     private boolean isAdmin(HttpServletRequest request) {

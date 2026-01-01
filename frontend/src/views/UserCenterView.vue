@@ -2721,12 +2721,34 @@ export default {
       }
 
       try {
-        // 这里应该调用API修改密码
-        this.showNotification('密码修改成功')
-        this.closePasswordDialog()
+        const res = await request({
+          url: '/api/user/password',
+          method: 'PUT',
+          data: {
+            currentPassword: this.passwordForm.currentPassword,
+            newPassword: this.passwordForm.newPassword
+          }
+        })
+
+        if (res.code === 200) {
+          this.showNotification('密码修改成功，请重新登录')
+          this.closePasswordDialog()
+          // 清空密码表单
+          this.passwordForm = {
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+          }
+          // 可选：自动退出登录
+          setTimeout(() => {
+            this.$router.push('/auth')
+          }, 2000)
+        } else {
+          this.showNotification(res.message || '密码修改失败')
+        }
       } catch (error) {
         console.error('修改密码失败:', error)
-        this.showNotification('修改密码失败')
+        this.showNotification(error.response?.data?.message || '密码修改失败')
       }
     },
 
