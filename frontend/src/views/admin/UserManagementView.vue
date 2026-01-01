@@ -150,7 +150,19 @@
               v-model="form.password"
               type="password"
               required
-              placeholder="请输入密码"
+              minlength="6"
+              placeholder="请输入密码（至少6位）"
+            />
+          </div>
+
+          <div v-if="!isEdit" class="form-group">
+            <label>确认密码 <span class="required">*</span></label>
+            <input
+              v-model="form.confirmPassword"
+              type="password"
+              required
+              minlength="6"
+              placeholder="请再次输入密码"
             />
           </div>
 
@@ -190,27 +202,24 @@
             <Icon icon="mdi:close" />
           </button>
         </div>
-        <form class="dialog-body" @submit.prevent="resetPassword">
-          <div class="form-group">
-            <label>新密码 <span class="required">*</span></label>
-            <input
-              v-model="newPassword"
-              type="password"
-              required
-              placeholder="请输入新密码"
-            />
+        <div class="dialog-body">
+          <div class="reset-password-confirm">
+            <Icon icon="mdi:alert-circle" class="warning-icon" />
+            <p class="confirm-message">确定要将该用户的密码重置为默认密码吗？</p>
+            <p class="default-password-hint">默认密码：<strong>123456</strong></p>
+            <p class="security-hint">建议用户登录后立即修改密码</p>
           </div>
 
           <div class="dialog-actions">
             <button type="button" class="cancel-btn" @click="closeResetPasswordDialog">
               取消
             </button>
-            <button type="submit" class="submit-btn" :disabled="saving">
+            <button type="button" class="submit-btn" :disabled="saving" @click="resetPassword">
               <Icon v-if="saving" icon="mdi:loading" class="spin" />
               {{ saving ? '重置中...' : '确认重置' }}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
@@ -234,7 +243,6 @@ const saving = ref(false)
 
 const showResetPasswordDialog = ref(false)
 const currentUserId = ref(null)
-const newPassword = ref('')
 
 const form = ref({
   username: '',
@@ -289,6 +297,7 @@ function openAddDialog() {
   form.value = {
     username: '',
     password: '',
+    confirmPassword: '',
     role: 'user',
     status: 1
   }
@@ -311,6 +320,22 @@ function closeDialog() {
 }
 
 async function saveUser() {
+  // 添加用户时验证密码
+  if (!isEdit.value) {
+    if (!form.value.password || form.value.password.trim().length === 0) {
+      alert('密码不能为空')
+      return
+    }
+    if (form.value.password.length < 6) {
+      alert('密码长度不能少于6位')
+      return
+    }
+    if (form.value.password !== form.value.confirmPassword) {
+      alert('两次输入的密码不一致')
+      return
+    }
+  }
+
   saving.value = true
   try {
     let res
@@ -321,10 +346,12 @@ async function saveUser() {
         data: form.value
       })
     } else {
+      // 创建用户时，不发送 confirmPassword 字段
+      const {  ...userData } = form.value
       res = await request({
         url: '/api/admin/users',
         method: 'POST',
-        data: form.value
+        data: userData
       })
     }
 
@@ -345,32 +372,25 @@ async function saveUser() {
 
 function openResetPasswordDialog(user) {
   currentUserId.value = user.id
-  newPassword.value = ''
   showResetPasswordDialog.value = true
 }
 
 function closeResetPasswordDialog() {
   showResetPasswordDialog.value = false
   currentUserId.value = null
-  newPassword.value = ''
 }
 
 async function resetPassword() {
-  if (!newPassword.value) {
-    alert('请输入新密码')
-    return
-  }
-
   saving.value = true
   try {
     const res = await request({
       url: `/api/admin/users/${currentUserId.value}/reset-password`,
       method: 'PUT',
-      data: { password: newPassword.value }
+      data: { password: '123456' }
     })
 
     if (res.code === 200) {
-      alert('密码重置成功')
+      alert('密码已重置为：123456')
       closeResetPasswordDialog()
     } else {
       alert(res.message || '密码重置失败')
@@ -444,8 +464,8 @@ function formatDate(dateString) {
     minute: '2-digit'
   })
 }
-</script>
 
+</script>
 <style scoped>
 .user-management {
   padding: 20px;
@@ -955,5 +975,41 @@ function formatDate(dateString) {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 重置密码确认对话框样式 */
+.reset-password-confirm {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.warning-icon {
+  font-size: 48px;
+  color: #f57c00;
+  margin-bottom: 16px;
+}
+
+.confirm-message {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.default-password-hint {
+  font-size: 18px;
+  color: #e17055;
+  margin-bottom: 8px;
+}
+
+.default-password-hint strong {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.security-hint {
+  font-size: 13px;
+  color: #999;
+  margin-top: 12px;
 }
 </style>
