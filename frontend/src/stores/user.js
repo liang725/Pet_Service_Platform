@@ -55,6 +55,7 @@ export const useUserStore = defineStore('user', {
         this.userInfo = userInfo
         this.userRole = userInfo.role || 'user'
         localStorage.setItem('userRole', this.userRole)
+        localStorage.setItem('userInfo', JSON.stringify(userInfo))
         console.log('设置用户角色:', this.userRole) // 添加调试日志
       }
     },
@@ -67,11 +68,15 @@ export const useUserStore = defineStore('user', {
       this.isLoggedIn = false
       localStorage.removeItem('token')
       localStorage.removeItem('userRole')
+      localStorage.removeItem('userInfo')
     },
 
     // 登录
     async login(credentials) {
       try {
+        // 登录前先清除旧用户数据
+        this.clearToken()
+
         const response = await request({
           url: '/api/auth/login',
           method: 'POST',

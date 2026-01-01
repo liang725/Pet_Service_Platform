@@ -74,7 +74,7 @@ const userStore = useUserStore()
 const handleLogout = () => {
   if (confirm('确定要退出登录吗？')) {
     userStore.logout()
-    router.push('/')
+    router.push('/auth')
   }
 }
 </script>

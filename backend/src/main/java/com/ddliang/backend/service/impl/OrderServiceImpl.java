@@ -5,6 +5,7 @@ import com.ddliang.backend.dto.OrderResponse;
 import com.ddliang.backend.entity.Order;
 import com.ddliang.backend.entity.OrderItem;
 import com.ddliang.backend.mapper.OrderMapper;
+import com.ddliang.backend.mapper.ProductMapper;
 import com.ddliang.backend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
     
     @Autowired
     private OrderMapper orderMapper;
+    
+    @Autowired
+    private ProductMapper productMapper;
     
     @Override
     public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
@@ -252,6 +256,21 @@ public class OrderServiceImpl implements OrderService {
                     
                     if (updated > 0) {
                         System.out.println("支付处理成功，订单状态已更新为paid");
+                        
+                        // 支付成功后，更新商品销量
+                        try {
+                            List<OrderItem> items = orderMapper.findOrderItemsByOrderId(orderId);
+                            for (OrderItem item : items) {
+                                int salesUpdated = productMapper.increaseSales(item.getProductId(), item.getQuantity());
+                                System.out.println("更新商品销量，商品ID: " + item.getProductId() + 
+                                                 ", 数量: " + item.getQuantity() + 
+                                                 ", 更新结果: " + salesUpdated);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("更新商品销量失败: " + e.getMessage());
+                            // 销量更新失败不影响支付流程，只记录日志
+                        }
+                        
                         return true;
                     } else {
                         System.err.println("更新订单状态失败，影响行数为0");

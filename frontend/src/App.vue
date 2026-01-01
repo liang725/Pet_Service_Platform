@@ -1,12 +1,13 @@
 <!-- src/App.vue -->
 <script setup>
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { onMounted, computed } from 'vue'
 import ShoppingCart from '@/components/ShoppingCart.vue'
 
 const userStore = useUserStore()
 const route = useRoute()
+const router = useRouter()
 
 // 计算是否显示导航栏
 const showHeader = computed(() => {
@@ -20,6 +21,7 @@ const showFooter = computed(() => {
 // 退出登录
 const logout = () => {
   userStore.logout()
+  router.push('/auth')
 }
 
 onMounted(() => {
@@ -110,8 +112,8 @@ onMounted(() => {
       <RouterView />
     </main>
 
-    <!-- 购物车悬浮组件 -->
-    <ShoppingCart />
+    <!-- 购物车悬浮组件 - 仅在用户端登录后显示 -->
+    <ShoppingCart v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
 
     <!-- 条件渲染页脚 -->
     <footer v-if="showFooter" class="app-footer">

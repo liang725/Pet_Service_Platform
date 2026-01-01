@@ -41,14 +41,12 @@ public class OrderController {
      */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createOrder(
+            @RequestAttribute("userId") Long userId,
             @RequestBody CreateOrderRequest request,
             HttpServletRequest httpRequest) {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 临时跳过JWT验证，直接使用固定用户ID进行测试
-            Long userId = 2L;
-            
             System.out.println("创建订单，用户ID: " + userId);
             System.out.println("订单商品数量: " + (request.getItems() != null ? request.getItems().size() : 0));
             
@@ -74,13 +72,12 @@ public class OrderController {
      * 获取用户订单列表
      */
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getUserOrders(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getUserOrders(
+            @RequestAttribute("userId") Long userId,
+            HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 临时跳过JWT验证，直接使用固定用户ID进行测试
-            Long userId = 2L; // 使用测试数据中的用户ID
-            
             System.out.println("获取用户订单列表，用户ID: " + userId);
             
             List<Order> orders = orderService.getOrdersByUserId(userId);
@@ -89,7 +86,7 @@ public class OrderController {
             
             // 确保返回格式与前端期望一致
             response.put("success", true);
-            response.put("code", 200);  // 同时提供两种格式
+            response.put("code", 200);
             response.put("data", orders);
             response.put("message", "获取订单列表成功");
             return ResponseEntity.ok(response);
@@ -149,13 +146,12 @@ public class OrderController {
      */
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<Map<String, Object>> cancelOrder(
+            @RequestAttribute("userId") Long userId,
             @PathVariable String orderId,
             HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 临时跳过JWT验证，直接使用固定用户ID进行测试
-            Long userId = 2L;
             
             System.out.println("取消订单请求，订单标识: " + orderId + ", 用户ID: " + userId);
             
@@ -205,14 +201,13 @@ public class OrderController {
      */
     @PostMapping("/{orderId}/pay")
     public ResponseEntity<Map<String, Object>> payOrder(
+            @RequestAttribute("userId") Long userId,
             @PathVariable String orderId,
             @RequestBody Map<String, String> paymentData,
             HttpServletRequest httpRequest) {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 临时跳过JWT验证，直接使用固定用户ID进行测试
-            Long userId = 2L;
             
             String paymentMethod = paymentData.get("paymentMethod");
             System.out.println("支付订单请求，订单标识: " + orderId + ", 支付方式: " + paymentMethod);

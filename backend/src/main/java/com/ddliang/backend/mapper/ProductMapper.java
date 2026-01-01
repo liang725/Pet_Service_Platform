@@ -132,4 +132,10 @@ public interface ProductMapper {
      */
     @Update("UPDATE products SET stock = #{stock}, updated_at = NOW() WHERE id = #{id}")
     int updateStock(@Param("id") Integer id, @Param("stock") Integer stock);
+
+    /**
+     * 增加商品销量
+     */
+    @Update("UPDATE products SET sales = sales + #{quantity}, updated_at = NOW() WHERE id = #{id}")
+    int increaseSales(@Param("id") Integer id, @Param("quantity") Integer quantity);
 }
