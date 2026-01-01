@@ -1,5 +1,6 @@
 package com.ddliang.backend.service.impl;
 
+import com.ddliang.backend.common.Result;
 import com.ddliang.backend.dto.ProductDetailResponse;
 import com.ddliang.backend.dto.ProductResponse;
 import com.ddliang.backend.entity.*;
@@ -106,6 +107,56 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Result<?> advancedSearch(String keyword, String category, Double minPrice, 
+                                   Double maxPrice, String sortBy, Integer page, Integer pageSize) {
+        try {
+            // 计算偏移量
+            int offset = (page - 1) * pageSize;
+            
+            // 转换分类为category_id
+            Integer categoryId = null;
+            if (category != null && !category.isEmpty()) {
+                switch (category.toLowerCase()) {
+                    case "food":
+                        categoryId = 1;
+                        break;
+                    case "supply":
+                        categoryId = 2;
+                        break;
+                    case "toy":
+                        categoryId = 3;
+                        break;
+                }
+            }
+            
+            // 执行高级搜索
+            List<Product> products = productMapper.advancedSearch(
+                keyword, categoryId, minPrice, maxPrice, sortBy, offset, pageSize
+            );
+            
+            // 获取总数
+            int total = productMapper.countAdvancedSearch(keyword, categoryId, minPrice, maxPrice);
+            
+            // 转换为DTO
+            List<ProductResponse> productResponses = products.stream()
+                    .map(this::convertToResponse)
+                    .collect(Collectors.toList());
+            
+            // 构建返回结果
+            Map<String, Object> result = new HashMap<>();
+            result.put("list", productResponses);
+            result.put("total", total);
+            result.put("page", page);
+            result.put("pageSize", pageSize);
+            result.put("totalPages", (int) Math.ceil((double) total / pageSize));
+            
+            return Result.success(result);
+        } catch (Exception e) {
+            return Result.error("搜索失败: " + e.getMessage());
+        }
     }
 
     /**

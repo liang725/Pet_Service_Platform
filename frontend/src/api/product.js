@@ -79,3 +79,23 @@ export function searchProducts(keyword, page = 1, pageSize = 10) {
     }
   })
 }
+
+/**
+ * 高级商品搜索（支持多条件筛选）
+ * @param {Object} params - 搜索参数
+ * @param {string} params.keyword - 搜索关键词
+ * @param {string} params.category - 分类 (food/supply/toy)
+ * @param {number} params.minPrice - 最低价格
+ * @param {number} params.maxPrice - 最高价格
+ * @param {string} params.sortBy - 排序方式 (price_asc/price_desc/sales/rating)
+ * @param {number} params.page - 页码
+ * @param {number} params.pageSize - 每页数量
+ * @returns {Promise}
+ */
+export function advancedSearchProducts(params) {
+  return request({
+    url: '/api/products/search',
+    method: 'GET',
+    params
+  })
+}

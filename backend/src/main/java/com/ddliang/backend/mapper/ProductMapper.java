@@ -138,4 +138,61 @@ public interface ProductMapper {
      */
     @Update("UPDATE products SET sales = sales + #{quantity}, updated_at = NOW() WHERE id = #{id}")
     int increaseSales(@Param("id") Integer id, @Param("quantity") Integer quantity);
+
+    /**
+     * 高级搜索商品（支持多条件筛选和排序）
+     */
+    @Select("<script>" +
+            "SELECT * FROM products WHERE status = 'in_stock' " +
+            "<if test='keyword != null and keyword != \"\"'>" +
+            "AND (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) " +
+            "</if>" +
+            "<if test='categoryId != null'>" +
+            "AND category_id = #{categoryId} " +
+            "</if>" +
+            "<if test='minPrice != null'>" +
+            "AND price &gt;= #{minPrice} " +
+            "</if>" +
+            "<if test='maxPrice != null'>" +
+            "AND price &lt;= #{maxPrice} " +
+            "</if>" +
+            "ORDER BY " +
+            "<choose>" +
+            "<when test='sortBy == \"price_asc\"'>price ASC</when>" +
+            "<when test='sortBy == \"price_desc\"'>price DESC</when>" +
+            "<when test='sortBy == \"rating\"'>rating DESC</when>" +
+            "<otherwise>sales DESC</otherwise>" +
+            "</choose> " +
+            "LIMIT #{offset}, #{pageSize}" +
+            "</script>")
+    List<Product> advancedSearch(@Param("keyword") String keyword,
+                                 @Param("categoryId") Integer categoryId,
+                                 @Param("minPrice") Double minPrice,
+                                 @Param("maxPrice") Double maxPrice,
+                                 @Param("sortBy") String sortBy,
+                                 @Param("offset") Integer offset,
+                                 @Param("pageSize") Integer pageSize);
+
+    /**
+     * 统计高级搜索结果数量
+     */
+    @Select("<script>" +
+            "SELECT COUNT(*) FROM products WHERE status = 'in_stock' " +
+            "<if test='keyword != null and keyword != \"\"'>" +
+            "AND (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) " +
+            "</if>" +
+            "<if test='categoryId != null'>" +
+            "AND category_id = #{categoryId} " +
+            "</if>" +
+            "<if test='minPrice != null'>" +
+            "AND price &gt;= #{minPrice} " +
+            "</if>" +
+            "<if test='maxPrice != null'>" +
+            "AND price &lt;= #{maxPrice} " +
+            "</if>" +
+            "</script>")
+    int countAdvancedSearch(@Param("keyword") String keyword,
+                           @Param("categoryId") Integer categoryId,
+                           @Param("minPrice") Double minPrice,
+                           @Param("maxPrice") Double maxPrice);
 }

@@ -33,10 +33,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            List<Address> addresses = addressService.getUserAddresses(userId);
+            List<Address> addresses = addressService.getUserAddresses(userId.longValue());
             
             response.put("success", true);
             response.put("data", addresses);
@@ -60,10 +65,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            Address address = addressService.addAddress(userId, addressRequest);
+            Address address = addressService.addAddress(userId.longValue(), addressRequest);
             
             response.put("success", true);
             response.put("data", address);
@@ -88,10 +98,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            Address address = addressService.updateAddress(id, userId, addressRequest);
+            Address address = addressService.updateAddress(id, userId.longValue(), addressRequest);
             
             response.put("success", true);
             response.put("data", address);
@@ -115,10 +130,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            boolean success = addressService.deleteAddress(id, userId);
+            boolean success = addressService.deleteAddress(id, userId.longValue());
             
             if (success) {
                 response.put("success", true);
@@ -146,10 +166,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            boolean success = addressService.setDefaultAddress(id, userId);
+            boolean success = addressService.setDefaultAddress(id, userId.longValue());
             
             if (success) {
                 response.put("success", true);
@@ -175,10 +200,15 @@ public class AddressController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 从请求头获取用户ID（临时跳过JWT验证）
-            Long userId = 1L; // 临时使用固定用户ID
+            // 从 JWT 拦截器设置的 request 属性中获取用户 ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "用户未登录");
+                return ResponseEntity.status(401).body(response);
+            }
             
-            Address address = addressService.getDefaultAddress(userId);
+            Address address = addressService.getDefaultAddress(userId.longValue());
             
             response.put("success", true);
             response.put("data", address);

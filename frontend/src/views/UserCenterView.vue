@@ -315,8 +315,25 @@
             <div v-else class="cart-content">
               <!-- 购物车商品列表 -->
               <div class="cart-items-card">
+                <!-- 全选控制栏 -->
+                <div class="cart-select-all">
+                  <input
+                    type="checkbox"
+                    :checked="selectAll"
+                    @change="toggleSelectAll"
+                    class="cart-checkbox"
+                  >
+                  <span class="select-all-text">全选</span>
+                  <span class="selected-info">已选 {{ selectedCount }} 件商品</span>
+                </div>
+
                 <div v-for="item in paginatedCartItems" :key="item.id" class="cart-item">
-                  <input type="checkbox" v-model="item.selected" @change="updateCartTotal" class="cart-checkbox">
+                  <input
+                    type="checkbox"
+                    :checked="item.selected"
+                    @change="toggleItemSelect(item)"
+                    class="cart-checkbox"
+                  >
                   <div class="cart-item-image">
                     <img v-if="item.image" :src="item.image" :alt="item.name">
                     <Icon v-else icon="mdi:image" />
@@ -1738,7 +1755,7 @@ export default {
     cartItems() {
       return this.cartStore.cartItems.map(item => ({
         ...item,
-        selected: item.selected !== undefined ? item.selected : true
+        selected: item.selected !== undefined ? item.selected : false // 默认不选中
       }))
     },
     // 购物车搜索过滤
@@ -1801,6 +1818,10 @@ export default {
       const start = (this.cartCurrentPage - 1) * this.cartPageSize
       const end = start + this.cartPageSize
       return this.filteredCartItems.slice(start, end)
+    },
+    // 全选状态
+    selectAll() {
+      return this.filteredCartItems.length > 0 && this.filteredCartItems.every(item => item.selected)
     },
     // 可选城市列表
     availableCities() {
@@ -2253,6 +2274,27 @@ export default {
 
     updateCartTotal() {
       // 计算总价逻辑已在computed中处理
+    },
+
+    // 切换单个商品的选中状态
+    toggleItemSelect(item) {
+      // 在 store 中找到对应的商品并切换状态
+      const storeItem = this.cartStore.cartItems.find(i => i.id === item.id)
+      if (storeItem) {
+        storeItem.selected = !storeItem.selected
+        this.$forceUpdate()
+      }
+    },
+
+    // 全选/取消全选
+    toggleSelectAll() {
+      const newSelectState = !this.selectAll
+      // 直接修改 store 中的数据以确保响应式更新
+      this.cartStore.cartItems.forEach(item => {
+        item.selected = newSelectState
+      })
+      this.$forceUpdate() // 强制更新视图
+      this.updateCartTotal()
     },
 
     applyPromo() {
@@ -3781,6 +3823,27 @@ export default {
 
 .cart-item:last-child {
   border-bottom: none;
+}
+
+/* 全选控制栏 */
+.cart-select-all {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 12px;
+  background: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+  font-size: 14px;
+}
+
+.select-all-text {
+  font-weight: 600;
+  color: #333;
+}
+
+.selected-info {
+  color: #666;
+  margin-left: auto;
 }
 
 .cart-checkbox {

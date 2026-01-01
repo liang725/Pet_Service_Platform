@@ -137,30 +137,29 @@
             <label>用户名 <span class="required">*</span></label>
             <input
               v-model="form.username"
-              :disabled="isEdit"
               required
               placeholder="请输入用户名"
             />
-            <small v-if="isEdit" class="hint">用户名不可修改</small>
           </div>
 
-          <div v-if="!isEdit" class="form-group">
+          <div class="form-group">
             <label>密码 <span class="required">*</span></label>
             <input
               v-model="form.password"
               type="password"
-              required
+              :required="!isEdit"
               minlength="6"
-              placeholder="请输入密码（至少6位）"
+              :placeholder="isEdit ? '留空则不修改密码' : '请输入密码（至少6位）'"
             />
+            <small v-if="isEdit" class="hint">留空则不修改密码</small>
           </div>
 
-          <div v-if="!isEdit" class="form-group">
+          <div v-if="form.password" class="form-group">
             <label>确认密码 <span class="required">*</span></label>
             <input
               v-model="form.confirmPassword"
               type="password"
-              required
+              :required="!!form.password"
               minlength="6"
               placeholder="请再次输入密码"
             />
@@ -320,9 +319,9 @@ function closeDialog() {
 }
 
 async function saveUser() {
-  // 添加用户时验证密码
-  if (!isEdit.value) {
-    if (!form.value.password || form.value.password.trim().length === 0) {
+  // 验证密码（添加用户时必填，编辑用户时选填）
+  if (form.value.password) {
+    if (form.value.password.trim().length === 0) {
       alert('密码不能为空')
       return
     }
@@ -334,20 +333,30 @@ async function saveUser() {
       alert('两次输入的密码不一致')
       return
     }
+  } else if (!isEdit.value) {
+    // 添加用户时密码必填
+    alert('密码不能为空')
+    return
   }
 
   saving.value = true
   try {
+    // 准备提交的数据，排除 confirmPassword
+    const { confirmPassword, ...userData } = form.value
+
+    // 如果是编辑且密码为空，则不发送密码字段
+    if (isEdit.value && !userData.password) {
+      delete userData.password
+    }
+
     let res
     if (isEdit.value) {
       res = await request({
         url: `/api/admin/users/${form.value.id}`,
         method: 'PUT',
-        data: form.value
+        data: userData
       })
     } else {
-      // 创建用户时，不发送 confirmPassword 字段
-      const {  ...userData } = form.value
       res = await request({
         url: '/api/admin/users',
         method: 'POST',

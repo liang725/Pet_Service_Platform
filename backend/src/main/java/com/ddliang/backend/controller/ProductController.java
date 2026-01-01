@@ -59,6 +59,33 @@ public class ProductController {
     }
 
     /**
+     * 高级商品搜索（支持多条件筛选）
+     * @param keyword 搜索关键词
+     * @param category 分类
+     * @param minPrice 最低价格
+     * @param maxPrice 最高价格
+     * @param sortBy 排序方式: price_asc/price_desc/sales/rating
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @return 商品列表和总数
+     */
+    @GetMapping("/search")
+    public Result<?> advancedSearch(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "sales") String sortBy,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "12") Integer pageSize) {
+        try {
+            return productService.advancedSearch(keyword, category, minPrice, maxPrice, sortBy, page, pageSize);
+        } catch (Exception e) {
+            return Result.error("搜索商品失败: " + e.getMessage());
+        }
+    }
+
+    /**
      * 获取商品详情
      * @param id 商品ID
      * @return 商品详情

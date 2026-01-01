@@ -1,5 +1,29 @@
 <template>
   <div class="product-list-page">
+    <!-- 搜索栏 -->
+    <div class="search-section">
+      <div class="container">
+        <div class="search-bar">
+          <input
+            v-model="searchKeyword"
+            type="text"
+            placeholder="搜索商品名称、品牌..."
+            @keyup.enter="searchProducts"
+            class="search-input"
+          >
+          <button @click="searchProducts" class="search-btn">
+            <i class="fas fa-search"></i> 搜索
+          </button>
+          <button v-if="searchKeyword" @click="clearSearch" class="clear-btn">
+            <i class="fas fa-times"></i> 清除
+          </button>
+        </div>
+        <div v-if="isSearching" class="search-info">
+          搜索 "{{ searchKeyword }}" 的结果，共找到 {{ searchResults.length }} 件商品
+        </div>
+      </div>
+    </div>
+
     <!-- 分类导航 -->
     <nav class="category-nav">
       <div class="container">
@@ -15,6 +39,48 @@
     </nav>
 
     <div class="container">
+      <!-- 搜索结果 -->
+      <div v-if="isSearching" class="search-results-section">
+        <h2 class="section-title">搜索结果</h2>
+        <div v-if="searchResults.length === 0" class="empty-search">
+          <i class="fas fa-search empty-icon"></i>
+          <p>没有找到相关商品</p>
+          <button @click="clearSearch" class="back-btn">返回商品列表</button>
+        </div>
+        <div v-else class="product-grid">
+          <div v-for="product in searchResults" :key="product.id"
+            class="product-card" @click="goToProduct(product.id)">
+            <div class="product-image">
+              <img :src="product.image" :alt="product.name">
+              <span v-if="product.tag" class="product-tag">{{ product.tag }}</span>
+            </div>
+            <div class="product-info">
+              <div class="product-title">{{ product.name }}</div>
+              <div class="product-price">
+                ¥{{ product.price.toFixed(2) }}
+                <span v-if="product.originalPrice" class="original-price">
+                  ¥{{ product.originalPrice.toFixed(2) }}
+                </span>
+              </div>
+              <div class="product-rating">
+                <i v-for="n in 5" :key="n" :class="getStarClass(n, product.rating)"></i>
+                <span class="rating-count">({{ product.ratingCount }})</span>
+              </div>
+              <div class="product-actions">
+                <button class="add-to-cart" @click.stop="addToCart(product)">
+                  <i class="fas fa-cart-plus"></i> 加入购物车
+                </button>
+                <button class="wishlist-btn" @click.stop="toggleWishlist(product.id)">
+                  <i :class="isInWishlist(product.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 原有商品列表（非搜索状态） -->
+      <div v-else>
       <!-- 轮播图 -->
       <div class="banner">
         <img :src="bannerImage" alt="宠物之家欢迎您">
@@ -174,6 +240,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
 
     <!-- 回到顶部按钮 -->
@@ -206,6 +273,11 @@ const selectedCategory = ref('food')
 const showBackToTop = ref(false)
 const wishlist = ref([])
 const notification = ref({ show: false, message: '' })
+
+// 搜索相关
+const searchKeyword = ref('')
+const isSearching = ref(false)
+const searchResults = ref([])
 
 const bannerImage = ref('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80')
 
@@ -344,6 +416,50 @@ const scrollToTop = () => {
   })
 }
 
+// 搜索商品
+const searchProducts = async () => {
+  if (!searchKeyword.value.trim()) {
+    showNotification('请输入搜索关键词')
+    return
+  }
+
+  try {
+    isSearching.value = true
+    // 合并所有商品进行搜索
+    const allProducts = [
+      ...hotProducts.value,
+      ...foodProducts.value,
+      ...supplyProducts.value,
+      ...toyProducts.value
+    ]
+
+    // 去重
+    const uniqueProducts = allProducts.filter((product, index, self) =>
+      index === self.findIndex(p => p.id === product.id)
+    )
+
+    // 搜索匹配
+    const keyword = searchKeyword.value.toLowerCase()
+    searchResults.value = uniqueProducts.filter(product =>
+      product.name.toLowerCase().includes(keyword) ||
+      (product.description && product.description.toLowerCase().includes(keyword)) ||
+      (product.brand && product.brand.toLowerCase().includes(keyword))
+    )
+
+    showNotification(`找到 ${searchResults.value.length} 件相关商品`)
+  } catch (error) {
+    console.error('搜索失败:', error)
+    showNotification('搜索失败，请重试')
+  }
+}
+
+// 清除搜索
+const clearSearch = () => {
+  searchKeyword.value = ''
+  isSearching.value = false
+  searchResults.value = []
+}
+
 const handleScroll = () => {
   showBackToTop.value = window.scrollY > 300
 }
@@ -418,6 +534,124 @@ onUnmounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 15px;
+}
+
+/* 搜索栏 */
+.search-section {
+  background-color: #fff8e1;
+  padding: 20px 0;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(255, 179, 71, 0.1);
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid #ffecb3;
+  border-radius: 25px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #ffb347;
+  box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.1);
+}
+
+.search-btn {
+  background: linear-gradient(135deg, #ffb347, #e69500);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(255, 179, 71, 0.3);
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 179, 71, 0.4);
+}
+
+.clear-btn {
+  background-color: #8d6e63;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clear-btn:hover {
+  background-color: #6d4c41;
+  transform: translateY(-2px);
+}
+
+.search-info {
+  text-align: center;
+  margin-top: 15px;
+  color: #5a4a42;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.search-results-section {
+  margin-top: 30px;
+}
+
+.empty-search {
+  text-align: center;
+  padding: 80px 20px;
+  color: #8d6e63;
+}
+
+.empty-icon {
+  font-size: 80px;
+  color: #ffecb3;
+  margin-bottom: 20px;
+}
+
+.empty-search p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #ffb347, #e69500);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(255, 179, 71, 0.3);
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 179, 71, 0.4);
 }
 
 /* 分类导航 */

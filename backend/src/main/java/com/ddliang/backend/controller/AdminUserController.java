@@ -169,6 +169,17 @@ public class AdminUserController {
             // 设置用户ID
             user.setId(id);
 
+            // 如果提供了新密码，则加密
+            if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+                if (user.getPassword().length() < 6) {
+                    return Result.error(400, "密码长度不能少于6位");
+                }
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            } else {
+                // 如果没有提供密码，保持原密码不变
+                user.setPassword(null);
+            }
+
             // 如果没有设置角色和状态，使用现有的值
             if (user.getRole() == null) {
                 user.setRole(existing.getRole());
