@@ -17,8 +17,8 @@
           </div>
           <div class="user-stats">
             <div class="stat-item">
-              <div class="stat-number">{{ orderCount }}</div>
-              <div class="stat-label">订单数量</div>
+              <div class="stat-number">{{ completedOrderCount }}</div>
+              <div class="stat-label">交易成功</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">{{ cartCount }}</div>
@@ -84,197 +84,19 @@
 
       <!-- 右侧主内容区 -->
       <div class="main-content">
-        <!-- 我的订单 -->
+        <!-- 我的订单 - 使用 MyOrders 组件 -->
         <div class="content-section" v-show="activeTab === 'orders'">
-          <div class="content-header">
-            <h2>我的订单</h2>
-            <p>查看和管理您的所有订单</p>
-          </div>
-
-          <!-- 订单状态筛选栏 -->
-          <div class="order-filter-tabs">
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'all' }"
-              @click="setOrderFilter('all')"
-            >
-              全部订单
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'pending' }"
-              @click="setOrderFilter('pending')"
-            >
-              待付款
-              <span v-if="getPendingCount() > 0" class="filter-badge">{{ getPendingCount() }}</span>
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'processing' }"
-              @click="setOrderFilter('processing')"
-            >
-              待收货/使用
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'delivered' }"
-              @click="setOrderFilter('delivered')"
-            >
-              待评价
-              <span v-if="getDeliveredCount() > 0" class="filter-badge">{{ getDeliveredCount() }}</span>
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'cancelled' }"
-              @click="setOrderFilter('cancelled')"
-            >
-              订单回收站
-            </div>
-            <!-- 清空回收站按钮 -->
-            <div v-if="orderFilter === 'cancelled' && getCancelledCount() > 0" class="clear-trash-btn" @click="clearTrash">
-              <Icon icon="mdi:delete-sweep" />
-              清空回收站
-            </div>
-          </div>
-
-            <!-- 订单列表 -->
-            <div v-if="loading" class="loading-state">
-              <div class="loading-spinner">
-                <Icon icon="mdi:loading" class="spin" />
-                <span>加载中...</span>
-              </div>
-            </div>
-            <div v-else-if="orders.length === 0" class="empty-state">
-              <div class="empty-icon">
-                <Icon icon="mdi:clipboard-list" />
-              </div>
-              <div class="empty-title">暂无订单</div>
-              <div class="empty-description">您还没有任何订单记录</div>
-              <button class="empty-action" @click="continueShopping">
-                <Icon icon="mdi:shopping" /> 去购物
-              </button>
-            </div>
-            <div v-else class="orders-list">
-              <div v-for="order in filteredOrders" :key="order.id" class="order-card">
-                <div class="order-header">
-                  <div class="order-info">
-                    <div class="order-info-item">
-                      <div class="order-info-label">订单号</div>
-                      <div class="order-info-value">{{ order.orderNo || order.id }}</div>
-                    </div>
-                    <div class="order-info-item">
-                      <div class="order-info-label">下单时间</div>
-                      <div class="order-info-value">{{ formatDateTime(order.createdAt || order.date) }}</div>
-                    </div>
-                    <div class="order-info-item">
-                      <div class="order-info-label">订单金额</div>
-                      <div class="order-info-value">¥{{ (order.finalAmount || order.total || 0).toFixed(2) }}</div>
-                    </div>
-                  </div>
-                  <div class="order-status-section">
-                    <div class="order-status" :class="getStatusClass(order.status)">
-                      {{ getStatusText(order.status) }}
-                    </div>
-                    <!-- 未付款订单显示剩余支付时间在右上角 -->
-                    <div v-if="order.status === 'pending'" class="payment-countdown-badge" :class="{ 'countdown-warning': getPaymentTimeLeft(order) <= 180 }">
-                      <Icon icon="mdi:clock-outline" />
-                      <span>{{ formatPaymentTime(getPaymentTimeLeft(order)) }}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 订单商品预览 -->
-                <div v-if="order.items && order.items.length > 0" class="order-preview">
-                  <div class="preview-product" @click="goToProduct(order.items[0].productId)">
-                    <div class="product-image">
-                      <img v-if="order.items[0].image" :src="order.items[0].image" :alt="order.items[0].name">
-                      <Icon v-else icon="mdi:image" />
-                    </div>
-                    <div class="product-info">
-                      <h4>{{ order.items[0].name }}</h4>
-                      <p>{{ order.items[0].spec }}</p>
-                    </div>
-                  </div>
-                  <div class="order-summary">
-                    <p>共 {{ order.items.length }} 件商品</p>
-                    <h3>实付：¥{{ order.total.toFixed(2) }}</h3>
-                  </div>
-                </div>
-
-                <!-- 订单操作按钮 -->
-                <div class="order-actions">
-                  <button class="action-btn action-btn-secondary" @click="toggleOrderDetail(order)">
-                    <Icon icon="mdi:eye" />
-                    {{ order.showDetail ? '收起详情' : '查看详情' }}
-                  </button>
-                  <button v-if="order.status === 'delivered' || order.status === 'paid' || order.status === 'shipped'" class="action-btn action-btn-primary" @click="reorder(order)">
-                    <Icon icon="mdi:refresh" />
-                    再次购买
-                  </button>
-                  <button v-if="order.status === 'pending' && !isOrderExpired(order)" class="action-btn action-btn-primary" @click="payOrder(order)">
-                    <Icon icon="mdi:credit-card" />
-                    立即支付
-                  </button>
-                  <button v-if="order.status === 'pending' && !isOrderExpired(order)" class="action-btn action-btn-danger" @click="cancelOrder(order)">
-                    <Icon icon="mdi:close" />
-                    取消订单
-                  </button>
-                  <div v-if="order.status === 'pending' && isOrderExpired(order)" class="expired-order-notice">
-                    <Icon icon="mdi:clock-alert" />
-                    <span>订单已超时，无法支付</span>
-                  </div>
-                </div>
-
-                <!-- 订单详情展开 -->
-                <div v-if="order.showDetail" class="order-detail-expanded">
-                  <div class="detail-section">
-                    <h4>商品清单</h4>
-                    <div class="detail-products">
-                      <div v-for="item in order.items" :key="item.id" class="detail-product-item" @click="goToProduct(item.productId)">
-                        <div class="product-image">
-                          <img v-if="item.image" :src="item.image" :alt="item.name">
-                          <Icon v-else icon="mdi:image" />
-                        </div>
-                        <div class="product-details">
-                          <h5>{{ item.name }}</h5>
-                          <p>{{ item.spec }}</p>
-                          <div class="price-quantity">
-                            <span class="price">¥{{ item.price.toFixed(2) }}</span>
-                            <span class="quantity">数量：{{ item.quantity }}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div v-if="order.summary" class="detail-section">
-                    <h4>费用明细</h4>
-                    <div class="order-summary-detail">
-                      <div class="summary-row">
-                        <span>商品总价</span>
-                        <span>¥{{ order.summary.subtotal.toFixed(2) }}</span>
-                      </div>
-                      <div class="summary-row">
-                        <span>运费</span>
-                        <span>¥{{ order.summary.shipping.toFixed(2) }}</span>
-                      </div>
-                      <div v-if="order.summary.coupon > 0" class="summary-row">
-                        <span>优惠券折扣</span>
-                        <span>-¥{{ order.summary.coupon.toFixed(2) }}</span>
-                      </div>
-                      <div v-if="order.summary.discount > 0" class="summary-row">
-                        <span>会员折扣</span>
-                        <span>-¥{{ order.summary.discount.toFixed(2) }}</span>
-                      </div>
-                      <div class="summary-row total">
-                        <span>实付金额</span>
-                        <span>¥{{ order.summary.total.toFixed(2) }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <MyOrders
+            :orders="orders"
+            :loading="loading"
+            @continue-shopping="continueShopping"
+            @go-to-product="goToProduct"
+            @reorder="reorder"
+            @pay-order="payOrder"
+            @cancel-order="cancelOrder"
+            @clear-trash="clearTrash"
+            @delete-order="deleteOrder"
+          />
         </div>
 
         <!-- 购物车 -->
@@ -752,7 +574,7 @@
         <div class="content-section" v-show="activeTab === 'settings'">
           <div class="content-header">
             <h2>账户设置</h2>
-            <p>管理您的账户信息和偏好设置</p>
+            <p>管理您的账户信息和安全设置</p>
           </div>
           <div class="settings-content">
             <!-- 账户安全 -->
@@ -765,24 +587,6 @@
                 </div>
                 <button class="setting-action-btn" @click="openPasswordDialog">
                   <Icon icon="mdi:key" /> 修改密码
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">手机号码</span>
-                  <span class="setting-desc">{{ userInfo.phone || '未绑定' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="openPhoneDialog">
-                  <Icon icon="mdi:phone" /> {{ userInfo.phone ? '更换' : '绑定' }}
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">邮箱地址</span>
-                  <span class="setting-desc">{{ userInfo.email || '未绑定' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="openEmailDialog">
-                  <Icon icon="mdi:email" /> {{ userInfo.email ? '更换' : '绑定' }}
                 </button>
               </div>
             </div>
@@ -799,182 +603,19 @@
                   <Icon icon="mdi:pencil" /> 编辑
                 </button>
               </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">会员等级</span>
-                  <span class="setting-desc">{{ userInfo.level || '普通会员' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="viewMembershipBenefits">
-                  <Icon icon="mdi:crown" /> 升级会员
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">积分余额</span>
-                  <span class="setting-desc">{{ userInfo.points || 0 }} 积分</span>
-                </div>
-                <button class="setting-action-btn" @click="viewPointsHistory">
-                  <Icon icon="mdi:star" /> 积分明细
-                </button>
-              </div>
             </div>
 
-            <!-- 通知设置 -->
+            <!-- 账户操作 -->
             <div class="setting-group">
-              <h3><Icon icon="mdi:bell" /> 通知设置</h3>
+              <h3><Icon icon="mdi:cog" /> 账户操作</h3>
               <div class="setting-item">
                 <div class="setting-info">
-                  <span class="setting-title">订单通知</span>
-                  <span class="setting-desc">接收订单状态变更通知</span>
+                  <span class="setting-title">退出登录</span>
+                  <span class="setting-desc">退出当前账户</span>
                 </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.orderNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">促销通知</span>
-                  <span class="setting-desc">接收优惠活动和促销信息</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.promotionNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">预约提醒</span>
-                  <span class="setting-desc">服务预约前24小时提醒</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.appointmentReminder">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">邮件通知</span>
-                  <span class="setting-desc">通过邮件接收重要通知</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.emailNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 隐私设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:shield-lock" /> 隐私设置</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">个人资料可见性</span>
-                  <span class="setting-desc">控制其他用户查看您的个人信息</span>
-                </div>
-                <select v-model="privacySettings.profileVisibility" class="setting-select">
-                  <option value="public">公开</option>
-                  <option value="friends">仅好友</option>
-                  <option value="private">私密</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">购买记录</span>
-                  <span class="setting-desc">是否允许显示购买历史</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="privacySettings.showPurchaseHistory">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">数据分析</span>
-                  <span class="setting-desc">允许使用数据改善服务体验</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="privacySettings.allowDataAnalysis">
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 商业化设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:store" /> 商业化服务</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">VIP会员服务</span>
-                  <span class="setting-desc">享受专属优惠和优先服务</span>
-                </div>
-                <button class="setting-action-btn premium" @click="upgradeToVip">
-                  <Icon icon="mdi:crown" /> 升级VIP
+                <button class="setting-action-btn" @click="logout">
+                  <Icon icon="mdi:logout" /> 退出登录
                 </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">宠物保险</span>
-                  <span class="setting-desc">为您的爱宠提供全面保障</span>
-                </div>
-                <button class="setting-action-btn" @click="viewInsuranceOptions">
-                  <Icon icon="mdi:shield-heart" /> 了解详情
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">定制服务</span>
-                  <span class="setting-desc">个性化宠物护理方案</span>
-                </div>
-                <button class="setting-action-btn" @click="viewCustomServices">
-                  <Icon icon="mdi:palette" /> 定制方案
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">推荐奖励</span>
-                  <span class="setting-desc">邀请好友注册获得奖励</span>
-                </div>
-                <button class="setting-action-btn" @click="viewReferralProgram">
-                  <Icon icon="mdi:gift" /> 邀请好友
-                </button>
-              </div>
-            </div>
-
-            <!-- 其他设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:cog" /> 其他设置</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">语言设置</span>
-                  <span class="setting-desc">选择界面显示语言</span>
-                </div>
-                <select v-model="otherSettings.language" class="setting-select">
-                  <option value="zh-CN">简体中文</option>
-                  <option value="zh-TW">繁體中文</option>
-                  <option value="en-US">English</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">主题模式</span>
-                  <span class="setting-desc">选择浅色或深色主题</span>
-                </div>
-                <select v-model="otherSettings.theme" class="setting-select">
-                  <option value="light">浅色模式</option>
-                  <option value="dark">深色模式</option>
-                  <option value="auto">跟随系统</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">自动登录</span>
-                  <span class="setting-desc">下次访问时自动登录</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="otherSettings.autoLogin">
-                  <span class="slider"></span>
-                </label>
               </div>
             </div>
 
@@ -990,13 +631,6 @@
                   <Icon icon="mdi:delete-forever" /> 注销账户
                 </button>
               </div>
-            </div>
-
-            <!-- 保存按钮 -->
-            <div class="settings-actions">
-              <button class="save-settings-btn" @click="saveSettings">
-                <Icon icon="mdi:content-save" /> 保存设置
-              </button>
             </div>
           </div>
         </div>
@@ -1520,9 +1154,13 @@ import { getUserOrders, cancelOrder } from '@/api/order'
 import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import { getAddresses, addAddress, updateAddress, deleteAddress, setDefaultAddress } from '@/api/address'
+import MyOrders from '@/components/MyOrders.vue'
 
 export default {
   name: 'UserCenterView',
+  components: {
+    MyOrders
+  },
   setup() {
     const cartStore = useCartStore()
     const userStore = useUserStore()
@@ -1737,6 +1375,10 @@ export default {
     orderCount() {
       return this.orders.filter(order => order.status === 'pending' || order.status === 'processing').length
     },
+    // 交易成功数量（已完成的订单）
+    completedOrderCount() {
+      return this.orders.filter(order => order.status === 'delivered' || order.status === 'completed' || order.status === 'paid' || order.status === 'shipped').length
+    },
     cartCount() {
       return this.cartStore.totalItems
     },
@@ -1755,7 +1397,7 @@ export default {
     cartItems() {
       return this.cartStore.cartItems.map(item => ({
         ...item,
-        selected: item.selected !== undefined ? item.selected : false // 默认不选中
+        selected: item.selected !== undefined ? item.selected : true // 默认选中
       }))
     },
     // 购物车搜索过滤
@@ -1874,25 +1516,71 @@ export default {
 
     // 清空回收站
     async clearTrash() {
-      const cancelledOrders = this.orders.filter(order => order.status === 'cancelled')
-      if (cancelledOrders.length === 0) {
-        this.showNotification('回收站已经是空的')
+      const allOrders = this.orders
+      if (allOrders.length === 0) {
+        this.showNotification('没有订单可删除')
         return
       }
 
-      const confirmed = confirm(`确定要清空回收站吗？这将永久删除 ${cancelledOrders.length} 个已取消的订单，此操作不可恢复。`)
+      const confirmed = confirm(`确定要删除全部订单吗？这将永久删除 ${allOrders.length} 个订单，此操作不可恢复。`)
       if (!confirmed) {
         return
       }
 
       try {
-        // 这里可以调用后端API来永久删除已取消的订单
-        // 暂时只是从前端移除
-        this.orders = this.orders.filter(order => order.status !== 'cancelled')
-        this.showNotification('回收站已清空')
+        // 调用后端API删除全部订单
+        const response = await fetch('http://localhost:8080/api/orders/clear-all', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          // 从前端移除所有订单
+          this.orders = []
+          this.showNotification(`成功删除 ${data.data.deletedCount} 个订单`)
+        } else {
+          this.showNotification('删除订单失败：' + data.message)
+        }
       } catch (error) {
-        console.error('清空回收站失败:', error)
-        this.showNotification('清空回收站失败，请重试')
+        console.error('删除订单失败:', error)
+        this.showNotification('删除订单失败，请重试')
+      }
+    },
+
+    // 删除单个订单
+    async deleteOrder(order) {
+      const confirmed = confirm(`确定要删除订单 ${order.orderNo || order.id} 吗？此操作不可恢复。`)
+      if (!confirmed) {
+        return
+      }
+
+      try {
+        // 调用后端API删除订单
+        const response = await fetch(`http://localhost:8080/api/orders/${order.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+          // 从前端移除该订单
+          this.orders = this.orders.filter(o => o.id !== order.id)
+          this.showNotification('订单删除成功')
+        } else {
+          this.showNotification('删除订单失败：' + data.message)
+        }
+      } catch (error) {
+        console.error('删除订单失败:', error)
+        this.showNotification('删除订单失败，请重试')
       }
     },
 

@@ -4,6 +4,7 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { onMounted, computed } from 'vue'
 import ShoppingCart from '@/components/ShoppingCart.vue'
+import AiFloatBall from '@/components/AiFloatBall.vue'
 
 const userStore = useUserStore()
 const route = useRoute()
@@ -74,10 +75,10 @@ onMounted(() => {
                 </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/ai-consult" class="nav-link">
                   <Icon icon="mdi:robot" class="nav-icon" />
                   <span>AI咨询</span>
-                </a>
+                </router-link>
               </li>
             </ul>
           </nav>
@@ -114,6 +115,9 @@ onMounted(() => {
 
     <!-- 购物车悬浮组件 - 仅在用户端登录后显示 -->
     <ShoppingCart v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
+
+    <!-- AI悬浮球 - 仅在用户端登录后显示 -->
+    <AiFloatBall v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
 
     <!-- 条件渲染页脚 -->
     <footer v-if="showFooter" class="app-footer">

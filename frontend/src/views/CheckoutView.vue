@@ -492,14 +492,17 @@ export default {
       } else {
         // 购物车结算
         this.orderType = 'cart'
-        await this.cartStore.loadCart()
 
-        // 如果商品有selected属性，只选择已选中的商品；否则选择所有商品
-        const itemsToCheckout = this.cartStore.cartItems.some(item => 'selected' in item)
-          ? this.cartStore.cartItems.filter(item => item.selected)
-          : this.cartStore.cartItems
+        // 不重新加载，直接使用store中已有的选中状态
+        // 如果store中没有数据才加载
+        if (this.cartStore.cartItems.length === 0) {
+          await this.cartStore.loadCart()
+        }
 
-        this.orderItems = itemsToCheckout.map(item => ({
+        // 只选择已选中的商品进行结算
+        const selectedItems = this.cartStore.cartItems.filter(item => item.selected)
+
+        this.orderItems = selectedItems.map(item => ({
           id: item.id,
           name: item.name,
           image: item.image,

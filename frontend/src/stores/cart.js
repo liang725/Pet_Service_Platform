@@ -28,7 +28,11 @@ export const useCartStore = defineStore('cart', () => {
     try {
       loading.value = true
       const response = await getCartItems()
-      cartItems.value = response.items || []
+      // 为每个商品添加默认选中状态
+      cartItems.value = (response.items || []).map(item => ({
+        ...item,
+        selected: item.selected !== undefined ? item.selected : true
+      }))
     } catch (error) {
       console.error('加载购物车失败:', error)
     } finally {

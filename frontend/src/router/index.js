@@ -159,6 +159,17 @@ const router = createRouter({
         hideFooter: false
       }
     },
+    {
+      path: '/ai-consult',
+      name: 'aiConsult',
+      component: () => import('../views/AiConsultView.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'AI宠物咨询',
+        hideHeader: false,
+        hideFooter: false
+      }
+    },
     // 管理后台路由
     {
       path: '/admin',

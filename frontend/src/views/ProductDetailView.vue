@@ -1,4 +1,4 @@
-﻿<template>
+﻿3<template>
   <div class="product-detail-page">
     <nav class="breadcrumb">
       <div class="container">
@@ -471,9 +471,10 @@ onMounted(() => {
 }
 
 .main-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .product-info {
