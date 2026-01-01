@@ -62,4 +62,28 @@ public interface OrderMapper {
             "original_price, quantity, total_price) VALUES (#{orderId}, #{productId}, #{productName}, " +
             "#{productImage}, #{spec}, #{price}, #{originalPrice}, #{quantity}, #{totalPrice})")
     int insertOrderItem(OrderItem orderItem);
+    
+    /**
+     * 删除订单（物理删除）
+     */
+    @Delete("DELETE FROM orders WHERE id = #{orderId}")
+    int deleteOrder(@Param("orderId") Long orderId);
+    
+    /**
+     * 删除订单商品
+     */
+    @Delete("DELETE FROM order_items WHERE order_id = #{orderId}")
+    int deleteOrderItems(@Param("orderId") Long orderId);
+    
+    /**
+     * 批量删除用户的所有已取消订单
+     */
+    @Delete("DELETE FROM orders WHERE user_id = #{userId} AND status = 'cancelled'")
+    int deleteCancelledOrdersByUserId(@Param("userId") Long userId);
+    
+    /**
+     * 删除用户的所有订单
+     */
+    @Delete("DELETE FROM orders WHERE user_id = #{userId}")
+    int deleteAllOrdersByUserId(@Param("userId") Long userId);
 }

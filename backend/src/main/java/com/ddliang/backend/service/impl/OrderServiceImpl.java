@@ -318,4 +318,33 @@ public class OrderServiceImpl implements OrderService {
         
         return orderMapper.updateOrderStatus(orderId, "delivered") > 0;
     }
+    
+    @Override
+    public boolean deleteOrder(Long orderId, Long userId) {
+        // 验证订单是否属于当前用户
+        Order order = orderMapper.findById(orderId);
+        if (order == null || !order.getUserId().equals(userId)) {
+            return false;
+        }
+        
+        // 只有已取消状态的订单可以删除
+        if (!"cancelled".equals(order.getStatus())) {
+            return false;
+        }
+        
+        // 删除订单（物理删除）
+        return orderMapper.deleteOrder(orderId) > 0;
+    }
+    
+    @Override
+    public int clearCancelledOrders(Long userId) {
+        // 批量删除用户的所有已取消订单
+        return orderMapper.deleteCancelledOrdersByUserId(userId);
+    }
+    
+    @Override
+    public int clearAllOrders(Long userId) {
+        // 删除用户的所有订单
+        return orderMapper.deleteAllOrdersByUserId(userId);
+    }
 }

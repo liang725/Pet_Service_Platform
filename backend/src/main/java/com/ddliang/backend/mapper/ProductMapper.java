@@ -66,9 +66,9 @@ public interface ProductMapper {
     List<ProductReview> findReviewsByProductId(@Param("productId") Integer productId, @Param("limit") Integer limit);
 
     /**
-     * 搜索商品
+     * 搜索商品（宽松匹配，忽略大小写）
      */
-    @Select("SELECT * FROM products WHERE (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) AND status = 'in_stock' ORDER BY sales DESC LIMIT #{offset}, #{pageSize}")
+    @Select("SELECT * FROM products WHERE (LOWER(name) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR LOWER(brand) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR LOWER(description) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR LOWER(short_description) LIKE LOWER(CONCAT('%', #{keyword}, '%'))) AND status = 'in_stock' ORDER BY sales DESC LIMIT #{offset}, #{pageSize}")
     List<Product> searchProducts(@Param("keyword") String keyword, @Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
 
     /**
@@ -140,12 +140,26 @@ public interface ProductMapper {
     int increaseSales(@Param("id") Integer id, @Param("quantity") Integer quantity);
 
     /**
-     * 高级搜索商品（支持多条件筛选和排序）
+     * 高级搜索商品（支持多条件筛选和排序，宽松匹配，支持同义词）
      */
     @Select("<script>" +
             "SELECT * FROM products WHERE status = 'in_stock' " +
             "<if test='keyword != null and keyword != \"\"'>" +
-            "AND (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) " +
+            "AND (" +
+            "LOWER(name) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(brand) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(description) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(short_description) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            // 同义词匹配 - 狗相关
+            "(LOWER(#{keyword}) LIKE '%狗%' AND (LOWER(name) LIKE '%犬%' OR LOWER(description) LIKE '%犬%')) OR " +
+            "(LOWER(#{keyword}) LIKE '%犬%' AND (LOWER(name) LIKE '%狗%' OR LOWER(description) LIKE '%狗%')) OR " +
+            // 同义词匹配 - 狗粮相关
+            "(LOWER(#{keyword}) LIKE '%狗粮%' AND (LOWER(name) LIKE '%犬粮%' OR LOWER(name) LIKE '%狗食%' OR LOWER(name) LIKE '%犬食%')) OR " +
+            "(LOWER(#{keyword}) LIKE '%犬粮%' AND (LOWER(name) LIKE '%狗粮%' OR LOWER(name) LIKE '%狗食%' OR LOWER(name) LIKE '%犬食%')) OR " +
+            // 同义词匹配 - 猫粮相关
+            "(LOWER(#{keyword}) LIKE '%猫粮%' AND LOWER(name) LIKE '%猫食%') OR " +
+            "(LOWER(#{keyword}) LIKE '%猫食%' AND LOWER(name) LIKE '%猫粮%')" +
+            ") " +
             "</if>" +
             "<if test='categoryId != null'>" +
             "AND category_id = #{categoryId} " +
@@ -174,12 +188,26 @@ public interface ProductMapper {
                                  @Param("pageSize") Integer pageSize);
 
     /**
-     * 统计高级搜索结果数量
+     * 统计高级搜索结果数量（宽松匹配，支持同义词）
      */
     @Select("<script>" +
             "SELECT COUNT(*) FROM products WHERE status = 'in_stock' " +
             "<if test='keyword != null and keyword != \"\"'>" +
-            "AND (name LIKE CONCAT('%', #{keyword}, '%') OR brand LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')) " +
+            "AND (" +
+            "LOWER(name) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(brand) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(description) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            "LOWER(short_description) LIKE LOWER(CONCAT('%', #{keyword}, '%')) OR " +
+            // 同义词匹配 - 狗相关
+            "(LOWER(#{keyword}) LIKE '%狗%' AND (LOWER(name) LIKE '%犬%' OR LOWER(description) LIKE '%犬%')) OR " +
+            "(LOWER(#{keyword}) LIKE '%犬%' AND (LOWER(name) LIKE '%狗%' OR LOWER(description) LIKE '%狗%')) OR " +
+            // 同义词匹配 - 狗粮相关
+            "(LOWER(#{keyword}) LIKE '%狗粮%' AND (LOWER(name) LIKE '%犬粮%' OR LOWER(name) LIKE '%狗食%' OR LOWER(name) LIKE '%犬食%')) OR " +
+            "(LOWER(#{keyword}) LIKE '%犬粮%' AND (LOWER(name) LIKE '%狗粮%' OR LOWER(name) LIKE '%狗食%' OR LOWER(name) LIKE '%犬食%')) OR " +
+            // 同义词匹配 - 猫粮相关
+            "(LOWER(#{keyword}) LIKE '%猫粮%' AND LOWER(name) LIKE '%猫食%') OR " +
+            "(LOWER(#{keyword}) LIKE '%猫食%' AND LOWER(name) LIKE '%猫粮%')" +
+            ") " +
             "</if>" +
             "<if test='categoryId != null'>" +
             "AND category_id = #{categoryId} " +

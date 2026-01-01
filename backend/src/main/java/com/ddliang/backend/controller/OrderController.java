@@ -351,4 +351,116 @@ public class OrderController {
             return ResponseEntity.status(500).body(response);
         }
     }
+    
+    /**
+     * 删除订单（仅限已取消的订单）
+     */
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Map<String, Object>> deleteOrder(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable String orderId,
+            HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            System.out.println("删除订单请求，订单标识: " + orderId + ", 用户ID: " + userId);
+            
+            // 查找订单 - 优先按订单号查找
+            Order order = orderService.getOrderByOrderNo(orderId);
+            if (order == null) {
+                try {
+                    Long orderIdLong = Long.parseLong(orderId);
+                    order = orderService.getOrderById(orderIdLong);
+                } catch (NumberFormatException e) {
+                    System.err.println("订单标识格式错误: " + orderId);
+                }
+            }
+            
+            if (order == null) {
+                System.err.println("订单不存在，订单标识: " + orderId);
+                response.put("success", false);
+                response.put("message", "订单不存在");
+                return ResponseEntity.status(404).body(response);
+            }
+            
+            System.out.println("找到订单，数据库ID: " + order.getId() + ", 订单号: " + order.getOrderNo() + ", 状态: " + order.getStatus());
+            
+            boolean success = orderService.deleteOrder(order.getId(), userId);
+            
+            if (success) {
+                response.put("success", true);
+                response.put("message", "订单删除成功");
+            } else {
+                response.put("success", false);
+                response.put("message", "订单删除失败，只能删除已取消的订单");
+            }
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            System.err.println("删除订单失败: " + e.getMessage());
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "删除订单失败：" + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+    
+    /**
+     * 批量删除已取消的订单（清空回收站）
+     */
+    @PostMapping("/clear-cancelled")
+    public ResponseEntity<Map<String, Object>> clearCancelledOrders(
+            @RequestAttribute("userId") Long userId,
+            HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            System.out.println("清空回收站请求，用户ID: " + userId);
+            
+            int deletedCount = orderService.clearCancelledOrders(userId);
+            
+            response.put("success", true);
+            response.put("message", "成功删除 " + deletedCount + " 个已取消的订单");
+            response.put("data", Map.of("deletedCount", deletedCount));
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            System.err.println("清空回收站失败: " + e.getMessage());
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "清空回收站失败：" + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+    
+    /**
+     * 清空所有订单
+     */
+    @PostMapping("/clear-all")
+    public ResponseEntity<Map<String, Object>> clearAllOrders(
+            @RequestAttribute("userId") Long userId,
+            HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            System.out.println("清空所有订单请求，用户ID: " + userId);
+            
+            int deletedCount = orderService.clearAllOrders(userId);
+            
+            response.put("success", true);
+            response.put("message", "成功删除 " + deletedCount + " 个订单");
+            response.put("data", Map.of("deletedCount", deletedCount));
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            System.err.println("清空所有订单失败: " + e.getMessage());
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "清空所有订单失败：" + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }
