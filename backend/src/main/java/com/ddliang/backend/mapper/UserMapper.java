@@ -3,6 +3,8 @@ package com.ddliang.backend.mapper;
 import com.ddliang.backend.entity.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 /**
  * 用户Mapper接口
  */
@@ -46,4 +48,79 @@ public interface UserMapper {
      */
     @Select("SELECT * FROM users WHERE id = #{id}")
     User findById(Integer id);
+
+    // ==================== 管理端用户管理接口 ====================
+
+    /**
+     * 查询用户列表（分页）
+     */
+    @Select("SELECT id, username, nickname, avatar, phone, email, role, status, " +
+            "created_at, updated_at, last_login_at " +
+            "FROM users " +
+            "ORDER BY created_at DESC " +
+            "LIMIT #{offset}, #{limit}")
+    List<User> findAllUsersForAdmin(@Param("offset") int offset, @Param("limit") int limit);
+
+    /**
+     * 搜索用户（分页）
+     */
+    @Select("SELECT id, username, nickname, avatar, phone, email, role, status, " +
+            "created_at, updated_at, last_login_at " +
+            "FROM users " +
+            "WHERE username LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR nickname LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR phone LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR email LIKE CONCAT('%', #{keyword}, '%') " +
+            "ORDER BY created_at DESC " +
+            "LIMIT #{offset}, #{limit}")
+    List<User> searchUsersForAdmin(@Param("keyword") String keyword,
+                                    @Param("offset") int offset,
+                                    @Param("limit") int limit);
+
+    /**
+     * 统计用户总数
+     */
+    @Select("SELECT COUNT(*) FROM users")
+    int countAllUsers();
+
+    /**
+     * 统计搜索结果数量
+     */
+    @Select("SELECT COUNT(*) FROM users " +
+            "WHERE username LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR nickname LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR phone LIKE CONCAT('%', #{keyword}, '%') " +
+            "   OR email LIKE CONCAT('%', #{keyword}, '%')")
+    int countSearchUsers(@Param("keyword") String keyword);
+
+    /**
+     * 更新用户信息
+     */
+    @Update("UPDATE users SET " +
+            "nickname = #{nickname}, " +
+            "avatar = #{avatar}, " +
+            "phone = #{phone}, " +
+            "email = #{email}, " +
+            "role = #{role}, " +
+            "status = #{status} " +
+            "WHERE id = #{id}")
+    int update(User user);
+
+    /**
+     * 更新用户密码
+     */
+    @Update("UPDATE users SET password = #{password} WHERE id = #{id}")
+    int updatePassword(@Param("id") Integer id, @Param("password") String password);
+
+    /**
+     * 更新用户状态
+     */
+    @Update("UPDATE users SET status = #{status} WHERE id = #{id}")
+    int updateStatus(@Param("id") Integer id, @Param("status") Integer status);
+
+    /**
+     * 删除用户
+     */
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    int deleteById(@Param("id") Integer id);
 }

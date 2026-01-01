@@ -64,6 +64,8 @@ buildNumber.properties
 *.db
 *.sqlite
 *.sqlite3
+*.sql
+pet_home_*.sql
 
 # 临时文件
 *.tmp
@@ -90,5 +92,9 @@ coverage/
 # 开发文档和日志（不提交到仓库）
 GIT_COMMIT_HISTORY.md
 宠物之家7.0版本开发日志.md
+宠物之家8.0版本开发日志.md
 购物车功能说明.md
 个人开发日志示例：Java后端开发日志.txt
+销量更新功能说明.md
+update_image_url_field.sql
+管理端商品管理功能清单
