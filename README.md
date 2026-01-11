@@ -435,6 +435,6 @@ server {
 ```
 
 ### 代码规范
-- 后端遵循阿里巴巴Java开发规范
+- 后端遵循ava开发规范
 - 前端使用ESLint + Prettier
 - 提交信息遵循Conventional Commits规范
