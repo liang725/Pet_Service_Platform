@@ -1,0 +1,1 @@
+import{y as e}from"./index-D7KbY98F.js";function u(t){return e({url:`/api/products/detail/${t}`,method:"GET"})}function d(t,r=4){return e({url:`/api/products/detail/${t}/recommended`,method:"GET",params:{limit:r}})}function a(t){return e({url:"/api/products",method:"GET",params:t})}export{u as a,d as b,a as g};

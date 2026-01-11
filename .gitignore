@@ -2,11 +2,11 @@
 node_modules/
 */node_modules/
 
-# 构建输出
-dist/
-build/
-*/dist/
-*/build/
+# # 构建输出
+# dist/
+# build/
+# */dist/
+# */build/
 
 # 日志文件
 *.log
@@ -60,12 +60,16 @@ buildNumber.properties
 # Spring Boot
 *.original
 
-# 数据库
+# 数据库（排除重要的数据文件）
 *.db
 *.sqlite
 *.sqlite3
-*.sql
-pet_home_*.sql
+# 允许重要的SQL文件和数据文件
+!pet_home_*.sql
+!*.sql
+# 但忽略临时SQL文件
+*_temp.sql
+*_backup.sql
 
 # 临时文件
 *.tmp
@@ -89,7 +93,7 @@ coverage/
 .eslintcache
 .stylelintcache
 
-# 开发文档和日志（不提交到仓库）
+# 开发文档和日志（允许重要文档提交）
 GIT_COMMIT_HISTORY.md
 宠物之家7.0版本开发日志.md
 宠物之家8.0版本开发日志.md
@@ -98,3 +102,10 @@ GIT_COMMIT_HISTORY.md
 销量更新功能说明.md
 update_image_url_field.sql
 管理端商品管理功能清单
+
+# 允许重要的项目文档
+!宠物服务平台-系统*.pdf
+!*个人开发日志.pdf
+!组内工作量说明文档.pdf
+!README.md
+!*.md
