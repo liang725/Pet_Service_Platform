@@ -338,33 +338,35 @@
 
           <!-- 操作按钮 -->
           <div class="payment-actions compact-actions">
-            <button
-              v-if="paymentStatus === 'waiting'"
-              class="btn-confirm-payment"
-              @click="confirmPayment"
-              :disabled="!selectedPaymentMethod"
-            >
-              <Icon icon="mdi:check" />
-              确认已支付
-            </button>
+            <div class="button-group">
+              <button
+                v-if="paymentStatus === 'waiting'"
+                class="btn-confirm-payment"
+                @click="confirmPayment"
+                :disabled="!selectedPaymentMethod"
+              >
+                <Icon icon="mdi:check" />
+                确认已支付
+              </button>
 
-            <button
-              v-if="paymentStatus === 'success'"
-              class="btn-view-order"
-              @click="goToOrderDetail"
-            >
-              <Icon icon="mdi:eye" />
-              查看订单
-            </button>
+              <button
+                v-if="paymentStatus === 'success'"
+                class="btn-view-order"
+                @click="goToOrderDetail"
+              >
+                <Icon icon="mdi:eye" />
+                查看订单
+              </button>
 
-            <button
-              v-if="paymentStatus === 'waiting'"
-              class="btn-cancel-payment"
-              @click="cancelPayment"
-            >
-              <Icon icon="mdi:close" />
-              取消支付
-            </button>
+              <button
+                v-if="paymentStatus === 'waiting'"
+                class="btn-cancel-payment"
+                @click="cancelPayment"
+              >
+                <Icon icon="mdi:close" />
+                取消支付
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -492,15 +494,18 @@ export default {
       } else {
         // 购物车结算
         this.orderType = 'cart'
-        await this.cartStore.loadCart()
 
-        // 如果商品有selected属性，只选择已选中的商品；否则选择所有商品
-        const itemsToCheckout = this.cartStore.cartItems.some(item => 'selected' in item)
-          ? this.cartStore.cartItems.filter(item => item.selected)
-          : this.cartStore.cartItems
+        // 不重新加载，直接使用store中已有的选中状态
+        // 如果store中没有数据才加载
+        if (this.cartStore.cartItems.length === 0) {
+          await this.cartStore.loadCart()
+        }
 
-        this.orderItems = itemsToCheckout.map(item => ({
-          id: item.id,
+        // 只选择已选中的商品进行结算
+        const selectedItems = this.cartStore.cartItems.filter(item => item.selected)
+
+        this.orderItems = selectedItems.map(item => ({
+          id: item.productId, // 使用商品ID而不是购物车项ID
           name: item.name,
           image: item.image,
           price: item.price,
@@ -606,6 +611,8 @@ export default {
           totalAmount: this.totalAmount
         }
 
+        console.log('创建订单数据:', JSON.stringify(orderData, null, 2))
+
         const response = await createOrder(orderData)
         if (response.success) {
           this.orderId = response.data.orderId
@@ -668,7 +675,6 @@ export default {
         this.paymentTimeLeft--
         if (this.paymentTimeLeft <= 0) {
           this.stopPaymentTimer()
-          this.autoCancel()
         }
       }, 1000)
     },
@@ -684,29 +690,6 @@ export default {
       const minutes = Math.floor(seconds / 60)
       const secs = seconds % 60
       return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
-    },
-
-    async autoCancel() {
-      // 10分钟超时自动取消订单
-      try {
-        // 调用后端取消订单接口
-        if (this.orderId) {
-          const { cancelOrder } = await import('@/api/order')
-          const response = await cancelOrder(this.orderId)
-          if (response.success) {
-            this.showNotification('支付超时，订单已自动取消')
-          } else {
-            this.showNotification('支付超时，订单取消失败：' + response.message)
-          }
-        } else {
-          this.showNotification('支付超时，订单已取消')
-        }
-        this.closePaymentDialog()
-      } catch (error) {
-        console.error('自动取消订单失败:', error)
-        this.showNotification('支付超时，请联系客服处理')
-        this.closePaymentDialog()
-      }
     },
 
     async cancelPayment() {
@@ -1579,16 +1562,20 @@ export default {
   color: #17a2b8;
 }
 
-/* 操作按钮区域 */
+/* 操作按钮区域 - 修改为并排布局 */
 .compact-actions {
-  display: flex;
-  gap: 12px;
   padding-top: 16px;
   border-top: 1px solid #e9ecef;
 }
 
-.compact-actions .btn-confirm-payment,
-.compact-actions .btn-view-order {
+.button-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.button-group .btn-confirm-payment,
+.button-group .btn-view-order {
   flex: 2;
   padding: 14px;
   border: none;
@@ -1603,38 +1590,38 @@ export default {
   transition: all 0.3s ease;
 }
 
-.compact-actions .btn-confirm-payment {
+.button-group .btn-confirm-payment {
   background: #ff9800;
   color: white;
   box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
 }
 
-.compact-actions .btn-confirm-payment:hover:not(:disabled) {
+.button-group .btn-confirm-payment:hover:not(:disabled) {
   background: #f57c00;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
 }
 
-.compact-actions .btn-confirm-payment:disabled {
+.button-group .btn-confirm-payment:disabled {
   background: #ccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
-.compact-actions .btn-view-order {
+.button-group .btn-view-order {
   background: #28a745;
   color: white;
   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
-.compact-actions .btn-view-order:hover {
+.button-group .btn-view-order:hover {
   background: #218838;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
 }
 
-.compact-actions .btn-cancel-payment {
+.button-group .btn-cancel-payment {
   flex: 1;
   background: #6c757d;
   color: white;
@@ -1651,9 +1638,48 @@ export default {
   transition: all 0.3s ease;
 }
 
-.compact-actions .btn-cancel-payment:hover {
+.button-group .btn-cancel-payment:hover {
   background: #5a6268;
   transform: translateY(-1px);
+}
+
+/* 响应式设计 - 移动端优化 */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: row; /* 保持并排布局 */
+    flex-wrap: wrap;
+  }
+
+  .button-group .btn-confirm-payment,
+  .button-group .btn-view-order {
+    flex: 1;
+    min-width: 60%;
+  }
+
+  .button-group .btn-cancel-payment {
+    flex: 1;
+    min-width: 35%;
+  }
+}
+
+/* 支付成功时，查看订单按钮单独显示 */
+.button-group:has(.btn-view-order:only-child) {
+  justify-content: center;
+}
+
+.button-group:has(.btn-view-order:only-child) .btn-view-order {
+  flex: none;
+  width: 200px;
+}
+
+/* 支付成功时，查看订单按钮单独显示 */
+.payment-actions:has(.btn-view-order:only-child) {
+  justify-content: center;
+}
+
+.payment-actions:has(.btn-view-order:only-child) .btn-view-order {
+  flex: none;
+  width: 200px;
 }
 
 /* 响应式设计 - 移动端优化 */

@@ -1,16 +1,15 @@
+// PetRequest.java - 在原有基础上添加userId字段
 package com.ddliang.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * 宠物请求DTO
- */
 public class PetRequest {
+
+    @NotNull(message = "用户ID不能为空")
+    @Min(value = 1, message = "用户ID必须大于0")
+    private Integer userId;
 
     @NotBlank(message = "宠物类型不能为空")
     @Pattern(regexp = "猫|狗", message = "宠物类型必须是猫或狗")
@@ -32,6 +31,8 @@ public class PetRequest {
     @Size(max = 50, message = "毛色描述长度不能超过50个字符")
     private String color;
 
+    @DecimalMin(value = "0.0", message = "体重不能小于0")
+    @DecimalMax(value = "100.0", message = "体重不能大于100")
     private BigDecimal weight;
 
     @Size(max = 255, message = "头像URL长度不能超过255个字符")
@@ -43,6 +44,14 @@ public class PetRequest {
     private String notes;
 
     // Getter和Setter方法
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getPetType() {
         return petType;
     }

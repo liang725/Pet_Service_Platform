@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/pets")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class PetController {
 
     @Autowired
@@ -72,14 +73,23 @@ public class PetController {
                                       BindingResult bindingResult,
                                       HttpServletRequest request) {
         try {
+            // 移除了 userId 的验证
             if (bindingResult.hasErrors()) {
-                return Result.error(400, bindingResult.getFieldError().getDefaultMessage());
+                // 检查错误是否是关于 userId 的
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    if (!"userId".equals(error.getField())) {
+                        return Result.error(400, error.getDefaultMessage());
+                    }
+                }
             }
 
             Integer userId = getUserIdFromToken(request);
             if (userId == null) {
                 return Result.error(401, "用户未登录");
             }
+
+            // 设置 userId 到请求对象中
+            petRequest.setUserId(userId);
 
             PetResponse pet = petService.addPet(petRequest, userId);
             return Result.success("添加宠物成功", pet);
@@ -97,14 +107,23 @@ public class PetController {
                                          BindingResult bindingResult,
                                          HttpServletRequest request) {
         try {
+            // 移除了 userId 的验证
             if (bindingResult.hasErrors()) {
-                return Result.error(400, bindingResult.getFieldError().getDefaultMessage());
+                // 检查错误是否是关于 userId 的
+                for (FieldError error : bindingResult.getFieldErrors()) {
+                    if (!"userId".equals(error.getField())) {
+                        return Result.error(400, error.getDefaultMessage());
+                    }
+                }
             }
 
             Integer userId = getUserIdFromToken(request);
             if (userId == null) {
                 return Result.error(401, "用户未登录");
             }
+
+            // 设置 userId 到请求对象中
+            petRequest.setUserId(userId);
 
             PetResponse pet = petService.updatePet(id, petRequest, userId);
             return Result.success("更新宠物成功", pet);

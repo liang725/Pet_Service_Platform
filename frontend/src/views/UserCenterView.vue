@@ -17,8 +17,8 @@
           </div>
           <div class="user-stats">
             <div class="stat-item">
-              <div class="stat-number">{{ orderCount }}</div>
-              <div class="stat-label">订单数量</div>
+              <div class="stat-number">{{ completedOrderCount }}</div>
+              <div class="stat-label">交易成功</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">{{ cartCount }}</div>
@@ -84,197 +84,19 @@
 
       <!-- 右侧主内容区 -->
       <div class="main-content">
-        <!-- 我的订单 -->
+        <!-- 我的订单 - 使用 MyOrders 组件 -->
         <div class="content-section" v-show="activeTab === 'orders'">
-          <div class="content-header">
-            <h2>我的订单</h2>
-            <p>查看和管理您的所有订单</p>
-          </div>
-
-          <!-- 订单状态筛选栏 -->
-          <div class="order-filter-tabs">
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'all' }"
-              @click="setOrderFilter('all')"
-            >
-              全部订单
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'pending' }"
-              @click="setOrderFilter('pending')"
-            >
-              待付款
-              <span v-if="getPendingCount() > 0" class="filter-badge">{{ getPendingCount() }}</span>
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'processing' }"
-              @click="setOrderFilter('processing')"
-            >
-              待收货/使用
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'delivered' }"
-              @click="setOrderFilter('delivered')"
-            >
-              待评价
-              <span v-if="getDeliveredCount() > 0" class="filter-badge">{{ getDeliveredCount() }}</span>
-            </div>
-            <div
-              class="filter-tab"
-              :class="{ active: orderFilter === 'cancelled' }"
-              @click="setOrderFilter('cancelled')"
-            >
-              订单回收站
-            </div>
-            <!-- 清空回收站按钮 -->
-            <div v-if="orderFilter === 'cancelled' && getCancelledCount() > 0" class="clear-trash-btn" @click="clearTrash">
-              <Icon icon="mdi:delete-sweep" />
-              清空回收站
-            </div>
-          </div>
-
-            <!-- 订单列表 -->
-            <div v-if="loading" class="loading-state">
-              <div class="loading-spinner">
-                <Icon icon="mdi:loading" class="spin" />
-                <span>加载中...</span>
-              </div>
-            </div>
-            <div v-else-if="orders.length === 0" class="empty-state">
-              <div class="empty-icon">
-                <Icon icon="mdi:clipboard-list" />
-              </div>
-              <div class="empty-title">暂无订单</div>
-              <div class="empty-description">您还没有任何订单记录</div>
-              <button class="empty-action" @click="continueShopping">
-                <Icon icon="mdi:shopping" /> 去购物
-              </button>
-            </div>
-            <div v-else class="orders-list">
-              <div v-for="order in filteredOrders" :key="order.id" class="order-card">
-                <div class="order-header">
-                  <div class="order-info">
-                    <div class="order-info-item">
-                      <div class="order-info-label">订单号</div>
-                      <div class="order-info-value">{{ order.orderNo || order.id }}</div>
-                    </div>
-                    <div class="order-info-item">
-                      <div class="order-info-label">下单时间</div>
-                      <div class="order-info-value">{{ formatDateTime(order.createdAt || order.date) }}</div>
-                    </div>
-                    <div class="order-info-item">
-                      <div class="order-info-label">订单金额</div>
-                      <div class="order-info-value">¥{{ (order.finalAmount || order.total || 0).toFixed(2) }}</div>
-                    </div>
-                  </div>
-                  <div class="order-status-section">
-                    <div class="order-status" :class="getStatusClass(order.status)">
-                      {{ getStatusText(order.status) }}
-                    </div>
-                    <!-- 未付款订单显示剩余支付时间在右上角 -->
-                    <div v-if="order.status === 'pending'" class="payment-countdown-badge" :class="{ 'countdown-warning': getPaymentTimeLeft(order) <= 180 }">
-                      <Icon icon="mdi:clock-outline" />
-                      <span>{{ formatPaymentTime(getPaymentTimeLeft(order)) }}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 订单商品预览 -->
-                <div v-if="order.items && order.items.length > 0" class="order-preview">
-                  <div class="preview-product" @click="goToProduct(order.items[0].productId)">
-                    <div class="product-image">
-                      <img v-if="order.items[0].image" :src="order.items[0].image" :alt="order.items[0].name">
-                      <Icon v-else icon="mdi:image" />
-                    </div>
-                    <div class="product-info">
-                      <h4>{{ order.items[0].name }}</h4>
-                      <p>{{ order.items[0].spec }}</p>
-                    </div>
-                  </div>
-                  <div class="order-summary">
-                    <p>共 {{ order.items.length }} 件商品</p>
-                    <h3>实付：¥{{ order.total.toFixed(2) }}</h3>
-                  </div>
-                </div>
-
-                <!-- 订单操作按钮 -->
-                <div class="order-actions">
-                  <button class="action-btn action-btn-secondary" @click="toggleOrderDetail(order)">
-                    <Icon icon="mdi:eye" />
-                    {{ order.showDetail ? '收起详情' : '查看详情' }}
-                  </button>
-                  <button v-if="order.status === 'delivered' || order.status === 'paid' || order.status === 'shipped'" class="action-btn action-btn-primary" @click="reorder(order)">
-                    <Icon icon="mdi:refresh" />
-                    再次购买
-                  </button>
-                  <button v-if="order.status === 'pending' && !isOrderExpired(order)" class="action-btn action-btn-primary" @click="payOrder(order)">
-                    <Icon icon="mdi:credit-card" />
-                    立即支付
-                  </button>
-                  <button v-if="order.status === 'pending' && !isOrderExpired(order)" class="action-btn action-btn-danger" @click="cancelOrder(order)">
-                    <Icon icon="mdi:close" />
-                    取消订单
-                  </button>
-                  <div v-if="order.status === 'pending' && isOrderExpired(order)" class="expired-order-notice">
-                    <Icon icon="mdi:clock-alert" />
-                    <span>订单已超时，无法支付</span>
-                  </div>
-                </div>
-
-                <!-- 订单详情展开 -->
-                <div v-if="order.showDetail" class="order-detail-expanded">
-                  <div class="detail-section">
-                    <h4>商品清单</h4>
-                    <div class="detail-products">
-                      <div v-for="item in order.items" :key="item.id" class="detail-product-item" @click="goToProduct(item.productId)">
-                        <div class="product-image">
-                          <img v-if="item.image" :src="item.image" :alt="item.name">
-                          <Icon v-else icon="mdi:image" />
-                        </div>
-                        <div class="product-details">
-                          <h5>{{ item.name }}</h5>
-                          <p>{{ item.spec }}</p>
-                          <div class="price-quantity">
-                            <span class="price">¥{{ item.price.toFixed(2) }}</span>
-                            <span class="quantity">数量：{{ item.quantity }}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div v-if="order.summary" class="detail-section">
-                    <h4>费用明细</h4>
-                    <div class="order-summary-detail">
-                      <div class="summary-row">
-                        <span>商品总价</span>
-                        <span>¥{{ order.summary.subtotal.toFixed(2) }}</span>
-                      </div>
-                      <div class="summary-row">
-                        <span>运费</span>
-                        <span>¥{{ order.summary.shipping.toFixed(2) }}</span>
-                      </div>
-                      <div v-if="order.summary.coupon > 0" class="summary-row">
-                        <span>优惠券折扣</span>
-                        <span>-¥{{ order.summary.coupon.toFixed(2) }}</span>
-                      </div>
-                      <div v-if="order.summary.discount > 0" class="summary-row">
-                        <span>会员折扣</span>
-                        <span>-¥{{ order.summary.discount.toFixed(2) }}</span>
-                      </div>
-                      <div class="summary-row total">
-                        <span>实付金额</span>
-                        <span>¥{{ order.summary.total.toFixed(2) }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <MyOrders
+            :orders="orders"
+            :loading="loading"
+            @continue-shopping="continueShopping"
+            @go-to-product="goToProduct"
+            @reorder="reorder"
+            @pay-order="payOrder"
+            @cancel-order="cancelOrder"
+            @clear-trash="clearTrash"
+            @delete-order="deleteOrder"
+          />
         </div>
 
         <!-- 购物车 -->
@@ -309,7 +131,7 @@
               <div class="empty-title">购物车是空的</div>
               <div class="empty-description">您还没有添加任何商品到购物车</div>
               <button class="empty-action" @click="continueShopping">
-                <Icon icon="mdi:shopping" /> 去首页逛逛
+                <Icon icon="mdi:shopping" /> 去商店逛逛
               </button>
             </div>
             <div v-else class="cart-content">
@@ -413,18 +235,6 @@
                   </div>
                 </div>
 
-                <!-- 优惠券 -->
-                <div class="promo-section">
-                  <h4><Icon icon="mdi:tag" /> 使用优惠券</h4>
-                  <div class="promo-input">
-                    <input type="text" v-model="promoCode" placeholder="输入优惠券代码">
-                    <button @click="applyPromo">应用</button>
-                  </div>
-                  <div v-if="promoMessage" class="promo-message" :class="promoMessageType">
-                    {{ promoMessage }}
-                  </div>
-                </div>
-
                 <!-- 结算按钮 -->
                 <div class="cart-actions">
                   <button class="cart-action-btn continue-shopping" @click="continueShopping">
@@ -442,7 +252,7 @@
         <div class="content-section" v-show="activeTab === 'favorites'">
           <div class="content-header">
             <h2>我的收藏</h2>
-            <p>您收藏的商品和服务，共 {{ favorites.length }} 件</p>
+            <p>您收藏的商品，共 {{ favorites.length }} 件</p>
             <!-- 收藏搜索框 -->
             <div class="favorites-search">
               <input
@@ -623,7 +433,7 @@
           <div class="content-header">
             <h2>我的预约</h2>
             <p>查看您的服务预约记录</p>
-            <button class="action-btn action-btn-primary" @click="openAppointmentDialog">
+            <button class="action-btn action-btn-primary" @click="goToNewAppointment">
               <Icon icon="mdi:plus" /> 新建预约
             </button>
           </div>
@@ -738,7 +548,7 @@
                   <button
                     v-if="appointment.status === 'completed'"
                     class="action-btn action-btn-primary"
-                    @click="rebookAppointment(appointment)"
+                    @click="goToNewAppointment"
                   >
                     <Icon icon="mdi:refresh" /> 再次预约
                   </button>
@@ -752,7 +562,7 @@
         <div class="content-section" v-show="activeTab === 'settings'">
           <div class="content-header">
             <h2>账户设置</h2>
-            <p>管理您的账户信息和偏好设置</p>
+            <p>管理您的账户信息和安全设置</p>
           </div>
           <div class="settings-content">
             <!-- 账户安全 -->
@@ -765,24 +575,6 @@
                 </div>
                 <button class="setting-action-btn" @click="openPasswordDialog">
                   <Icon icon="mdi:key" /> 修改密码
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">手机号码</span>
-                  <span class="setting-desc">{{ userInfo.phone || '未绑定' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="openPhoneDialog">
-                  <Icon icon="mdi:phone" /> {{ userInfo.phone ? '更换' : '绑定' }}
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">邮箱地址</span>
-                  <span class="setting-desc">{{ userInfo.email || '未绑定' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="openEmailDialog">
-                  <Icon icon="mdi:email" /> {{ userInfo.email ? '更换' : '绑定' }}
                 </button>
               </div>
             </div>
@@ -799,205 +591,24 @@
                   <Icon icon="mdi:pencil" /> 编辑
                 </button>
               </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">会员等级</span>
-                  <span class="setting-desc">{{ userInfo.level || '普通会员' }}</span>
-                </div>
-                <button class="setting-action-btn" @click="viewMembershipBenefits">
-                  <Icon icon="mdi:crown" /> 升级会员
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">积分余额</span>
-                  <span class="setting-desc">{{ userInfo.points || 0 }} 积分</span>
-                </div>
-                <button class="setting-action-btn" @click="viewPointsHistory">
-                  <Icon icon="mdi:star" /> 积分明细
-                </button>
-              </div>
             </div>
 
-            <!-- 通知设置 -->
+            <!-- 账户操作 -->
             <div class="setting-group">
-              <h3><Icon icon="mdi:bell" /> 通知设置</h3>
+              <h3><Icon icon="mdi:cog" /> 账户操作</h3>
               <div class="setting-item">
                 <div class="setting-info">
-                  <span class="setting-title">订单通知</span>
-                  <span class="setting-desc">接收订单状态变更通知</span>
+                  <span class="setting-title">退出登录</span>
+                  <span class="setting-desc">退出当前账户</span>
                 </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.orderNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">促销通知</span>
-                  <span class="setting-desc">接收优惠活动和促销信息</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.promotionNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">预约提醒</span>
-                  <span class="setting-desc">服务预约前24小时提醒</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.appointmentReminder">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">邮件通知</span>
-                  <span class="setting-desc">通过邮件接收重要通知</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="notificationSettings.emailNotification">
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 隐私设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:shield-lock" /> 隐私设置</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">个人资料可见性</span>
-                  <span class="setting-desc">控制其他用户查看您的个人信息</span>
-                </div>
-                <select v-model="privacySettings.profileVisibility" class="setting-select">
-                  <option value="public">公开</option>
-                  <option value="friends">仅好友</option>
-                  <option value="private">私密</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">购买记录</span>
-                  <span class="setting-desc">是否允许显示购买历史</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="privacySettings.showPurchaseHistory">
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">数据分析</span>
-                  <span class="setting-desc">允许使用数据改善服务体验</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="privacySettings.allowDataAnalysis">
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 商业化设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:store" /> 商业化服务</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">VIP会员服务</span>
-                  <span class="setting-desc">享受专属优惠和优先服务</span>
-                </div>
-                <button class="setting-action-btn premium" @click="upgradeToVip">
-                  <Icon icon="mdi:crown" /> 升级VIP
+                <button class="setting-action-btn" @click="logout">
+                  <Icon icon="mdi:logout" /> 退出登录
                 </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">宠物保险</span>
-                  <span class="setting-desc">为您的爱宠提供全面保障</span>
-                </div>
-                <button class="setting-action-btn" @click="viewInsuranceOptions">
-                  <Icon icon="mdi:shield-heart" /> 了解详情
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">定制服务</span>
-                  <span class="setting-desc">个性化宠物护理方案</span>
-                </div>
-                <button class="setting-action-btn" @click="viewCustomServices">
-                  <Icon icon="mdi:palette" /> 定制方案
-                </button>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">推荐奖励</span>
-                  <span class="setting-desc">邀请好友注册获得奖励</span>
-                </div>
-                <button class="setting-action-btn" @click="viewReferralProgram">
-                  <Icon icon="mdi:gift" /> 邀请好友
-                </button>
-              </div>
-            </div>
-
-            <!-- 其他设置 -->
-            <div class="setting-group">
-              <h3><Icon icon="mdi:cog" /> 其他设置</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">语言设置</span>
-                  <span class="setting-desc">选择界面显示语言</span>
-                </div>
-                <select v-model="otherSettings.language" class="setting-select">
-                  <option value="zh-CN">简体中文</option>
-                  <option value="zh-TW">繁體中文</option>
-                  <option value="en-US">English</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">主题模式</span>
-                  <span class="setting-desc">选择浅色或深色主题</span>
-                </div>
-                <select v-model="otherSettings.theme" class="setting-select">
-                  <option value="light">浅色模式</option>
-                  <option value="dark">深色模式</option>
-                  <option value="auto">跟随系统</option>
-                </select>
-              </div>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">自动登录</span>
-                  <span class="setting-desc">下次访问时自动登录</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" v-model="otherSettings.autoLogin">
-                  <span class="slider"></span>
-                </label>
               </div>
             </div>
 
             <!-- 危险操作 -->
-            <div class="setting-group danger-zone">
-              <h3><Icon icon="mdi:alert" /> 危险操作</h3>
-              <div class="setting-item">
-                <div class="setting-info">
-                  <span class="setting-title">注销账户</span>
-                  <span class="setting-desc">永久删除账户和所有数据，此操作不可恢复</span>
-                </div>
-                <button class="setting-action-btn danger" @click="confirmDeleteAccount">
-                  <Icon icon="mdi:delete-forever" /> 注销账户
-                </button>
-              </div>
-            </div>
 
-            <!-- 保存按钮 -->
-            <div class="settings-actions">
-              <button class="save-settings-btn" @click="saveSettings">
-                <Icon icon="mdi:content-save" /> 保存设置
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -1112,82 +723,6 @@
       </div>
     </div>
 
-    <!-- 预约对话框 -->
-    <div v-if="showAppointmentDialog" class="dialog-overlay" @click="closeAppointmentDialog">
-      <div class="dialog-container" @click.stop>
-        <div class="dialog-header">
-          <h3>新建预约</h3>
-          <button class="dialog-close-btn" @click="closeAppointmentDialog">
-            <Icon icon="mdi:close" />
-          </button>
-        </div>
-
-        <form class="dialog-form" @submit.prevent="submitAppointment">
-          <div class="form-group">
-            <label>选择宠物 <span class="required">*</span></label>
-            <select v-model="appointmentForm.petId" required>
-              <option value="">请选择宠物</option>
-              <option v-for="pet in pets" :key="pet.id" :value="pet.id">
-                {{ pet.name }} ({{ pet.breed || '未知品种' }})
-              </option>
-            </select>
-            <div v-if="pets.length === 0" class="no-pets-tip">
-              <Icon icon="mdi:information" />
-              <span>暂无宠物信息，请先到个人资料页面添加宠物</span>
-              <button type="button" class="btn-link" @click="goToProfile">
-                去添加宠物
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>选择服务 <span class="required">*</span></label>
-            <select v-model="appointmentForm.serviceId" required>
-              <option value="">请选择服务</option>
-              <option v-for="service in services" :key="service.id" :value="service.id">
-                {{ service.itemName }} - ¥{{ service.finalPrice }}
-              </option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>预约日期 <span class="required">*</span></label>
-              <input
-                type="date"
-                v-model="appointmentForm.appointmentDate"
-                :min="new Date().toISOString().split('T')[0]"
-                required
-              >
-            </div>
-            <div class="form-group">
-              <label>预约时间 <span class="required">*</span></label>
-              <select v-model="appointmentForm.timeSlot" required>
-                <option value="">请选择时间</option>
-                <option v-for="slot in timeSlots" :key="slot" :value="slot">
-                  {{ slot }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>特殊要求</label>
-            <textarea
-              v-model="appointmentForm.specialNotes"
-              placeholder="请告知特殊要求，如对某些用品过敏等"
-              rows="3"
-            ></textarea>
-          </div>
-
-          <div class="dialog-actions">
-            <button type="button" class="btn-cancel" @click="closeAppointmentDialog">取消</button>
-            <button type="submit" class="btn-save">确认预约</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <!-- 个人信息编辑对话框 -->
     <div v-if="showProfileEditDialog" class="dialog-overlay" @click="closeProfileEditDialog">
       <div class="dialog-container" @click.stop>
@@ -1206,15 +741,6 @@
               v-model="profileEditForm.name"
               placeholder="请输入用户名"
               required
-            >
-          </div>
-
-          <div class="form-group">
-            <label>昵称</label>
-            <input
-              type="text"
-              v-model="profileEditForm.nickname"
-              placeholder="请输入昵称"
             >
           </div>
 
@@ -1516,13 +1042,18 @@
 </template>
 
 <script>
-import { getUserOrders, cancelOrder } from '@/api/order'
+import { getUserOrders, cancelOrder, deleteOrder, clearAllOrders } from '@/api/order'
 import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import { getAddresses, addAddress, updateAddress, deleteAddress, setDefaultAddress } from '@/api/address'
+import MyOrders from '@/components/MyOrders.vue'
+import request from '@/utils/request'  // 添加这行
 
 export default {
   name: 'UserCenterView',
+  components: {
+    MyOrders
+  },
   setup() {
     const cartStore = useCartStore()
     const userStore = useUserStore()
@@ -1737,6 +1268,10 @@ export default {
     orderCount() {
       return this.orders.filter(order => order.status === 'pending' || order.status === 'processing').length
     },
+    // 交易成功数量（已完成的订单）
+    completedOrderCount() {
+      return this.orders.filter(order => order.status === 'delivered' || order.status === 'completed' || order.status === 'paid' || order.status === 'shipped').length
+    },
     cartCount() {
       return this.cartStore.totalItems
     },
@@ -1755,7 +1290,7 @@ export default {
     cartItems() {
       return this.cartStore.cartItems.map(item => ({
         ...item,
-        selected: item.selected !== undefined ? item.selected : false // 默认不选中
+        selected: item.selected !== undefined ? item.selected : true // 默认选中
       }))
     },
     // 购物车搜索过滤
@@ -1852,6 +1387,12 @@ export default {
     }
   },
   methods: {
+
+    // 跳转到新建预约页面
+    goToNewAppointment() {
+      this.$router.push('/service/appointment');
+    },
+
     // 设置订单筛选条件
     setOrderFilter(filter) {
       this.orderFilter = filter
@@ -1874,25 +1415,53 @@ export default {
 
     // 清空回收站
     async clearTrash() {
-      const cancelledOrders = this.orders.filter(order => order.status === 'cancelled')
-      if (cancelledOrders.length === 0) {
-        this.showNotification('回收站已经是空的')
+      const allOrders = this.orders
+      if (allOrders.length === 0) {
+        this.showNotification('没有订单可删除')
         return
       }
 
-      const confirmed = confirm(`确定要清空回收站吗？这将永久删除 ${cancelledOrders.length} 个已取消的订单，此操作不可恢复。`)
+      const confirmed = confirm(`确定要删除全部订单吗？这将永久删除 ${allOrders.length} 个订单，此操作不可恢复。`)
       if (!confirmed) {
         return
       }
 
       try {
-        // 这里可以调用后端API来永久删除已取消的订单
-        // 暂时只是从前端移除
-        this.orders = this.orders.filter(order => order.status !== 'cancelled')
-        this.showNotification('回收站已清空')
+        // 使用统一的API调用
+        const response = await clearAllOrders()
+        if (response.success) {
+          // 从前端移除所有订单
+          this.orders = []
+          this.showNotification(`成功删除 ${response.data.deletedCount} 个订单`)
+        } else {
+          this.showNotification('删除订单失败：' + response.message)
+        }
       } catch (error) {
-        console.error('清空回收站失败:', error)
-        this.showNotification('清空回收站失败，请重试')
+        console.error('删除订单失败:', error)
+        this.showNotification('删除订单失败，请重试')
+      }
+    },
+
+    // 删除单个订单
+    async deleteOrder(order) {
+      const confirmed = confirm(`确定要删除订单 ${order.orderNo || order.id} 吗？此操作不可恢复。`)
+      if (!confirmed) {
+        return
+      }
+
+      try {
+        // 使用统一的API调用
+        const response = await deleteOrder(order.id)
+        if (response.success) {
+          // 从前端移除该订单
+          this.orders = this.orders.filter(o => o.id !== order.id)
+          this.showNotification('订单删除成功')
+        } else {
+          this.showNotification('删除订单失败：' + response.message)
+        }
+      } catch (error) {
+        console.error('删除订单失败:', error)
+        this.showNotification('删除订单失败，请重试')
       }
     },
 
@@ -1915,8 +1484,23 @@ export default {
             ...order,
             id: order.orderNo,
             date: order.createdAt,
-            total: order.finalAmount
+            total: order.finalAmount,
+            // 确保订单商品信息完整
+            items: (order.items || []).map(item => ({
+              ...item,
+              // 确保 productId 字段存在（只使用真正的productId）
+              productId: item.productId,
+              // 确保规格信息存在
+              spec: item.spec || item.specification || '标准装',
+              // 确保数量信息存在
+              quantity: item.quantity || 1,
+              // 确保价格信息存在
+              price: item.price || item.unitPrice || 0,
+              // 确保商品名称存在
+              name: item.name || item.productName || '未知商品'
+            }))
           }))
+          console.log('订单数据加载完成:', this.orders)
         } else {
           this.showNotification('获取订单列表失败：' + response.message)
         }
@@ -2008,23 +1592,118 @@ export default {
     },
 
     // 订单操作
-    reorder(order) {
-      // 将订单商品重新加入购物车
-      if (order.items && order.items.length > 0) {
-        order.items.forEach(async (item) => {
+    async reorder(order) {
+      console.log('reorder 被调用，订单数据:', order)
+
+      // 检查用户是否已登录
+      if (!this.userStore.isLoggedIn) {
+        this.showNotification('请先登录')
+        this.$router.push('/auth')
+        return
+      }
+
+      // 检查订单商品信息
+      if (!order.items || order.items.length === 0) {
+        this.showNotification('订单商品信息不完整，无法重新购买')
+        return
+      }
+
+      try {
+        let successCount = 0
+        let failCount = 0
+        const failedItems = []
+
+        for (const item of order.items) {
           try {
-            await this.cartStore.addItem({
-              productId: item.productId,
-              spec: item.spec || '标准装',
-              quantity: item.quantity
-            })
-          } catch (error) {
-            console.error('添加商品到购物车失败:', error)
+            // 验证商品信息 - 只使用productId，不使用订单项ID
+            let productId = item.productId
+
+            // 如果没有productId，说明数据有问题，跳过该商品
+            if (!productId) {
+              console.error('商品缺少productId字段:', item)
+              const itemName = item.name || item.productName || '未知商品'
+              failedItems.push(`${itemName} (缺少商品ID)`)
+              failCount++
+              continue
+            }
+
+            // 如果productId是字符串，尝试转换为数字
+            if (typeof productId === 'string') {
+              productId = parseInt(productId)
+            }
+
+            if (!productId || isNaN(productId) || productId <= 0) {
+              console.error('商品ID无效:', item)
+              failedItems.push(`${item.name || '未知商品'} (ID无效)`)
+              failCount++
+              continue
+            }
+
+            // 验证商品名称
+            if (!item.name && !item.productName) {
+              console.error('商品名称缺失:', item)
+              failedItems.push(`商品ID ${productId} (名称缺失)`)
+              failCount++
+              continue
+            }
+
+            // 准备添加到购物车的数据
+            const addItemData = {
+              productId: productId,
+              spec: item.spec || item.specification || '标准装',
+              quantity: Math.max(1, parseInt(item.quantity) || 1) // 确保数量至少为1
+            }
+
+            console.log('准备添加商品到购物车:', addItemData)
+
+            // 添加到购物车
+            await this.cartStore.addItem(addItemData)
+            successCount++
+
+            console.log(`成功添加商品: ${item.name || item.productName}`)
+
+          } catch (itemError) {
+            console.error('添加单个商品失败:', itemError, item)
+            const itemName = item.name || item.productName || `商品ID ${item.productId}`
+            failedItems.push(`${itemName} (${itemError.message || '添加失败'})`)
+            failCount++
           }
-        })
-        this.showNotification('商品已重新加入购物车')
-      } else {
-        this.showNotification('订单商品信息不完整')
+        }
+
+        // 显示结果通知
+        if (successCount > 0) {
+          let message = `成功添加 ${successCount} 件商品到购物车`
+          if (failCount > 0) {
+            message += `，${failCount} 件商品添加失败`
+            console.log('失败的商品:', failedItems)
+          }
+          this.showNotification(message)
+
+          // 刷新购物车数据
+          await this.cartStore.loadCart()
+
+          // 如果有成功添加的商品，询问是否跳转到购物车
+          if (successCount === order.items.length) {
+            setTimeout(() => {
+              if (confirm('商品已全部添加到购物车，是否立即查看购物车？')) {
+                this.switchTab('cart')
+              }
+            }, 1000)
+          }
+        } else {
+          let message = '所有商品添加失败'
+          if (failedItems.length > 0) {
+            message += '，失败原因：\n' + failedItems.slice(0, 3).join('\n')
+            if (failedItems.length > 3) {
+              message += `\n等${failedItems.length}个问题`
+            }
+          }
+          this.showNotification(message)
+        }
+
+      } catch (error) {
+        console.error('重新购买失败:', error)
+        this.showNotification('重新购买失败：' + (error.message || '网络错误，请稍后重试'))
       }
     },
 
@@ -2313,7 +1992,7 @@ export default {
     },
 
     continueShopping() {
-      this.$router.push('/')
+      this.$router.push('/products')
     },
 
     checkout() {
@@ -2369,7 +2048,12 @@ export default {
 
     // 跳转到商品详情页
     goToProduct(productId) {
-      this.$router.push(`/product/${productId}`)
+      console.log('跳转到商品详情页，商品ID:', productId)
+      if (productId) {
+        this.$router.push(`/product/${productId}`)
+      } else {
+        this.showNotification('商品信息不完整，无法查看详情')
+      }
     },
 
     // 收藏搜索过滤
@@ -2730,15 +2414,35 @@ export default {
     // 保存个人信息
     async saveProfile() {
       try {
-        // 这里应该调用API保存个人信息
-        this.userInfo.name = this.profileEditForm.name
-        this.userInfo.nickname = this.profileEditForm.nickname
-        this.userInfo.gender = this.profileEditForm.gender
-        this.userInfo.birthday = this.profileEditForm.birthday
-        this.userInfo.bio = this.profileEditForm.bio
+        // 调用API保存个人信息
+        const res = await request({
+          url: '/api/user/info',
+          method: 'PUT',
+          data: {
+            name: this.profileEditForm.name,
+            nickname: this.profileEditForm.name,
+            gender: this.profileEditForm.gender,
+            birthday: this.profileEditForm.birthday,
+            bio: this.profileEditForm.bio
+          }
+        })
 
-        this.showNotification('个人信息保存成功')
-        this.closeProfileEditDialog()
+        if (res.code === 200) {
+          // 更新本地数据
+          this.userInfo.name = this.profileEditForm.name
+          this.userInfo.nickname = this.profileEditForm.name
+          this.userInfo.gender = this.profileEditForm.gender
+          this.userInfo.birthday = this.profileEditForm.birthday
+          this.userInfo.bio = this.profileEditForm.bio
+
+          this.showNotification('个人信息保存成功')
+          this.closeProfileEditDialog()
+
+          // 刷新用户信息
+          await this.userStore.fetchUserInfo()
+        } else {
+          this.showNotification(res.message || '保存失败')
+        }
       } catch (error) {
         console.error('保存个人信息失败:', error)
         this.showNotification('保存个人信息失败')
@@ -2747,52 +2451,60 @@ export default {
 
     // 修改密码
     async changePassword() {
-      if (!this.passwordForm.currentPassword || !this.passwordForm.newPassword || !this.passwordForm.confirmPassword) {
-        this.showNotification('请填写完整的密码信息')
-        return
-      }
+  // 验证表单
+  if (!this.passwordForm.currentPassword || !this.passwordForm.newPassword || !this.passwordForm.confirmPassword) {
+    this.showNotification('请填写完整的密码信息')
+    return
+  }
 
-      if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
-        this.showNotification('两次输入的新密码不一致')
-        return
-      }
+  if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+    this.showNotification('两次输入的新密码不一致')
+    return
+  }
 
-      if (this.passwordForm.newPassword.length < 6) {
-        this.showNotification('新密码长度不能少于6位')
-        return
-      }
+  if (this.passwordForm.newPassword.length < 6) {
+    this.showNotification('新密码长度不能少于6位')
+    return
+  }
 
-      try {
-        const res = await request({
-          url: '/api/user/password',
-          method: 'PUT',
-          data: {
-            currentPassword: this.passwordForm.currentPassword,
-            newPassword: this.passwordForm.newPassword
-          }
-        })
-
-        if (res.code === 200) {
-          this.showNotification('密码修改成功，请重新登录')
-          this.closePasswordDialog()
-          // 清空密码表单
-          this.passwordForm = {
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-          }
-          // 可选：自动退出登录
-          setTimeout(() => {
-            this.$router.push('/auth')
-          }, 2000)
-        } else {
-          this.showNotification(res.message || '密码修改失败')
-        }
-      } catch (error) {
-        console.error('修改密码失败:', error)
-        this.showNotification(error.response?.data?.message || '密码修改失败')
+  try {
+    const res = await request({
+      url: '/api/user/password',
+      method: 'PUT',
+      data: {
+        currentPassword: this.passwordForm.currentPassword,
+        newPassword: this.passwordForm.newPassword
       }
-    },
+    })
+
+    if (res.code === 200) {
+      this.showNotification('密码修改成功，请重新登录')
+      this.closePasswordDialog()
+      // 清空密码表单
+      this.passwordForm = {
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      }
+      // 可选：自动退出登录
+      setTimeout(() => {
+        this.logout()
+      }, 2000)
+    } else {
+      this.showNotification(res.message || '密码修改失败')
+    }
+  } catch (error) {
+    console.error('修改密码失败:', error)
+    this.showNotification(error.response?.data?.message || '密码修改失败')
+  }
+},
+
+logout() {
+  if (confirm('确定要退出登录吗？')) {
+    this.userStore.logout()
+    this.$router.push('/auth')
+  }
+},
 
     // 绑定/更换手机号
     async changePhone() {
@@ -2931,10 +2643,21 @@ export default {
 
     async deleteAccount() {
       try {
-        // 这里应该调用API注销账户
-        this.showNotification('账户注销成功')
-        // 跳转到登录页面
-        this.$router.push('/login')
+        // 调用后端API注销账户
+        const res = await request({
+          url: '/api/user/delete',
+          method: 'DELETE'
+        })
+
+        if (res.code === 200) {
+          this.showNotification('账户注销成功')
+          // 清除本地存储的用户信息
+          this.userStore.logout()
+          // 跳转到登录页面
+          this.$router.push('/auth')
+        } else {
+          this.showNotification(res.message || '注销账户失败')
+        }
       } catch (error) {
         console.error('注销账户失败:', error)
         this.showNotification('注销账户失败')
@@ -3175,7 +2898,6 @@ export default {
 
 <style scoped>
 .user-center-page {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   min-height: 100vh;
   padding: 20px 0;
 }

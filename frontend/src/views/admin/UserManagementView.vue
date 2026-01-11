@@ -319,9 +319,18 @@ function closeDialog() {
 }
 
 async function saveUser() {
-  // 验证密码（添加用户时必填，编辑用户时选填）
-  if (form.value.password) {
-    if (form.value.password.trim().length === 0) {
+  // 验证表单
+  if (!form.value.username || form.value.username.trim().length === 0) {
+    alert('用户名不能为空')
+    return
+  }
+
+  // 验证密码
+  let passwordToSend = null
+  
+  if (!isEdit.value) {
+    // 添加用户时密码必填
+    if (!form.value.password || form.value.password.trim().length === 0) {
       alert('密码不能为空')
       return
     }
@@ -333,21 +342,40 @@ async function saveUser() {
       alert('两次输入的密码不一致')
       return
     }
-  } else if (!isEdit.value) {
-    // 添加用户时密码必填
-    alert('密码不能为空')
-    return
+    passwordToSend = form.value.password
+  } else {
+    // 编辑用户时，如果填写了新密码，则验证
+    if (form.value.password && form.value.password.trim().length > 0) {
+      if (form.value.password.length < 6) {
+        alert('密码长度不能少于6位')
+        return
+      }
+      if (form.value.password !== form.value.confirmPassword) {
+        alert('两次输入的密码不一致')
+        return
+      }
+      passwordToSend = form.value.password
+    }
   }
 
   saving.value = true
   try {
-    // 准备提交的数据，排除 confirmPassword
-    const { confirmPassword, ...userData } = form.value
-
-    // 如果是编辑且密码为空，则不发送密码字段
-    if (isEdit.value && !userData.password) {
-      delete userData.password
+    // 准备提交的数据
+    const userData = {
+      username: form.value.username.trim(),
+      role: form.value.role,
+      status: Number(form.value.status)
     }
+
+    // 添加密码字段
+    if (passwordToSend) {
+      userData.password = passwordToSend
+    } else if (!isEdit.value) {
+      // 添加用户时必须有密码
+      throw new Error('添加用户必须设置密码')
+    }
+
+    console.log('提交的用户数据:', userData) // 调试日志
 
     let res
     if (isEdit.value) {
@@ -364,6 +392,8 @@ async function saveUser() {
       })
     }
 
+    console.log('API响应:', res) // 调试日志
+
     if (res.code === 200) {
       alert(isEdit.value ? '更新成功' : '添加成功')
       closeDialog()
@@ -373,7 +403,7 @@ async function saveUser() {
     }
   } catch (error) {
     console.error('保存失败:', error)
-    alert('保存失败')
+    alert('保存失败: ' + (error.response?.data?.message || error.message))
   } finally {
     saving.value = false
   }
@@ -401,12 +431,13 @@ async function resetPassword() {
     if (res.code === 200) {
       alert('密码已重置为：123456')
       closeResetPasswordDialog()
+      loadUsers() // 重新加载用户列表
     } else {
       alert(res.message || '密码重置失败')
     }
   } catch (error) {
     console.error('密码重置失败:', error)
-    alert('密码重置失败')
+    alert('密码重置失败: ' + (error.response?.data?.message || error.message))
   } finally {
     saving.value = false
   }

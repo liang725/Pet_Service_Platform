@@ -1,5 +1,6 @@
 // src/utils/request.js - 简化版，只处理基本错误
-const BASE_URL = 'http://localhost:8080'
+// 移除硬编码的BASE_URL，使用相对路径，由nginx代理处理
+const BASE_URL = ''
 
 async function request(options) {
   const { url, method = 'GET', data, params, headers = {} } = options

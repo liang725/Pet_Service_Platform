@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="product-detail-page">
     <nav class="breadcrumb">
       <div class="container">
@@ -204,7 +204,7 @@ const cartStore = useCartStore()
 
 const product = ref({
   id: null,
-  name: '',
+  name: '加载中...',
   subtitle: '',
   rating: 0,
   reviewCount: 0,
@@ -347,18 +347,43 @@ const showNotification = (message) => {
 const loadProductDetail = async () => {
   try {
     const productId = route.params.id
+    console.log('正在加载商品详情，ID:', productId)
+
+    if (!productId) {
+      console.error('商品ID为空')
+      showNotification('商品ID无效')
+      return
+    }
+
     const response = await getProductDetail(productId)
+    console.log('商品详情API响应:', response)
 
-    if (response.code === 200) {
-      product.value = response.data
+    if (response.code === 200 && response.data) {
+      product.value = {
+        ...response.data,
+        // 确保必要字段有默认值
+        images: response.data.images || [],
+        specifications: response.data.specifications || [],
+        params: response.data.params || {},
+        ratingDistribution: response.data.ratingDistribution || [],
+        reviews: response.data.reviews || [],
+        faqs: response.data.faqs || [],
+        promotions: response.data.promotions || []
+      }
 
+      console.log('商品详情加载成功:', product.value)
+
+      // 设置默认选中的规格
       if (product.value.specifications && product.value.specifications.length > 0) {
         selectedSpecId.value = product.value.specifications[0].id
       }
+    } else {
+      console.error('商品详情加载失败:', response)
+      showNotification('商品信息加载失败：' + (response.message || '未知错误'))
     }
   } catch (error) {
     console.error('加载商品详情失败:', error)
-    showNotification('加载商品信息失败')
+    showNotification('加载商品信息失败：' + error.message)
   }
 }
 
@@ -399,16 +424,19 @@ onMounted(() => {
 
 <style scoped>
 .product-detail-page {
-  background-color: #f8f9fa;
   min-height: 100vh;
   padding-bottom: 40px;
 }
 
 .breadcrumb {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 15px 0;
   margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border: 1px solid rgba(255, 179, 71, 0.1);
+  backdrop-filter: blur(10px);
+  margin: 20px;
+  border-radius: 15px;
 }
 
 .breadcrumb-list {
@@ -452,10 +480,12 @@ onMounted(() => {
 
 .product-images {
   flex: 1;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255, 179, 71, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .main-image-container {
@@ -471,17 +501,20 @@ onMounted(() => {
 }
 
 .main-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .product-info {
   flex: 1;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   padding: 30px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255, 179, 71, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .product-title {
@@ -533,10 +566,11 @@ onMounted(() => {
 }
 
 .price-section {
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.9);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 25px;
+  border: 1px solid rgba(255, 179, 71, 0.1);
 }
 
 .current-price {
@@ -587,6 +621,7 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.3s;
   font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .spec-option:hover {
@@ -610,6 +645,7 @@ onMounted(() => {
   border: 2px solid #eee;
   border-radius: 8px;
   overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .quantity-btn {
@@ -633,6 +669,7 @@ onMounted(() => {
   border: none;
   font-size: 18px;
   font-weight: bold;
+  background-color: white;
 }
 
 .stock-info {
@@ -726,10 +763,12 @@ onMounted(() => {
 
 
 .product-tabs {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   margin-bottom: 40px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  border: 1px solid rgba(255, 179, 71, 0.1);
+  backdrop-filter: blur(10px);
   overflow: hidden;
 }
 
@@ -828,8 +867,9 @@ onMounted(() => {
   align-items: center;
   margin-bottom: 30px;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: rgba(249, 249, 249, 0.9);
   border-radius: 10px;
+  border: 1px solid rgba(255, 179, 71, 0.1);
 }
 
 .overall-rating {
@@ -953,12 +993,14 @@ onMounted(() => {
 }
 
 .product-card-small {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   transition: all 0.3s;
   cursor: pointer;
+  border: 1px solid rgba(255, 179, 71, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .product-card-small:hover {
@@ -1042,6 +1084,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   max-width: 400px;
+  border: 1px solid rgba(255, 179, 71, 0.3);
 }
 
 .notification i {

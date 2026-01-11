@@ -97,6 +97,20 @@ public interface UserMapper {
     int update(User user);
 
     /**
+     * 管理端更新用户信息（包含用户名、角色、状态）
+     */
+    @Update("<script>" +
+            "UPDATE users SET " +
+            "<if test='username != null'>username = #{username}, </if>" +
+            "<if test='password != null'>password = #{password}, </if>" +
+            "role = #{role}, " +
+            "status = #{status}, " +
+            "updated_at = NOW() " +
+            "WHERE id = #{id}" +
+            "</script>")
+    int updateForAdmin(User user);
+
+    /**
      * 更新用户密码
      */
     @Update("UPDATE users SET password = #{password} WHERE id = #{id}")
@@ -113,4 +127,10 @@ public interface UserMapper {
      */
     @Delete("DELETE FROM users WHERE id = #{id}")
     int deleteById(@Param("id") Integer id);
+
+    /**
+     * 更新用户个人信息（用户名、昵称、头像、手机、邮箱）
+     */
+    @Update("UPDATE users SET username = #{username}, nickname = #{nickname}, avatar = #{avatar}, phone = #{phone}, email = #{email}, updated_at = NOW() WHERE id = #{id}")
+    int updateUserInfo(@Param("id") Integer id, @Param("username") String username, @Param("nickname") String nickname, @Param("avatar") String avatar, @Param("phone") String phone, @Param("email") String email);
 }

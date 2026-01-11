@@ -56,9 +56,9 @@
     <div class="filters-section">
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input 
-          v-model="searchKeyword" 
-          type="text" 
+        <input
+          v-model="searchKeyword"
+          type="text"
           placeholder="搜索订单号、宠物名称或服务项目..."
           @input="onSearch"
         >
@@ -85,8 +85,8 @@
 
     <!-- 标签页 -->
     <div class="orders-tabs">
-      <button 
-        v-for="tab in tabs" 
+      <button
+        v-for="tab in tabs"
         :key="tab.value"
         :class="['tab-btn', { active: activeTab === tab.value }]"
         @click="switchTab(tab.value)"
@@ -107,7 +107,7 @@
         </div>
         <p>加载预约记录中...</p>
       </div>
-      
+
       <!-- 空状态 -->
       <div v-else-if="filteredAppointments.length === 0" class="empty-state">
         <div class="empty-icon">
@@ -123,19 +123,19 @@
         <p v-else>
           暂无相关预约记录
         </p>
-        <router-link 
-          v-if="activeTab === 'pending'" 
-          to="/service/appointment" 
+        <router-link
+          v-if="activeTab === 'pending'"
+          to="/service/appointment"
           class="btn-primary"
         >
           <i class="fas fa-plus"></i> 立即预约
         </router-link>
       </div>
-      
+
       <!-- 订单列表 -->
       <div v-else class="appointments-grid">
-        <div 
-          v-for="appointment in filteredAppointments" 
+        <div
+          v-for="appointment in filteredAppointments"
           :key="appointment.id"
           :class="['appointment-card', appointment.status]"
         >
@@ -154,7 +154,7 @@
               {{ formatDate(appointment.appointmentDate) }} {{ appointment.timeSlot }}
             </div>
           </div>
-          
+
           <div class="card-body">
             <div class="service-info">
               <div class="service-icon">
@@ -174,79 +174,66 @@
                 ¥{{ appointment.orderTotalAmount }}
               </div>
             </div>
-            
+
             <div class="special-notes" v-if="appointment.specialNotes">
               <i class="fas fa-sticky-note"></i>
               <span>{{ appointment.specialNotes }}</span>
             </div>
-            
+
             <div class="card-footer">
               <div class="created-time">
                 创建时间：{{ formatDateTime(appointment.createdAt) }}
               </div>
               <div class="card-actions">
-                <button 
+                <button
                   class="btn-action view"
                   @click="viewAppointment(appointment.id)"
                 >
                   <i class="fas fa-eye"></i> 查看详情
                 </button>
-                
-                <template v-if="appointment.status === 'pending'">
-                  <button 
-                    class="btn-action reschedule"
-                    @click="rescheduleAppointment(appointment)"
-                  >
-                    <i class="fas fa-calendar-alt"></i> 改期
-                  </button>
-                  <button 
-                    class="btn-action cancel"
-                    @click="confirmCancel(appointment)"
-                  >
-                    <i class="fas fa-times"></i> 取消
-                  </button>
-                </template>
-                
-                <button 
-                  v-if="appointment.status === 'completed'"
-                  class="btn-action review"
-                  @click="addReview(appointment)"
+
+                <button
+                  v-if="appointment.status === 'pending'"
+                  class="btn-action cancel"
+                  @click="confirmCancel(appointment)"
                 >
-                  <i class="fas fa-star"></i> 评价
+                  <i class="fas fa-times"></i> 取消
                 </button>
+
+
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- 分页 -->
       <div v-if="totalPages > 1" class="pagination">
-        <button 
-          :disabled="currentPage === 1" 
+        <button
+          :disabled="currentPage === 1"
           @click="prevPage"
           class="page-btn"
         >
           <i class="fas fa-chevron-left"></i>
         </button>
-        
+
         <template v-for="page in visiblePages" :key="page">
-          <button 
+          <button
             :class="['page-btn', { active: page === currentPage }]"
             @click="goToPage(page)"
           >
             {{ page }}
           </button>
         </template>
-        
-        <button 
-          :disabled="currentPage === totalPages" 
+
+        <button
+          :disabled="currentPage === totalPages"
           @click="nextPage"
           class="page-btn"
         >
           <i class="fas fa-chevron-right"></i>
         </button>
-        
+
         <span class="page-info">
           第 {{ currentPage }} 页 / 共 {{ totalPages }} 页
         </span>
@@ -272,7 +259,7 @@
           <label for="cancelReason">
             <i class="fas fa-comment-dots"></i> 取消原因（可选）：
           </label>
-          <textarea 
+          <textarea
             id="cancelReason"
             v-model="cancelReason"
             placeholder="请告诉我们取消的原因..."
@@ -292,72 +279,10 @@
       </div>
     </div>
   </div>
-
-  <!-- 改期弹窗 -->
-  <div v-if="showRescheduleModal" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <i class="fas fa-calendar-alt"></i>
-        <h3>修改预约时间</h3>
-      </div>
-      <div class="modal-body">
-        <div class="reschedule-info">
-          <p>正在为预约 <strong>{{ rescheduleTarget?.orderNo }}</strong> 修改时间</p>
-          <div class="current-time">
-            原时间：{{ formatDate(rescheduleTarget?.appointmentDate) }} {{ rescheduleTarget?.timeSlot }}
-          </div>
-        </div>
-        
-        <div class="reschedule-form">
-          <div class="form-group">
-            <label><i class="fas fa-calendar-day"></i> 选择新日期</label>
-            <input 
-              type="date" 
-              v-model="newAppointmentDate"
-              :min="minDate"
-              class="form-control"
-            >
-          </div>
-          
-          <div class="form-group">
-            <label><i class="fas fa-clock"></i> 选择新时间</label>
-            <div v-if="loadingTimeSlots" class="loading-small">
-              <i class="fas fa-spinner fa-spin"></i> 加载时间段...
-            </div>
-            <div v-else class="time-slots-grid">
-              <div 
-                v-for="slot in availableTimeSlots" 
-                :key="slot"
-                :class="['time-slot', { selected: newTimeSlot === slot }]"
-                @click="newTimeSlot = slot"
-              >
-                {{ slot }}
-              </div>
-            </div>
-            <div v-if="!loadingTimeSlots && availableTimeSlots.length === 0" class="no-slots">
-              该日期暂无可用时间段
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" @click="showRescheduleModal = false">
-          取消
-        </button>
-        <button 
-          class="btn-primary" 
-          @click="rescheduleAppointmentConfirm"
-          :disabled="!canReschedule"
-        >
-          确认改期
-        </button>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
@@ -389,34 +314,28 @@ const pageSize = 10
 
 // 模态框相关
 const showCancelModal = ref(false)
-const showRescheduleModal = ref(false)
 const cancelTarget = ref(null)
-const rescheduleTarget = ref(null)
 const cancelReason = ref('')
-const newAppointmentDate = ref('')
-const newTimeSlot = ref('')
-const availableTimeSlots = ref([])
-const loadingTimeSlots = ref(false)
 
 // 计算属性
 const filteredAppointments = computed(() => {
   let filtered = [...appointments.value]
-  
+
   // 按标签筛选
   if (activeTab.value !== 'all') {
     filtered = filtered.filter(app => app.status === activeTab.value)
   }
-  
+
   // 搜索筛选
   if (searchKeyword.value) {
     const keyword = searchKeyword.value.toLowerCase()
-    filtered = filtered.filter(app => 
+    filtered = filtered.filter(app =>
       app.orderNo.toLowerCase().includes(keyword) ||
       app.petName.toLowerCase().includes(keyword) ||
       app.serviceName.toLowerCase().includes(keyword)
     )
   }
-  
+
   // 日期筛选
   if (dateFilter.value) {
     const now = new Date()
@@ -429,7 +348,7 @@ const filteredAppointments = computed(() => {
           const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()))
           return appDate >= startOfWeek
         case 'month':
-          return appDate.getMonth() === now.getMonth() && 
+          return appDate.getMonth() === now.getMonth() &&
                  appDate.getFullYear() === now.getFullYear()
         case 'last-month':
           const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
@@ -440,12 +359,12 @@ const filteredAppointments = computed(() => {
       }
     })
   }
-  
+
   // 宠物筛选
   if (petFilter.value) {
     filtered = filtered.filter(app => app.petId === parseInt(petFilter.value))
   }
-  
+
   // 分页
   const start = (currentPage.value - 1) * pageSize
   const end = start + pageSize
@@ -459,7 +378,7 @@ const totalPages = computed(() => {
 const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
-  
+
   if (totalPages.value <= maxVisible) {
     for (let i = 1; i <= totalPages.value; i++) {
       pages.push(i)
@@ -467,27 +386,17 @@ const visiblePages = computed(() => {
   } else {
     let start = Math.max(1, currentPage.value - 2)
     let end = Math.min(totalPages.value, start + maxVisible - 1)
-    
+
     if (end - start + 1 < maxVisible) {
       start = end - maxVisible + 1
     }
-    
+
     for (let i = start; i <= end; i++) {
       pages.push(i)
     }
   }
-  
+
   return pages
-})
-
-const canReschedule = computed(() => {
-  return newAppointmentDate.value && newTimeSlot.value
-})
-
-const minDate = computed(() => {
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  return tomorrow.toISOString().split('T')[0]
 })
 
 // 方法
@@ -546,16 +455,16 @@ async function fetchAppointments() {
   loading.value = true
   try {
     console.log('开始获取预约列表...')
-    
+
     // 并行获取数据
     const [allAppointmentsData, statsData] = await Promise.all([
       userStore.getAllUserAppointments(),
       userStore.getAppointmentStats()
     ])
-    
+
     console.log('预约列表原始数据:', allAppointmentsData)
     console.log('统计原始数据:', statsData)
-    
+
     // 处理预约数据
     let appointmentsArray = []
     if (Array.isArray(allAppointmentsData)) {
@@ -567,7 +476,7 @@ async function fetchAppointments() {
         appointmentsArray = allAppointmentsData.list
       }
     }
-    
+
     // 格式化预约数据
     appointmentsArray = appointmentsArray.map(app => ({
       id: parseInt(app.id) || app.id,
@@ -583,10 +492,10 @@ async function fetchAppointments() {
       status: app.status || 'pending',
       createdAt: app.createdAt || new Date().toISOString()
     }))
-    
+
     console.log('格式化后预约数据:', appointmentsArray)
     appointments.value = appointmentsArray
-    
+
     // 处理统计数据
     let statsObj = {}
     if (statsData && typeof statsData === 'object') {
@@ -597,7 +506,7 @@ async function fetchAppointments() {
         statsObj = statsData
       }
     }
-    
+
     // 确保所有状态都有值
     stats.value = {
       pending: parseInt(statsObj.pending) || 0,
@@ -606,9 +515,9 @@ async function fetchAppointments() {
       cancelled: parseInt(statsObj.cancelled) || 0,
       all: parseInt(statsObj.all) || appointmentsArray.length
     }
-    
+
     console.log('最终统计:', stats.value)
-    
+
   } catch (error) {
     console.error('获取预约列表失败:', error)
     // 使用模拟数据作为fallback
@@ -627,23 +536,6 @@ async function fetchPets() {
   }
 }
 
-async function fetchAvailableTimeSlots(date) {
-  if (!date) return
-  
-  loadingTimeSlots.value = true
-  try {
-    availableTimeSlots.value = await userStore.getAvailableTimeSlots(date)
-    if (availableTimeSlots.value.length > 0) {
-      newTimeSlot.value = availableTimeSlots.value[0]
-    }
-  } catch (error) {
-    console.error('获取可用时间段失败:', error)
-    availableTimeSlots.value = ['09:00', '10:30', '14:00', '15:30', '17:00']
-  } finally {
-    loadingTimeSlots.value = false
-  }
-}
-
 function switchTab(tab) {
   activeTab.value = tab
   currentPage.value = 1
@@ -659,20 +551,12 @@ function confirmCancel(appointment) {
   showCancelModal.value = true
 }
 
-function rescheduleAppointment(appointment) {
-  rescheduleTarget.value = appointment
-  newAppointmentDate.value = ''
-  newTimeSlot.value = ''
-  availableTimeSlots.value = []
-  showRescheduleModal.value = true
-}
-
 async function cancelAppointment() {
   if (!cancelTarget.value) return
-  
+
   try {
     await userStore.cancelAppointment(
-      cancelTarget.value.id, 
+      cancelTarget.value.id,
       cancelReason.value || '用户主动取消'
     )
     showCancelModal.value = false
@@ -682,21 +566,6 @@ async function cancelAppointment() {
   } catch (error) {
     console.error('取消预约失败:', error)
     alert(error.message || '取消预约失败')
-  }
-}
-
-async function rescheduleAppointmentConfirm() {
-  if (!rescheduleTarget.value || !canReschedule.value) return
-  
-  // 这里应该调用改期API
-  // 暂时模拟成功
-  try {
-    showRescheduleModal.value = false
-    alert('预约时间已修改')
-    fetchAppointments()
-  } catch (error) {
-    console.error('改期失败:', error)
-    alert(error.message || '改期失败')
   }
 }
 
@@ -741,27 +610,27 @@ function generateMockAppointments() {
     { name: '基础美容', price: 150, category: '美容' },
     { name: 'SPA护理', price: 160, category: '护理' }
   ]
-  
+
   const pets = [
     { id: 1, name: '旺财', type: '狗' },
     { id: 2, name: '咪咪', type: '猫' }
   ]
-  
+
   const statuses = ['pending', 'confirmed', 'completed', 'cancelled']
   const timeSlots = ['09:00', '10:30', '14:00', '15:30', '17:00']
-  
+
   const appointments = []
   const today = new Date()
-  
+
   for (let i = 0; i < 15; i++) {
     const daysAgo = Math.floor(Math.random() * 30)
     const appointmentDate = new Date()
     appointmentDate.setDate(today.getDate() - daysAgo + (i < 5 ? 3 : 0)) // 前5个是未来预约
-    
+
     const service = services[Math.floor(Math.random() * services.length)]
     const pet = pets[Math.floor(Math.random() * pets.length)]
     const status = statuses[Math.floor(Math.random() * statuses.length)]
-    
+
     appointments.push({
       id: i + 1,
       orderNo: `ORD-${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}-${String(i + 1).padStart(3, '0')}`,
@@ -777,7 +646,7 @@ function generateMockAppointments() {
       createdAt: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString()
     })
   }
-  
+
   return appointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate))
 }
 
@@ -791,13 +660,6 @@ function calculateMockStats() {
     all: mockApps.length
   }
 }
-
-// 监听
-watch(() => newAppointmentDate.value, (newDate) => {
-  if (newDate) {
-    fetchAvailableTimeSlots(newDate)
-  }
-})
 
 // 生命周期
 onMounted(() => {
@@ -1352,11 +1214,6 @@ onMounted(() => {
   color: #8B5A2B;
 }
 
-.btn-action.reschedule {
-  background-color: #C8E6C9;
-  color: #2E7D32;
-}
-
 .btn-action.cancel {
   background-color: #FFCDD2;
   color: #C62828;
@@ -1374,10 +1231,6 @@ onMounted(() => {
 
 .btn-action.view:hover {
   background-color: #FFD166;
-}
-
-.btn-action.reschedule:hover {
-  background-color: #A5D6A7;
 }
 
 .btn-action.cancel:hover {
@@ -1589,97 +1442,5 @@ onMounted(() => {
 .btn-danger:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(255, 71, 87, 0.3);
-}
-
-/* 改期模态框特定样式 */
-.reschedule-info {
-  background-color: #FFF9E6;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 25px;
-}
-
-.current-time {
-  background-color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  margin-top: 10px;
-  color: #E17055;
-  font-weight: 500;
-}
-
-.reschedule-form .form-group {
-  margin-bottom: 20px;
-}
-
-.reschedule-form label {
-  display: block;
-  margin-bottom: 8px;
-  color: #5A4B3A;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.reschedule-form .form-control {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #FFEAA7;
-  border-radius: 10px;
-  font-size: 1rem;
-  background-color: #FFFCF5;
-}
-
-.reschedule-form .form-control:focus {
-  outline: none;
-  border-color: #FF9F43;
-}
-
-.time-slots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.time-slot {
-  padding: 12px 8px;
-  background-color: #FFF9E6;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.time-slot:hover {
-  background-color: #FFEAA7;
-}
-
-.time-slot.selected {
-  background-color: #FF9F43;
-  color: white;
-  border-color: #E17055;
-  font-weight: bold;
-}
-
-.no-slots {
-  text-align: center;
-  padding: 20px;
-  color: #8B5A2B;
-  background-color: #FFF9E6;
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-.loading-small {
-  text-align: center;
-  padding: 20px;
-  color: #8B5A2B;
-}
-
-.loading-small i {
-  margin-right: 8px;
 }
 </style>

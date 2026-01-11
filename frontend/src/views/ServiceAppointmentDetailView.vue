@@ -48,9 +48,6 @@
           </div>
         </div>
         <div class="header-actions" v-if="appointment.status === 'pending'">
-          <button class="btn-action reschedule" @click="rescheduleAppointment">
-            <i class="fas fa-calendar-alt"></i> 改期
-          </button>
           <button class="btn-action cancel" @click="confirmCancel">
             <i class="fas fa-times"></i> 取消预约
           </button>
@@ -138,25 +135,78 @@
             </div>
           </div>
 
-          <!-- 服务信息卡片 -->
-          <div class="info-card">
+          <!-- 服务信息卡片 - 修改后显示洗护项目和护理项目 -->
+          <div class="info-card service-info-card">
             <div class="card-header">
               <i class="fas fa-spa"></i>
               <h3>服务信息</h3>
             </div>
             <div class="card-body">
-              <div class="service-detail">
-                <div class="service-icon">
-                  <i :class="getServiceIcon(appointment.serviceName)"></i>
-                </div>
-                <div class="service-content">
-                  <h4>{{ appointment.serviceName }}</h4>
-                  <p class="service-desc">{{ appointment.serviceDescription || '专业宠物洗护服务' }}</p>
-                  <div class="service-features">
-                    <span class="feature-tag" v-for="feature in serviceFeatures" :key="feature">
-                      {{ feature }}
-                    </span>
+              <!-- 洗护项目 -->
+              <div class="service-section" v-if="appointment.services && appointment.services.length > 0">
+                <h4 class="section-title">
+                  <i class="fas fa-shower"></i> 洗护项目
+                </h4>
+                <div class="service-list">
+                  <div v-for="service in appointment.services" :key="service.id || service.serviceId" class="service-item">
+                    <div class="service-item-main">
+                      <div class="service-item-name">{{ service.itemName || service.serviceName }}</div>
+                      <div class="service-item-price">¥{{ service.itemFinalPrice || service.finalPrice || service.basePrice }}</div>
+                    </div>
+                    <div class="service-item-details">
+                      <div class="service-item-desc">{{ service.briefDesc || service.description }}</div>
+                      <div v-if="(service.itemDiscountPercentage > 0) || (service.discountPercentage > 0)" class="service-item-discount">
+                        折扣: {{ service.itemDiscountPercentage || service.discountPercentage }}%
+                      </div>
+                    </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- 护理项目 -->
+              <div class="service-section" v-if="appointment.careItems && appointment.careItems.length > 0">
+                <h4 class="section-title">
+                  <i class="fas fa-heartbeat"></i> 护理项目
+                </h4>
+                <div class="care-list">
+                  <div v-for="careItem in appointment.careItems" :key="careItem.id || careItem.careId" class="care-item">
+                    <div class="care-item-main">
+                      <div class="care-item-name">{{ careItem.careName }}</div>
+                      <div class="care-item-price">¥{{ careItem.unitPrice }}</div>
+                    </div>
+                    <div class="care-item-details">
+                      <span class="care-category">{{ getCareCategoryText(careItem.careCategory) }}</span>
+                      <div class="care-item-desc">{{ careItem.description }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 无服务时的提示 -->
+              <div v-if="(!appointment.services || appointment.services.length === 0) && 
+                        (!appointment.careItems || appointment.careItems.length === 0)" 
+                   class="no-service">
+                <i class="fas fa-info-circle"></i>
+                <p>暂无服务信息</p>
+              </div>
+
+              <!-- 价格汇总 -->
+              <div class="price-summary" v-if="appointment.services || appointment.careItems">
+                <div class="price-row" v-if="appointment.itemsBaseTotal > 0">
+                  <span class="price-label">洗护项目总价:</span>
+                  <span class="price-value">¥{{ appointment.itemsBaseTotal }}</span>
+                </div>
+                <div class="price-row" v-if="appointment.itemsDiscountTotal > 0">
+                  <span class="price-label">洗护折扣:</span>
+                  <span class="price-value discount">-¥{{ appointment.itemsDiscountTotal }}</span>
+                </div>
+                <div class="price-row" v-if="appointment.careItemsTotal > 0">
+                  <span class="price-label">护理项目总价:</span>
+                  <span class="price-value">¥{{ appointment.careItemsTotal }}</span>
+                </div>
+                <div class="price-row total-price">
+                  <span class="price-label">订单总金额:</span>
+                  <span class="price-value">¥{{ appointment.orderTotalAmount }}</span>
                 </div>
               </div>
             </div>
@@ -317,7 +367,7 @@
           <p>确定要取消预约 <strong>{{ appointment?.orderNo }}</strong> 吗？</p>
           <div class="cancel-details">
             <p><i class="fas fa-paw"></i> 宠物：{{ appointment?.petName }}</p>
-            <p><i class="fas fa-spa"></i> 服务：{{ appointment?.serviceName }}</p>
+            <p><i class="fas fa-spa"></i> 服务：{{ getServiceNames() }}</p>
             <p><i class="far fa-calendar"></i> 时间：{{ formatDate(appointment?.appointmentDate) }} {{ appointment?.timeSlot }}</p>
           </div>
           <div class="cancel-reason">
@@ -372,37 +422,23 @@ const cancelReason = ref('')
 
 // 计算属性
 const estimateDuration = computed(() => {
-  // 根据服务类型估算时长
-  if (!appointment.value?.serviceName) return 60
+  if (!appointment.value) return 60
   
-  const service = appointment.value.serviceName
-  if (service.includes('基础')) return 60
-  if (service.includes('精致')) return 90
-  if (service.includes('美容')) return 120
-  if (service.includes('SPA')) return 150
-  return 60
-})
-
-const serviceFeatures = computed(() => {
-  if (!appointment.value?.serviceName) return []
+  let totalDuration = 0
   
-  const service = appointment.value.serviceName
-  const features = []
-  
-  if (service.includes('洗澡')) {
-    features.push('专业洗浴', '毛发吹干', '基础护理')
-  }
-  if (service.includes('美容')) {
-    features.push('造型设计', '专业修剪', '毛发打理')
-  }
-  if (service.includes('SPA')) {
-    features.push('精油按摩', '深层清洁', '放松护理')
-  }
-  if (service.includes('驱虫')) {
-    features.push('药浴驱虫', '健康检查', '防护处理')
+  // 计算洗护项目时长
+  if (appointment.value.services && appointment.value.services.length > 0) {
+    appointment.value.services.forEach(service => {
+      totalDuration += service.duration || 60
+    })
   }
   
-  return features.slice(0, 3) // 最多显示3个
+  // 护理项目增加时间（根据护理项数量）
+  if (appointment.value.careItems && appointment.value.careItems.length > 0) {
+    totalDuration += appointment.value.careItems.length * 15 // 每个护理项大约15分钟
+  }
+  
+  return totalDuration || 60
 })
 
 // 方法
@@ -420,12 +456,34 @@ function getPetIcon(petType) {
   return petType === '狗' ? 'fas fa-dog' : 'fas fa-cat'
 }
 
-function getServiceIcon(serviceName) {
-  if (serviceName.includes('洗澡')) return 'fas fa-shower'
-  if (serviceName.includes('美容')) return 'fas fa-cut'
-  if (serviceName.includes('SPA') || serviceName.includes('护理')) return 'fas fa-spa'
-  if (serviceName.includes('驱虫')) return 'fas fa-bug'
-  return 'fas fa-paw'
+function getCareCategoryText(category) {
+  const categoryMap = {
+    '局部护理': '局部护理',
+    '深度护理': '深度护理',
+    '精致修剪': '精致修剪',
+    '赠送护理': '赠送护理'
+  }
+  return categoryMap[category] || category
+}
+
+function getServiceNames() {
+  if (!appointment.value) return ''
+  
+  const serviceNames = []
+  
+  if (appointment.value.services && appointment.value.services.length > 0) {
+    appointment.value.services.forEach(service => {
+      serviceNames.push(service.itemName || service.serviceName)
+    })
+  }
+  
+  if (appointment.value.careItems && appointment.value.careItems.length > 0) {
+    appointment.value.careItems.forEach(careItem => {
+      serviceNames.push(careItem.careName)
+    })
+  }
+  
+  return serviceNames.join('、')
 }
 
 function formatDate(dateString) {
@@ -450,12 +508,32 @@ function formatDateTime(dateTimeString) {
 }
 
 function getStatusTime(status) {
-  // 这里应该从后端获取实际的状态变更时间
-  // 暂时返回固定值
   const now = new Date()
   const hours = now.getHours().toString().padStart(2, '0')
   const minutes = now.getMinutes().toString().padStart(2, '0')
   return `${hours}:${minutes}`
+}
+
+// 解析护理项数据
+function parseCareItems(careItemsData) {
+  if (!careItemsData) return []
+  
+  try {
+    // 如果已经是数组，直接返回
+    if (Array.isArray(careItemsData)) {
+      return careItemsData
+    }
+    
+    // 如果是JSON字符串，解析它
+    if (typeof careItemsData === 'string') {
+      return JSON.parse(careItemsData)
+    }
+    
+    return []
+  } catch (error) {
+    console.error('解析护理项数据失败:', error)
+    return []
+  }
 }
 
 async function fetchAppointmentDetail() {
@@ -474,7 +552,7 @@ async function fetchAppointmentDetail() {
       detailData = data.data
     }
     
-    // 格式化数据
+    // 根据新的数据结构格式化数据
     appointment.value = {
       id: parseInt(detailData.id) || props.id,
       orderNo: detailData.orderNo || `ORD-${new Date().getTime()}`,
@@ -482,14 +560,39 @@ async function fetchAppointmentDetail() {
       petType: detailData.petType || detailData.pet?.type || '未知',
       breed: detailData.breed || detailData.pet?.breed || '',
       personality: detailData.personality || detailData.pet?.personality || '',
-      serviceName: detailData.serviceName || detailData.service?.name || '未知服务',
-      serviceDescription: detailData.serviceDescription || detailData.service?.description || '',
       appointmentDate: detailData.appointmentDate || new Date().toISOString().split('T')[0],
       timeSlot: detailData.timeSlot || '09:00',
       orderTotalAmount: parseFloat(detailData.orderTotalAmount) || parseFloat(detailData.totalAmount) || 0,
+      itemsBaseTotal: parseFloat(detailData.itemsBaseTotal) || 0,
+      itemsDiscountTotal: parseFloat(detailData.itemsDiscountTotal) || 0,
+      careItemsTotal: parseFloat(detailData.careItemsTotal) || 0,
       specialNotes: detailData.specialNotes || '',
       status: detailData.status || 'pending',
-      createdAt: detailData.createdAt || new Date().toISOString()
+      createdAt: detailData.createdAt || new Date().toISOString(),
+      updatedAt: detailData.updatedAt || new Date().toISOString(),
+      cancellationReason: detailData.cancellationReason || '',
+      
+      // 服务项目（洗护项目）
+      services: detailData.services || [],
+      
+      // 护理项目
+      careItems: detailData.careItems || []
+    }
+    
+    // 如果没有服务项目但有serviceName（旧接口格式），创建一个服务项
+    if ((!appointment.value.services || appointment.value.services.length === 0) && detailData.serviceName) {
+      appointment.value.services = [{
+        serviceId: 0,
+        serviceName: detailData.serviceName,
+        category: detailData.serviceCategory || '洗护服务',
+        description: detailData.serviceDescription || '',
+        basePrice: appointment.value.orderTotalAmount,
+        discountPercentage: 0,
+        discountAmount: 0,
+        finalPrice: appointment.value.orderTotalAmount,
+        duration: 60,
+        quantity: 1
+      }];
     }
     
     console.log('格式化后详情数据:', appointment.value)
@@ -504,11 +607,6 @@ async function fetchAppointmentDetail() {
 
 function goBack() {
   router.back()
-}
-
-function rescheduleAppointment() {
-  // 跳转到改期页面或显示改期弹窗
-  alert('改期功能开发中...')
 }
 
 function confirmCancel() {
@@ -535,7 +633,6 @@ async function cancelAppointment() {
 }
 
 function addReview() {
-  // 跳转到评价页面
   router.push(`/service/review/${appointment.value.id}`)
 }
 
@@ -547,11 +644,10 @@ function shareDetail() {
   if (navigator.share) {
     navigator.share({
       title: `宠物之家预约 - ${appointment.value.orderNo}`,
-      text: `我在宠物之家预约了${appointment.value.serviceName}服务，时间：${formatDate(appointment.value.appointmentDate)} ${appointment.value.timeSlot}`,
+      text: `我在宠物之家预约了服务，时间：${formatDate(appointment.value.appointmentDate)} ${appointment.value.timeSlot}`,
       url: window.location.href
     })
   } else {
-    // 复制链接到剪贴板
     navigator.clipboard.writeText(window.location.href)
     alert('链接已复制到剪贴板')
   }
@@ -772,11 +868,6 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 
-.btn-action.reschedule {
-  background-color: #C8E6C9;
-  color: #2E7D32;
-}
-
 .btn-action.cancel {
   background-color: #FFCDD2;
   color: #C62828;
@@ -785,10 +876,6 @@ onMounted(() => {
 .btn-action:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-action.reschedule:hover {
-  background-color: #A5D6A7;
 }
 
 .btn-action.cancel:hover {
@@ -940,55 +1027,167 @@ onMounted(() => {
   color: #FF6B6B;
 }
 
-/* 服务信息 */
-.service-detail {
+/* 服务信息卡片样式 */
+.service-info-card .card-body {
+  padding: 20px;
+}
+
+.section-title {
   display: flex;
   align-items: center;
-  gap: 20px;
-}
-
-.service-icon {
-  width: 70px;
-  height: 70px;
-  background-color: #FFF9E6;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: #FF9F43;
-  flex-shrink: 0;
-}
-
-.service-content {
-  flex: 1;
-}
-
-.service-content h4 {
-  color: #5A4B3A;
-  font-size: 1.3rem;
-  margin: 0 0 10px 0;
-}
-
-.service-desc {
-  color: #8B5A2B;
-  margin: 0 0 15px 0;
-  line-height: 1.5;
-}
-
-.service-features {
-  display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  color: #5A4B3A;
+  font-size: 1.1rem;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #FFEAA7;
 }
 
-.feature-tag {
+.section-title i {
+  color: #FF9F43;
+}
+
+.service-list, .care-list {
+  margin-bottom: 20px;
+}
+
+.service-item, .care-item {
+  background-color: #FFFCF5;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-left: 4px solid #4CAF50;
+  transition: transform 0.2s ease;
+}
+
+.care-item {
+  border-left-color: #FF9F43;
+}
+
+.service-item:hover, .care-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-item-main, .care-item-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.service-item-name, .care-item-name {
+  color: #5A4B3A;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.service-item-price, .care-item-price {
+  color: #E17055;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.service-item-details, .care-item-details {
+  color: #8B5A2B;
+  font-size: 0.9rem;
+}
+
+.service-item-desc {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.service-item-discount {
   background-color: #FFEAA7;
   color: #8B5A2B;
-  padding: 6px 12px;
-  border-radius: 15px;
+  padding: 3px 8px;
+  border-radius: 12px;
   font-size: 0.85rem;
+  display: inline-block;
+}
+
+.care-category {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin-right: 8px;
+}
+
+.care-item-desc {
+  margin-top: 5px;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.no-service {
+  text-align: center;
+  padding: 30px;
+  color: #8B5A2B;
+}
+
+.no-service i {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #FFEAA7;
+}
+
+.no-service p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* 价格汇总 */
+.price-summary {
+  background-color: #FFF9E6;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #FFEAA7;
+}
+
+.price-row:last-child {
+  border-bottom: none;
+}
+
+.price-label {
+  color: #5A4B3A;
+  font-size: 0.95rem;
+}
+
+.price-value {
+  color: #5A4B3A;
   font-weight: 500;
+}
+
+.price-value.discount {
+  color: #FF4757;
+}
+
+.total-price {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid #FF9F43;
+}
+
+.total-price .price-label {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.total-price .price-value {
+  color: #E17055;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 /* 特殊要求卡片 */
@@ -1234,7 +1433,7 @@ onMounted(() => {
   box-shadow: 0 6px 20px rgba(255, 159, 67, 0.3);
 }
 
-/* 模态框样式（复用ServiceOrdersView的样式，略作调整） */
+/* 模态框样式 */
 .modal-overlay {
   position: fixed;
   top: 0;

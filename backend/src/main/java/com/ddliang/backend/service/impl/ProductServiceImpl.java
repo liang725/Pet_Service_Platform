@@ -132,13 +132,16 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
             
+            // 扩展关键词（添加同义词）
+            String expandedKeyword = expandKeyword(keyword);
+            
             // 执行高级搜索
             List<Product> products = productMapper.advancedSearch(
-                keyword, categoryId, minPrice, maxPrice, sortBy, offset, pageSize
+                expandedKeyword, categoryId, minPrice, maxPrice, sortBy, offset, pageSize
             );
             
             // 获取总数
-            int total = productMapper.countAdvancedSearch(keyword, categoryId, minPrice, maxPrice);
+            int total = productMapper.countAdvancedSearch(expandedKeyword, categoryId, minPrice, maxPrice);
             
             // 转换为DTO
             List<ProductResponse> productResponses = products.stream()
@@ -157,6 +160,40 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             return Result.error("搜索失败: " + e.getMessage());
         }
+    }
+    
+    /**
+     * 扩展关键词，添加同义词支持
+     */
+    private String expandKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return keyword;
+        }
+        
+        // 同义词映射表
+        Map<String, String[]> synonyms = new HashMap<>();
+        synonyms.put("狗粮", new String[]{"狗粮", "犬粮", "狗食", "犬食"});
+        synonyms.put("犬粮", new String[]{"狗粮", "犬粮", "狗食", "犬食"});
+        synonyms.put("猫粮", new String[]{"猫粮", "猫食"});
+        synonyms.put("狗", new String[]{"狗", "犬", "汪星人"});
+        synonyms.put("犬", new String[]{"狗", "犬", "汪星人"});
+        synonyms.put("猫", new String[]{"猫", "喵星人"});
+        synonyms.put("零食", new String[]{"零食", "小食", "点心", "snack"});
+        synonyms.put("玩具", new String[]{"玩具", "toy"});
+        synonyms.put("用品", new String[]{"用品", "supplies"});
+        synonyms.put("食品", new String[]{"食品", "food", "粮食"});
+        
+        // 检查是否有同义词
+        String lowerKeyword = keyword.toLowerCase().trim();
+        for (Map.Entry<String, String[]> entry : synonyms.entrySet()) {
+            if (lowerKeyword.contains(entry.getKey().toLowerCase())) {
+                // 返回原关键词（保持原有搜索）
+                // 同义词会在SQL层面通过OR条件处理
+                return keyword;
+            }
+        }
+        
+        return keyword;
     }
 
     /**

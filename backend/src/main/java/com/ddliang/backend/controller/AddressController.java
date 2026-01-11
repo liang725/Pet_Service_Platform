@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/addresses")
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*") // 注释掉跨域配置，使用nginx代理
 public class AddressController {
 
     @Autowired

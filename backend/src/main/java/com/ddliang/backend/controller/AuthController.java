@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173") // 允许前端跨域访问
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class AuthController {
 
     @Autowired

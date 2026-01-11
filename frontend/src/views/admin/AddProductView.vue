@@ -192,6 +192,7 @@ const form = ref({
   price: null,
   originalPrice: null,
   stock: 0,
+  sales: 0,
   imageUrl: '',
   shortDescription: '',
   description: '',
@@ -224,6 +225,7 @@ async function loadProduct() {
         price: product.price || null,
         originalPrice: product.originalPrice || null,
         stock: product.stock || 0,
+        sales: product.sales || 0,
         imageUrl: product.imageUrl || '',
         shortDescription: product.shortDescription || '',
         description: product.description || '',
@@ -285,11 +287,11 @@ function removeImage() {
 }
 
 // 拖拽相关事件处理
-function handleDragOver(event) {
+function handleDragOver() {
   isDragging.value = true
 }
 
-function handleDragLeave(event) {
+function handleDragLeave() {
   isDragging.value = false
 }
 

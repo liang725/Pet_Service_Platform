@@ -3,10 +3,13 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePetStore } from '@/stores/pet'
+import { useUserStore } from '@/stores/user'
+import { getUserInfo } from '@/api/user'
 
 const router = useRouter()
 const route = useRoute()
 const petStore = usePetStore()
+const userStore = useUserStore()
 
 // 模式：add 或 edit
 const mode = computed(() => route.name === 'editPet' ? 'edit' : 'add')
@@ -49,13 +52,109 @@ const pageTitle = computed(() => {
   return isEditing.value ? '编辑宠物信息' : '添加新宠物'
 })
 
+// 添加登录状态检查函数
+const checkLoginStatus = () => {
+  console.log('检查登录状态 - userStore.userInfo:', userStore.userInfo)
+  console.log('检查登录状态 - userStore.token:', userStore.token)
+  console.log('检查登录状态 - userStore.isLoggedIn:', userStore.isLoggedIn)
+
+  // 先检查是否已登录
+  if (userStore.isLoggedIn && userStore.token) {
+    // 如果已登录但没有用户信息，尝试获取
+    if (!userStore.userInfo?.id) {
+      console.log('已登录但缺少用户信息，尝试获取')
+      fetchUserInfo()
+      return !!userStore.userInfo?.id
+    }
+    return true
+  }
+
+  // 检查 localStorage
+  const storedToken = localStorage.getItem('token')
+  const storedUserRole = localStorage.getItem('userRole')
+
+  if (storedToken) {
+    console.log('发现 localStorage 中的 token:', storedToken)
+
+    // 如果有 token 但 store 中没有，设置到 store 中
+    if (!userStore.token) {
+      userStore.token = storedToken
+      userStore.userRole = storedUserRole || ''
+      userStore.isLoggedIn = true
+
+      // 尝试从 token 中提取用户信息
+      try {
+        const tokenParts = storedToken.split('.')
+        if (tokenParts.length === 3) {
+          const payload = JSON.parse(atob(tokenParts[1]))
+          console.log('从 token 中提取的用户信息:', payload)
+
+          if (payload.userId) {
+            // 设置用户信息
+            userStore.userInfo = {
+              id: payload.userId,
+              username: payload.sub || '用户',
+              role: payload.role || 'user'
+            }
+            console.log('已设置用户信息:', userStore.userInfo)
+          }
+        }
+      } catch (e) {
+        console.error('解析 token 失败:', e)
+      }
+    }
+
+    // 获取完整的用户信息
+    if (!userStore.userInfo?.id) {
+      fetchUserInfo()
+    }
+
+    return !!userStore.userInfo?.id
+  }
+
+  // 未登录，跳转到登录页面
+  console.log('未登录，跳转到登录页面')
+  alert('请先登录后再操作')
+  router.push('/auth')
+  return false
+}
+
+// 获取用户信息
+const fetchUserInfo = async () => {
+  try {
+    if (!userStore.token) {
+      console.log('没有 token，无法获取用户信息')
+      return false
+    }
+
+    const response = await getUserInfo()
+    if (response.code === 200) {
+      // 确保正确设置用户信息到 store
+      userStore.userInfo = response.data
+      userStore.isLoggedIn = true
+      console.log('成功获取用户信息:', userStore.userInfo)
+      return true
+    }
+    console.log('获取用户信息失败')
+    return false
+  } catch (error) {
+    console.error('获取用户信息失败:', error)
+    return false
+  }
+}
+
 // 获取宠物详情（编辑模式）
 const fetchPetDetail = async () => {
   if (!isEditing.value || !petId.value) return
-  
+
+  // 先检查登录状态
+  if (!checkLoginStatus()) {
+    return
+  }
+
   try {
     await petStore.fetchPetDetail(petId.value)
-    
+
     if (petStore.currentPet) {
       const pet = petStore.currentPet
       // 填充表单数据
@@ -136,10 +235,24 @@ const handleSubmit = async () => {
   if (!validateForm()) {
     return
   }
-  
+
+  // 检查登录状态
+  if (!checkLoginStatus()) {
+    return
+  }
+
+  // 确保用户信息存在
+  if (!userStore.userInfo?.id) {
+    alert('用户信息获取失败，请重新登录')
+    router.push('/auth')
+    return
+  }
+
+  console.log('提交表单 - 当前用户ID:', userStore.userInfo.id)
+
   try {
     submitting.value = true
-    
+
     // 准备提交数据
     const submitData = {
       petType: formData.value.petType,
@@ -153,20 +266,29 @@ const handleSubmit = async () => {
       personality: formData.value.personality.trim() || null,
       notes: formData.value.notes.trim() || null
     }
-    
+
+    console.log('提交表单 - 提交数据:', submitData)
+    console.log('提交表单 - 用户ID:', userStore.userInfo.id)
+
     let result
     if (isEditing.value) {
       result = await petStore.updatePet(petId.value, submitData)
     } else {
       result = await petStore.addPet(submitData)
     }
-    
+
     const successMessage = isEditing.value ? '更新宠物成功' : '添加宠物成功'
     alert(successMessage)
     router.push('/pets')
-    
+
   } catch (err) {
+    console.error('表单提交错误:', err)
     alert(err.message || '提交失败，请重试')
+
+    // 如果是未登录错误，跳转到登录页
+    if (err.message.includes('未登录') || err.message.includes('登录')) {
+      router.push('/auth')
+    }
   } finally {
     submitting.value = false
   }
@@ -202,6 +324,11 @@ const handleCancel = () => {
 
 // 组件挂载
 onMounted(() => {
+  // 检查登录状态
+  if (!checkLoginStatus()) {
+    return
+  }
+
   if (isEditing.value) {
     fetchPetDetail()
   }
@@ -252,7 +379,7 @@ const minDate = computed(() => {
             <Icon icon="mdi:information" />
             基本信息
           </h2>
-          
+
           <div class="form-grid">
             <!-- 宠物类型 -->
             <div class="form-group">
@@ -261,8 +388,8 @@ const minDate = computed(() => {
                 宠物类型
               </label>
               <div class="pet-type-selector">
-                <div v-for="option in petTypeOptions" :key="option.value" 
-                     class="pet-type-option" 
+                <div v-for="option in petTypeOptions" :key="option.value"
+                     class="pet-type-option"
                      :class="{ 'selected': formData.petType === option.value }"
                      @click="formData.petType = option.value">
                   <Icon :icon="option.icon" class="option-icon" />
@@ -278,10 +405,10 @@ const minDate = computed(() => {
                 <Icon icon="mdi:tag" />
                 宠物名字
               </label>
-              <input type="text" 
-                     id="name" 
-                     v-model="formData.name" 
-                     :class="['form-input', { 'error': errors.name }]" 
+              <input type="text"
+                     id="name"
+                     v-model="formData.name"
+                     :class="['form-input', { 'error': errors.name }]"
                      placeholder="例如：小白、巧克力"
                      maxlength="50">
               <div v-if="errors.name" class="error-message">{{ errors.name }}</div>
@@ -294,10 +421,10 @@ const minDate = computed(() => {
                 <Icon icon="mdi:dna" />
                 品种
               </label>
-              <input type="text" 
-                     id="breed" 
-                     v-model="formData.breed" 
-                     :class="['form-input', { 'error': errors.breed }]" 
+              <input type="text"
+                     id="breed"
+                     v-model="formData.breed"
+                     :class="['form-input', { 'error': errors.breed }]"
                      placeholder="例如：金毛寻回犬、英国短毛猫"
                      maxlength="100">
               <div v-if="errors.breed" class="error-message">{{ errors.breed }}</div>
@@ -311,8 +438,8 @@ const minDate = computed(() => {
                 性别
               </label>
               <div class="gender-selector">
-                <div v-for="option in genderOptions" :key="option.value" 
-                     class="gender-option" 
+                <div v-for="option in genderOptions" :key="option.value"
+                     class="gender-option"
                      :class="{ 'selected': formData.gender === option.value }"
                      @click="formData.gender = option.value">
                   <span class="gender-label">{{ option.label }}</span>
@@ -328,7 +455,7 @@ const minDate = computed(() => {
             <Icon icon="mdi:palette" />
             外观特征
           </h2>
-          
+
           <div class="form-grid">
             <!-- 毛色 -->
             <div class="form-group">
@@ -336,10 +463,10 @@ const minDate = computed(() => {
                 <Icon icon="mdi:palette" />
                 毛色
               </label>
-              <input type="text" 
-                     id="color" 
-                     v-model="formData.color" 
-                     :class="['form-input', { 'error': errors.color }]" 
+              <input type="text"
+                     id="color"
+                     v-model="formData.color"
+                     :class="['form-input', { 'error': errors.color }]"
                      placeholder="例如：白色带棕色斑点"
                      maxlength="50">
               <div v-if="errors.color" class="error-message">{{ errors.color }}</div>
@@ -352,10 +479,10 @@ const minDate = computed(() => {
                 <Icon icon="mdi:weight" />
                 体重 (kg)
               </label>
-              <input type="number" 
-                     id="weight" 
-                     v-model="formData.weight" 
-                     :class="['form-input', { 'error': errors.weight }]" 
+              <input type="number"
+                     id="weight"
+                     v-model="formData.weight"
+                     :class="['form-input', { 'error': errors.weight }]"
                      placeholder="例如：5.5"
                      step="0.1"
                      min="0.1"
@@ -370,9 +497,9 @@ const minDate = computed(() => {
                 <Icon icon="mdi:cake" />
                 出生日期
               </label>
-              <input type="date" 
-                     id="birthDate" 
-                     v-model="formData.birthDate" 
+              <input type="date"
+                     id="birthDate"
+                     v-model="formData.birthDate"
                      class="form-input"
                      :max="today"
                      :min="minDate">
@@ -387,7 +514,7 @@ const minDate = computed(() => {
             <Icon icon="mdi:heart" />
             性格与习惯
           </h2>
-          
+
           <div class="form-grid">
             <!-- 性格特点 -->
             <div class="form-group full-width">
@@ -395,10 +522,10 @@ const minDate = computed(() => {
                 <Icon icon="mdi:star" />
                 性格特点
               </label>
-              <input type="text" 
-                     id="personality" 
-                     v-model="formData.personality" 
-                     :class="['form-input', { 'error': errors.personality }]" 
+              <input type="text"
+                     id="personality"
+                     v-model="formData.personality"
+                     :class="['form-input', { 'error': errors.personality }]"
                      placeholder="例如：活泼、温顺、胆小、粘人"
                      maxlength="255">
               <div v-if="errors.personality" class="error-message">{{ errors.personality }}</div>
@@ -411,9 +538,9 @@ const minDate = computed(() => {
                 <Icon icon="mdi:note-text" />
                 特别记录
               </label>
-              <textarea id="notes" 
-                        v-model="formData.notes" 
-                        class="form-textarea" 
+              <textarea id="notes"
+                        v-model="formData.notes"
+                        class="form-textarea"
                         rows="4"
                         placeholder="记录宠物的特别习惯、喜好、健康情况、疫苗接种记录等"></textarea>
               <div class="input-hint">宠物的特别注意事项</div>
@@ -427,25 +554,25 @@ const minDate = computed(() => {
             <Icon icon="mdi:image" />
             宠物头像
           </h2>
-          
+
           <div class="form-group full-width">
             <label for="avatarUrl" class="form-label">
               <Icon icon="mdi:link" />
               头像图片URL
             </label>
-            <input type="text" 
-                   id="avatarUrl" 
-                   v-model="formData.avatarUrl" 
-                   class="form-input" 
+            <input type="text"
+                   id="avatarUrl"
+                   v-model="formData.avatarUrl"
+                   class="form-input"
                    placeholder="例如：https://example.com/pet-avatar.jpg"
                    maxlength="255">
             <div class="input-hint">支持JPG、PNG格式，建议尺寸：200x200像素</div>
-            
+
             <!-- 头像预览 -->
             <div v-if="formData.avatarUrl" class="avatar-preview">
               <div class="preview-label">头像预览：</div>
-              <img :src="formData.avatarUrl" 
-                   alt="头像预览" 
+              <img :src="formData.avatarUrl"
+                   alt="头像预览"
                    class="preview-image"
                    @error="formData.avatarUrl = ''">
             </div>
@@ -454,19 +581,19 @@ const minDate = computed(() => {
 
         <!-- 表单按钮 -->
         <div class="form-actions">
-          <button type="button" 
-                  @click="handleCancel" 
+          <button type="button"
+                  @click="handleCancel"
                   class="btn btn-secondary"
                   :disabled="submitting || petStore.loading">
             取消
           </button>
-          <button type="button" 
-                  @click="handleReset" 
+          <button type="button"
+                  @click="handleReset"
                   class="btn btn-reset"
                   :disabled="submitting || petStore.loading">
             重置
           </button>
-          <button type="submit" 
+          <button type="submit"
                   class="btn btn-primary"
                   :disabled="submitting || petStore.loading">
             <Icon v-if="submitting" icon="mdi:loading" spin />
@@ -843,11 +970,11 @@ const minDate = computed(() => {
   .add-pet-view {
     padding: 20px 15px;
   }
-  
+
   .form-container {
     padding: 30px;
   }
-  
+
   .page-title {
     font-size: 2rem;
   }
@@ -858,33 +985,33 @@ const minDate = computed(() => {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .pet-type-selector {
     flex-direction: column;
   }
-  
+
   .pet-type-option {
     padding: 15px;
   }
-  
+
   .option-icon {
     font-size: 2rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .btn {
     width: 100%;
   }
-  
+
   .page-title {
     font-size: 1.8rem;
     margin-top: 20px;
   }
-  
+
   .back-btn {
     position: relative;
     margin-bottom: 10px;
@@ -895,28 +1022,28 @@ const minDate = computed(() => {
   .add-pet-view {
     padding: 15px 10px;
   }
-  
+
   .form-container {
     padding: 20px 15px;
   }
-  
+
   .form-section {
     padding-bottom: 30px;
     margin-bottom: 30px;
   }
-  
+
   .section-title {
     font-size: 1.3rem;
   }
-  
+
   .pet-type-option {
     padding: 12px;
   }
-  
+
   .gender-selector {
     flex-direction: column;
   }
-  
+
   .gender-option {
     padding: 10px;
   }

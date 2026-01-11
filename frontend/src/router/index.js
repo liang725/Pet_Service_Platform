@@ -159,7 +159,18 @@ const router = createRouter({
         hideFooter: false
       }
     },
-    // 管理后台路由
+    {
+      path: '/ai-consult',
+      name: 'aiConsult',
+      component: () => import('../views/AiConsultView.vue'),
+      meta: {
+        requiresAuth: true,
+        title: 'AI宠物咨询',
+        hideHeader: false,
+        hideFooter: false
+      }
+    },
+    // 管理后台路由 - 移除Dashboard，默认跳转到用户管理
     {
       path: '/admin',
       component: () => import('@/views/admin/AdminLayout.vue'),
@@ -171,11 +182,10 @@ const router = createRouter({
         hideFooter: true
       },
       children: [
+        // 设置空路径重定向到用户管理页面
         {
           path: '',
-          name: 'adminDashboard',
-          component: () => import('@/views/admin/AdminHome.vue'),
-          meta: { title: '控制面板' }
+          redirect: '/admin/users'
         },
         {
           path: 'users',
@@ -242,7 +252,8 @@ router.beforeEach((to, from, next) => {
   // 已登录用户访问登录页面，重定向到首页或管理后台
   if (to.meta.requiresGuest && userStore.isLoggedIn) {
     if (userStore.isAdmin) {
-      next({ name: 'adminDashboard' })
+      // 管理员登录后直接跳转到用户管理页面
+      next({ name: 'adminUsers' })
     } else {
       next({ name: 'home' })
     }

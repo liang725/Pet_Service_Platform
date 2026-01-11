@@ -2,45 +2,25 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
+import request from '@/utils/request.js'
 
 export const usePetStore = defineStore('pet', () => {
   const pets = ref([])
   const currentPet = ref(null)
   const loading = ref(false)
   const error = ref('')
-  
+
   const userStore = useUserStore()
-
-  // 基础请求函数
-  const apiRequest = async (url, options = {}) => {
-    const token = userStore.token
-    const userId = userStore.user?.id || '1'
-    
-    const response = await fetch(`http://localhost:8080${url}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': `Bearer ${token}` }),
-        'X-User-Id': userId,
-        ...options.headers,
-      },
-      ...options,
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || '请求失败')
-    }
-
-    return data
-  }
 
   // 获取用户所有宠物
   const fetchUserPets = async () => {
     loading.value = true
     error.value = ''
     try {
-      const response = await apiRequest('/api/pets')
+      const response = await request({
+        url: '/api/pets',
+        method: 'GET'
+      })
       if (response.code === 200) {
         pets.value = response.data || []
       } else {
@@ -93,7 +73,10 @@ export const usePetStore = defineStore('pet', () => {
     loading.value = true
     error.value = ''
     try {
-      const response = await apiRequest(`/api/pets/${id}`)
+      const response = await request({
+        url: `/api/pets/${id}`,
+        method: 'GET'
+      })
       if (response.code === 200) {
         currentPet.value = response.data
       } else {
@@ -113,13 +96,36 @@ export const usePetStore = defineStore('pet', () => {
     loading.value = true
     error.value = ''
     try {
-      const response = await apiRequest('/api/pets', {
+      // 动态导入 request 模块
+      const { default: requestModule } = await import('@/utils/request.js')
+
+      // 从 userStore.userInfo.id 获取用户ID
+      const userId = userStore.userInfo?.id
+      if (!userId) {
+        console.error('用户ID获取失败:', {
+          userInfo: userStore.userInfo,
+          user: userStore.user
+        })
+        throw new Error('用户未登录，无法添加宠物')
+      }
+
+      console.log('添加宠物 - 用户ID:', userId)
+
+      // 添加 userId 到请求数据中
+      const requestData = {
+        ...petData,
+        userId: parseInt(userId), // 后端需要 Integer 类型
+      }
+
+      console.log('添加宠物 - 请求数据:', requestData)
+
+      const response = await requestModule({
+        url: '/api/pets',
         method: 'POST',
-        body: JSON.stringify(petData)
+        data: requestData
       })
-      
+
       if (response.code === 200) {
-        // 添加后重新获取列表，或直接添加到列表
         await fetchUserPets()
         return response.data
       } else {
@@ -139,20 +145,41 @@ export const usePetStore = defineStore('pet', () => {
     loading.value = true
     error.value = ''
     try {
-      const response = await apiRequest(`/api/pets/${id}`, {
+      // 从 userStore.userInfo.id 获取用户ID
+      const userId = userStore.userInfo?.id
+      if (!userId) {
+        console.error('用户ID获取失败:', {
+          userInfo: userStore.userInfo,
+          user: userStore.user
+        })
+        throw new Error('用户未登录，无法更新宠物信息')
+      }
+
+      console.log('更新宠物 - 用户ID:', userId)
+
+      // 添加 userId 到请求数据中
+      const requestData = {
+        ...petData,
+        userId: parseInt(userId), // 后端需要 Integer 类型
+      }
+
+      console.log('更新宠物 - 请求数据:', requestData)
+
+      const response = await request({
+        url: `/api/pets/${id}`,
         method: 'PUT',
-        body: JSON.stringify(petData)
+        data: requestData
       })
-      
+
       if (response.code === 200) {
         currentPet.value = response.data
-        
+
         // 更新列表中的宠物信息
         const index = pets.value.findIndex(pet => pet.id === id)
         if (index !== -1) {
           pets.value[index] = { ...pets.value[index], ...petData }
         }
-        
+
         return response.data
       } else {
         throw new Error(response.message)
@@ -171,10 +198,11 @@ export const usePetStore = defineStore('pet', () => {
     loading.value = true
     error.value = ''
     try {
-      const response = await apiRequest(`/api/pets/${id}`, {
+      const response = await request({
+        url: `/api/pets/${id}`,
         method: 'DELETE'
       })
-      
+
       if (response.code === 200) {
         // 从列表中移除
         const index = pets.value.findIndex(pet => pet.id === id)
@@ -196,7 +224,10 @@ export const usePetStore = defineStore('pet', () => {
   // 获取宠物数量
   const getPetCount = async () => {
     try {
-      const response = await apiRequest('/api/pets/count')
+      const response = await request({
+        url: '/api/pets/count',
+        method: 'GET'
+      })
       return response.data?.count || 0
     } catch (err) {
       console.error('获取宠物数量失败:', err)
@@ -238,7 +269,7 @@ export const usePetStore = defineStore('pet', () => {
     currentPet,
     loading,
     error,
-    
+
     // 方法
     fetchUserPets,
     fetchPetDetail,
@@ -248,7 +279,7 @@ export const usePetStore = defineStore('pet', () => {
     getPetCount,
     getPetTypeIcon,
     getPetTypeColor,
-    
+
     // 计算属性
     hasPets,
     petCount

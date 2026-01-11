@@ -1,4 +1,4 @@
-// ServiceAppointmentMapper.java - 完整修复版
+// ServiceAppointmentMapper.java - 修复版（直接在原文件上修改）
 package com.ddliang.backend.mapper;
 
 import com.ddliang.backend.entity.ServiceAppointment;
@@ -26,7 +26,7 @@ public interface ServiceAppointmentMapper {
     @Select("SELECT * FROM service_appointments WHERE user_id = #{userId} ORDER BY appointment_date DESC")
     List<ServiceAppointment> findByUserId(Integer userId);
 
-    // ServiceAppointmentMapper.java - 修复SQL语法
+    // 修复：使用 <![CDATA[ ]]> 包装复杂 SQL
     @Select("<script>" +
             "SELECT sa.*, " +
             "p.name as pet_name, " +
@@ -90,4 +90,125 @@ public interface ServiceAppointmentMapper {
 
     @Select("SELECT COUNT(*) as count FROM service_appointments WHERE user_id = #{userId}")
     int countAllByUserId(Integer userId);
+
+    // 预约日期显示在日历上
+    @Select("SELECT DATE(appointment_date) as appointment_date, COUNT(*) as count " +
+            "FROM service_appointments " +
+            "WHERE user_id = #{userId} " +
+            "AND appointment_date BETWEEN #{startDate} AND #{endDate} " +
+            "AND status IN ('pending', 'confirmed', 'completed') " +
+            "GROUP BY DATE(appointment_date) " +
+            "ORDER BY appointment_date")
+    List<Map<String, Object>> findDailyAppointmentCounts(@Param("userId") Integer userId,
+                                                         @Param("startDate") LocalDate startDate,
+                                                         @Param("endDate") LocalDate endDate);
+
+    @Select("SELECT COUNT(*) FROM service_appointments " +
+            "WHERE user_id = #{userId} " +
+            "AND DATE(appointment_date) = DATE(#{date}) " +
+            "AND status IN ('pending', 'confirmed', 'completed')")
+    int countByUserIdAndDate(@Param("userId") Integer userId, @Param("date") LocalDate date);
+
+    @Select("SELECT * FROM service_appointments WHERE id = #{id} AND user_id = #{userId}")
+    ServiceAppointment findAppointmentByIdAndUserId(@Param("id") Integer id, @Param("userId") Integer userId);
+
+    // 管理端预约列表查询 - 只保留当日筛选和动物种类筛选
+    @Select("<script>" +
+            "SELECT sa.*, " +
+            "u.username as user_name, " +
+            "u.phone as user_phone, " +
+            "p.name as pet_name, " +
+            "p.pet_type as pet_type, " +
+            "si.item_name as service_name " +
+            "FROM service_appointments sa " +
+            "LEFT JOIN users u ON sa.user_id = u.id " +
+            "LEFT JOIN pets p ON sa.pet_id = p.id " +
+            "LEFT JOIN service_order_items soi ON sa.id = soi.order_id " +
+            "LEFT JOIN service_items si ON soi.service_id = si.id " +
+            "WHERE 1=1 " +
+            "<if test='keyword != null and keyword != \"\"'>" +
+            "   AND (sa.order_no LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR u.username LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR p.name LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR si.item_name LIKE CONCAT('%', #{keyword}, '%')) " +
+            "</if>" +
+            "<if test='status != null and status != \"\" and status != \"all\"'>" +
+            "   AND sa.status = #{status} " +
+            "</if>" +
+            "<if test='today != null and today != \"\"'>" +
+            "   AND DATE(sa.appointment_date) = DATE(#{today}) " +
+            "</if>" +
+            "<if test='petType != null and petType != \"\"'>" +
+            "   AND p.pet_type = #{petType} " +
+            "</if>" +
+            "ORDER BY sa.appointment_date DESC, sa.created_at DESC " +
+            "<if test='limit != null and offset != null'>" +
+            "   LIMIT #{offset}, #{limit} " +
+            "</if>" +
+            "</script>")
+    List<Map<String, Object>> findAppointmentsForAdmin(Map<String, Object> params);
+
+    // 管理端预约数量统计 - 删除日期范围筛选条件
+    @Select("<script>" +
+            "SELECT COUNT(*) " +
+            "FROM service_appointments sa " +
+            "LEFT JOIN users u ON sa.user_id = u.id " +
+            "LEFT JOIN pets p ON sa.pet_id = p.id " +
+            "LEFT JOIN service_order_items soi ON sa.id = soi.order_id " +
+            "LEFT JOIN service_items si ON soi.service_id = si.id " +
+            "WHERE 1=1 " +
+            "<if test='keyword != null and keyword != \"\"'>" +
+            "   AND (sa.order_no LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR u.username LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR p.name LIKE CONCAT('%', #{keyword}, '%') " +
+            "        OR si.item_name LIKE CONCAT('%', #{keyword}, '%')) " +
+            "</if>" +
+            "<if test='status != null and status != \"\" and status != \"all\"'>" +
+            "   AND sa.status = #{status} " +
+            "</if>" +
+            "<if test='today != null and today != \"\"'>" +
+            "   AND DATE(sa.appointment_date) = DATE(#{today}) " +
+            "</if>" +
+            "<if test='petType != null and petType != \"\"'>" +
+            "   AND p.pet_type = #{petType} " +
+            "</if>" +
+            "</script>")
+    int countAppointmentsForAdmin(Map<String, Object> params);
+
+    // 管理端获取单个预约
+    @Select("SELECT sa.*, " +
+            "u.username as user_name, " +
+            "u.phone as user_phone, " +
+            "p.name as pet_name, " +
+            "p.pet_type as pet_type, " +
+            "si.item_name as service_name " +
+            "FROM service_appointments sa " +
+            "LEFT JOIN users u ON sa.user_id = u.id " +
+            "LEFT JOIN pets p ON sa.pet_id = p.id " +
+            "LEFT JOIN service_order_items soi ON sa.id = soi.order_id " +
+            "LEFT JOIN service_items si ON soi.service_id = si.id " +
+            "WHERE sa.id = #{id} " +
+            "LIMIT 1")
+    Map<String, Object> findAppointmentForAdmin(Integer id);
+
+    // 管理端更新状态 - 修复版
+    @Update("<script>" +
+            "UPDATE service_appointments " +
+            "SET status = #{status} " +
+            "<if test='reason != null and reason != \"\"'>" +
+            "   , cancellation_reason = #{reason} " +
+            "</if>" +
+            "WHERE id = #{id}" +
+            "</script>")
+    int updateStatusForAdmin(Map<String, Object> params);
+
+    // 管理端删除预约
+    @Delete("DELETE FROM service_appointments WHERE id = #{id}")
+    int deleteForAdmin(Integer id);
+
+    // 统计所有预约状态（管理员用）
+    @Select("SELECT status, COUNT(*) as count " +
+            "FROM service_appointments " +
+            "GROUP BY status")
+    List<Map<String, Object>> countAllAppointmentsByStatus();
 }

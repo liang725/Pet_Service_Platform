@@ -38,8 +38,6 @@
             <th>分类</th>
             <th>价格</th>
             <th>库存</th>
-            <th>销量</th>
-            <th>状态</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -73,19 +71,10 @@
                 <Icon v-if="product.stock < 10" icon="mdi:alert" class="warning-icon" title="库存不足" />
               </div>
             </td>
-            <td>{{ product.sales || 0 }}</td>
-            <td>
-              <span class="status-tag" :class="product.status">
-                {{ product.status === 'in_stock' ? '在售' : '下架' }}
-              </span>
-            </td>
             <td>
               <div class="actions">
                 <button class="action-btn edit" @click="goToEditProduct(product)" title="编辑">
                   <Icon icon="mdi:pencil" />
-                </button>
-                <button class="action-btn toggle" @click="toggleStatus(product)" :title="product.status === 'in_stock' ? '下架' : '上架'">
-                  <Icon :icon="product.status === 'in_stock' ? 'mdi:eye-off' : 'mdi:eye'" />
                 </button>
                 <button class="action-btn delete" @click="confirmDelete(product)" title="删除">
                   <Icon icon="mdi:delete" />
@@ -185,26 +174,6 @@ function goToAddProduct() {
 
 function goToEditProduct(product) {
   router.push(`/admin/products/edit/${product.id}`)
-}
-
-async function toggleStatus(product) {
-  const newStatus = product.status === 'in_stock' ? 'out_of_stock' : 'in_stock'
-  try {
-    const res = await request({
-      url: `/api/admin/products/${product.id}/status`,
-      method: 'PUT',
-      data: { status: newStatus }
-    })
-    if (res.code === 200) {
-      product.status = newStatus
-      alert('状态更新成功')
-    } else {
-      alert(res.message || '状态更新失败')
-    }
-  } catch (error) {
-    console.error('状态更新失败:', error)
-    alert('状态更新失败')
-  }
 }
 
 async function confirmDelete(product) {
@@ -459,21 +428,6 @@ async function confirmDelete(product) {
   font-weight: 600;
 }
 
-.status-tag {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-.status-tag.in_stock {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status-tag.out_of_stock {
-  background: #f8d7da;
-  color: #721c24;
-}
 
 .actions {
   display: flex;
@@ -506,15 +460,6 @@ async function confirmDelete(product) {
 
 .action-btn.edit:hover {
   background: linear-gradient(135deg, #bbdefb, #90caf9);
-}
-
-.action-btn.toggle {
-  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-  color: #f57c00;
-}
-
-.action-btn.toggle:hover {
-  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
 }
 
 .action-btn.delete {

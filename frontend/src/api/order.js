@@ -75,3 +75,18 @@ export function getPaymentStatus(orderId) {
     method: 'get'
   })
 }
+// 删除订单
+export function deleteOrder(orderId) {
+  return request({
+    url: `/api/orders/${orderId}`,
+    method: 'delete'
+  })
+}
+
+// 清空所有订单
+export function clearAllOrders() {
+  return request({
+    url: '/api/orders/clear-all',
+    method: 'post'
+  })
+}

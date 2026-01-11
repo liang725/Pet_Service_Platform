@@ -1,4 +1,4 @@
-// ServiceOrderItemMapper.java
+// ServiceOrderItemMapper.java - 简化版
 package com.ddliang.backend.mapper;
 
 import com.ddliang.backend.entity.ServiceOrderItem;

@@ -127,13 +127,7 @@
               <div v-if="loginForm.passwordError" class="error-message">密码不能少于6个字符</div>
             </div>
 
-            <div class="remember-forgot">
-              <div class="remember-me">
-                <input v-model="loginForm.remember" type="checkbox" id="rememberMe" />
-                <label for="rememberMe">记住我</label>
-              </div>
-              <a href="#" class="forgot-password">忘记密码?</a>
-            </div>
+
 
             <button type="submit" class="submit-btn" :disabled="isLoading">
               <Icon v-if="isLoading" icon="mdi:loading" class="spinner" spin />
@@ -472,19 +466,13 @@ const handleLogin = async () => {
 
     // 登录成功，根据角色跳转
     if (result.success) {
-      console.log('登录成功，当前用户角色:', userStore.userRole) // 添加调试日志
-      console.log('是否为管理员:', userStore.isAdmin) // 添加调试日志
-
-      // 稍微延迟一下，确保状态更新完成
-      setTimeout(() => {
-        if (userStore.isAdmin) {
-          console.log('跳转到管理后台')
-          router.push('/admin')
-        } else {
-          console.log('跳转到用户首页')
-          router.push('/')
-        }
-      }, 100)
+      isLoading.value = false
+      // 立即跳转，不需要延迟
+      if (userStore.isAdmin) {
+        router.push('/admin')
+      } else {
+        router.push('/')
+      }
     } else {
       alert(result.message || '登录失败，请检查用户名和密码')
       isLoading.value = false

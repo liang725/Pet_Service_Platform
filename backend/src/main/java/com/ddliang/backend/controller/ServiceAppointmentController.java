@@ -1,7 +1,8 @@
-// ServiceAppointmentController.java - 完整修复版
+// ServiceAppointmentController.java - 修正版
 package com.ddliang.backend.controller;
 
 import com.ddliang.backend.common.Result;
+import com.ddliang.backend.dto.ServiceAppointmentDetailResponse;
 import com.ddliang.backend.dto.ServiceAppointmentRequest;
 import com.ddliang.backend.dto.ServiceAppointmentResponse;
 import com.ddliang.backend.service.ServiceAppointmentService;
@@ -11,13 +12,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/service")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class ServiceAppointmentController {
 
     @Autowired
@@ -133,10 +135,85 @@ public class ServiceAppointmentController {
     }
 
     /**
-     * 获取预约详情
+     * 获取用户每日预约次数
      */
-    @GetMapping("/appointments/{id}")
-    public Result<?> getAppointmentDetails(
+    @GetMapping("/appointments/daily-counts")
+    public Result<?> getDailyAppointmentCounts(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        try {
+            Integer userId = validateAndGetUserId(token);
+            if (userId == null) {
+                return Result.error(401, "用户未认证或token无效");
+            }
+
+            List<Map<String, Object>> dailyCounts =
+                    ((com.ddliang.backend.service.impl.ServiceAppointmentServiceImpl) appointmentService)
+                            .getDailyAppointmentCounts(userId, startDate, endDate);
+
+            return Result.success("获取每日预约次数成功", dailyCounts);
+        } catch (RuntimeException e) {
+            return Result.error(400, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取指定日期的预约次数
+     */
+    @GetMapping("/appointments/date-count")
+    public Result<?> getAppointmentCountByDate(
+            @RequestHeader("Authorization") String token,
+            @RequestParam String date) {
+        try {
+            Integer userId = validateAndGetUserId(token);
+            if (userId == null) {
+                return Result.error(401, "用户未认证或token无效");
+            }
+
+            int count = ((com.ddliang.backend.service.impl.ServiceAppointmentServiceImpl) appointmentService)
+                    .getAppointmentCountByDate(userId, date);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("date", date);
+            data.put("count", count);
+
+            return Result.success("获取预约次数成功", data);
+        } catch (RuntimeException e) {
+            return Result.error(400, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取预约详情（包含服务项目和护理项目）- 新接口
+     */
+    @GetMapping("/appointments/{id}/detail")
+    public Result<?> getAppointmentDetail(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer id) {
+        try {
+            // 验证token并获取userId
+            Integer userId = validateAndGetUserId(token);
+            if (userId == null) {
+                return Result.error(401, "用户未认证或token无效");
+            }
+
+            ServiceAppointmentDetailResponse appointmentDetail =
+                    ((com.ddliang.backend.service.impl.ServiceAppointmentServiceImpl) appointmentService)
+                            .getAppointmentDetail(id, userId);
+
+            return Result.success("获取预约详情成功", appointmentDetail);
+        } catch (RuntimeException e) {
+            return Result.error(400, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取预约基础信息 - 保持向后兼容
+     * 这个接口返回基础信息，不包含服务项目和护理项目详情
+     */
+    @GetMapping("/appointments/{id}/basic")
+    public Result<?> getAppointmentBasicInfo(
             @RequestHeader("Authorization") String token,
             @PathVariable Integer id) {
         try {
@@ -149,7 +226,40 @@ public class ServiceAppointmentController {
             ServiceAppointmentResponse appointment =
                     appointmentService.getAppointmentDetails(id, userId);
 
-            return Result.success("获取预约详情成功", appointment);
+            return Result.success("获取预约信息成功", appointment);
+        } catch (RuntimeException e) {
+            return Result.error(400, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取预约详情 - 主接口，根据需求返回不同类型的数据
+     * 这个接口可以返回基础信息或详细信息，通过参数控制
+     */
+    @GetMapping("/appointments/{id}")
+    public Result<?> getAppointmentDetails(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer id,
+            @RequestParam(required = false, defaultValue = "basic") String type) {
+        try {
+            // 验证token并获取userId
+            Integer userId = validateAndGetUserId(token);
+            if (userId == null) {
+                return Result.error(401, "用户未认证或token无效");
+            }
+
+            if ("detail".equalsIgnoreCase(type)) {
+                // 返回详细信息
+                ServiceAppointmentDetailResponse appointmentDetail =
+                        ((com.ddliang.backend.service.impl.ServiceAppointmentServiceImpl) appointmentService)
+                                .getAppointmentDetail(id, userId);
+                return Result.success("获取预约详情成功", appointmentDetail);
+            } else {
+                // 默认返回基础信息
+                ServiceAppointmentResponse appointment =
+                        appointmentService.getAppointmentDetails(id, userId);
+                return Result.success("获取预约信息成功", appointment);
+            }
         } catch (RuntimeException e) {
             return Result.error(400, e.getMessage());
         }
@@ -226,7 +336,6 @@ public class ServiceAppointmentController {
             return Result.error(400, e.getMessage());
         }
     }
-
 
     /**
      * 获取推荐服务

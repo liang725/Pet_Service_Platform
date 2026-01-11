@@ -4,6 +4,7 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { onMounted, computed } from 'vue'
 import ShoppingCart from '@/components/ShoppingCart.vue'
+import AiFloatBall from '@/components/AiFloatBall.vue'
 
 const userStore = useUserStore()
 const route = useRoute()
@@ -18,153 +19,278 @@ const showFooter = computed(() => {
   return !route.meta.hideFooter
 })
 
+// 计算是否需要显示全局背景（例如管理后台不显示）
+const showGlobalBackground = computed(() => {
+  return !route.path.startsWith('/admin')
+})
+
 // 退出登录
 const logout = () => {
   userStore.logout()
   router.push('/auth')
 }
 
-onMounted(() => {
-  userStore.checkAuthStatus() // 使用我们store中确实存在的方法
+onMounted(async () => {
+  userStore.checkAuthStatus() // 检查登录状态
+  // 如果已登录，获取用户信息
+  if (userStore.isLoggedIn) {
+    await userStore.fetchUserInfo()
+  }
 })
 </script>
 
 <template>
   <div class="app">
-    <!-- 条件渲染头部导航栏 -->
-    <header v-if="showHeader" class="app-header">
-      <div class="container">
-        <div class="header-content">
-          <!-- Logo和标题 -->
-          <div class="logo">
-            <div class="logo-icon">
-              <Icon icon="mdi:paw" />
-            </div>
-            <div class="logo-text">
-              <h1>宠物之家</h1>
-              <p>一站式宠物服务平台</p>
-            </div>
-          </div>
-
-          <!-- 导航菜单 -->
-          <nav class="nav-container">
-            <ul class="nav-menu">
-              <li class="nav-item">
-                <router-link to="/" class="nav-link">
-                  <Icon icon="mdi:home" class="nav-icon" />
-                  <span>首页</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/service/appointment" class="nav-link">
-                  <Icon icon="mdi:calendar-check" class="nav-icon" />
-                  <span>预约洗护</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/pets" class="nav-link">
-                  <Icon icon="mdi:paw" class="nav-icon" />
-                  <span>宠物档案</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link to="/products" class="nav-link">
-                  <Icon icon="mdi:cart" class="nav-icon" />
-                  <span>宠物商店</span>
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <Icon icon="mdi:robot" class="nav-icon" />
-                  <span>AI咨询</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-          <!-- 用户区域 -->
-          <div class="user-area">
-            <div v-if="userStore.isLoggedIn" class="user-info">
-              <router-link to="/user-center" class="user-profile" title="进入个人中心">
-                <span class="user-avatar">{{ userStore.getAvatar }}</span>
-                <span class="user-name">{{ userStore.getDisplayName }}</span>
-              </router-link>
-              <button class="btn btn-logout" @click="logout" title="退出登录">
-                <Icon icon="mdi:logout" />
-              </button>
-            </div>
-            <div v-else class="auth-buttons">
-              <router-link to="/auth" class="btn btn-login">
-                <Icon icon="mdi:login" />
-                用户登录
-              </router-link>
-              <router-link to="/auth?mode=register" class="btn btn-register">
-                <Icon icon="mdi:account-plus" />
-                用户注册
-              </router-link>
-            </div>
-          </div>
-        </div>
+    <!-- 全局背景装饰层 -->
+    <div v-if="showGlobalBackground" class="global-background">
+      <!-- 爪印装饰 -->
+      <div class="paw-print paw-print-1">
+        <Icon icon="mdi:paw" />
       </div>
-    </header>
+      <div class="paw-print paw-print-2">
+        <Icon icon="mdi:paw" />
+      </div>
+      <div class="paw-print paw-print-3">
+        <Icon icon="mdi:paw" />
+      </div>
+      <div class="paw-print paw-print-4">
+        <Icon icon="mdi:paw" />
+      </div>
+    </div>
 
-    <main class="app-main">
-      <RouterView />
-    </main>
+    <!-- 主要内容容器 -->
+    <div class="app-container">
+      <!-- 条件渲染头部导航栏 -->
+      <header v-if="showHeader" class="app-header">
+        <div class="container">
+          <div class="header-content">
+            <!-- Logo和标题 -->
+            <div class="logo">
+              <div class="logo-icon">
+                <Icon icon="mdi:paw" />
+              </div>
+              <div class="logo-text">
+                <h1>宠物之家</h1>
+                <p>一站式宠物服务平台</p>
+              </div>
+            </div>
 
-    <!-- 购物车悬浮组件 - 仅在用户端登录后显示 -->
-    <ShoppingCart v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
+            <!-- 导航菜单 -->
+            <nav class="nav-container">
+              <ul class="nav-menu">
+                <li class="nav-item">
+                  <router-link to="/" class="nav-link">
+                    <Icon icon="mdi:home" class="nav-icon" />
+                    <span>首页</span>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/service/appointment" class="nav-link">
+                    <Icon icon="mdi:calendar-check" class="nav-icon" />
+                    <span>预约洗护</span>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/pets" class="nav-link">
+                    <Icon icon="mdi:paw" class="nav-icon" />
+                    <span>宠物档案</span>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/products" class="nav-link">
+                    <Icon icon="mdi:cart" class="nav-icon" />
+                    <span>宠物商店</span>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/ai-consult" class="nav-link">
+                    <Icon icon="mdi:robot" class="nav-icon" />
+                    <span>AI咨询</span>
+                  </router-link>
+                </li>
+              </ul>
+            </nav>
 
-    <!-- 条件渲染页脚 -->
-    <footer v-if="showFooter" class="app-footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-column">
-            <h3>宠物之家</h3>
-            <p>我们致力于为宠物主人提供最优质、最便捷的一站式宠物服务，让每一只宠物都能得到最好的照顾。</p>
-            <div class="pet-icons">
-              <Icon icon="mdi:paw" />
-              <Icon icon="mdi:cat" />
-              <Icon icon="mdi:dog" />
+            <!-- 用户区域 -->
+            <div class="user-area">
+              <div v-if="userStore.isLoggedIn" class="user-info">
+                <router-link to="/user-center" class="user-profile" title="进入个人中心">
+                  <span class="user-avatar">{{ userStore.getAvatar }}</span>
+                  <span class="user-name">{{ userStore.getDisplayName }}</span>
+                </router-link>
+                <button class="btn btn-logout" @click="logout" title="退出登录">
+                  <Icon icon="mdi:logout" />
+                </button>
+              </div>
+              <div v-else class="auth-buttons">
+                <router-link to="/auth" class="btn btn-login">
+                  <Icon icon="mdi:login" />
+                  用户登录
+                </router-link>
+                <router-link to="/auth?mode=register" class="btn btn-register">
+                  <Icon icon="mdi:account-plus" />
+                  用户注册
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="app-main">
+        <RouterView />
+      </main>
+
+      <!-- 购物车悬浮组件 - 仅在用户端登录后显示 -->
+      <ShoppingCart v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
+
+      <!-- AI悬浮球 - 仅在用户端登录后显示 -->
+      <AiFloatBall v-if="userStore.isLoggedIn && !route.path.startsWith('/admin')" />
+
+      <!-- 条件渲染页脚 -->
+      <footer v-if="showFooter" class="app-footer">
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-column">
+              <h3>宠物之家</h3>
+              <p>我们致力于为宠物主人提供最优质、最便捷的一站式宠物服务，让每一只宠物都能得到最好的照顾。</p>
+              <div class="pet-icons">
+                <Icon icon="mdi:paw" />
+                <Icon icon="mdi:cat" />
+                <Icon icon="mdi:dog" />
+              </div>
+            </div>
+
+            <div class="footer-column">
+              <h3>快速链接</h3>
+              <ul class="footer-links">
+                <li>
+                  <router-link to="/" class="footer-link">
+                    <Icon icon="mdi:chevron-right" class="link-icon" />
+                    返回首页
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/service/appointment" class="footer-link">
+                    <Icon icon="mdi:chevron-right" class="link-icon" />
+                    预约洗护
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/pets" class="footer-link">
+                    <Icon icon="mdi:chevron-right" class="link-icon" />
+                    宠物档案
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/products" class="footer-link">
+                    <Icon icon="mdi:chevron-right" class="link-icon" />
+                    宠物商店
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/ai-consult" class="footer-link">
+                    <Icon icon="mdi:chevron-right" class="link-icon" />
+                    AI咨询
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-column">
+              <h3>联系我们</h3>
+              <ul class="footer-links">
+                <li><a href="#"><Icon icon="mdi:map-marker" /> 杭州市钱塘区宠物之家大厦</a></li>
+                <li><a href="tel:400-123-4567"><Icon icon="mdi:phone" /> 400-123-4567</a></li>
+                <li><a href="mailto:service@pethome.com"><Icon icon="mdi:email" /> PetHome@pethome.com</a></li>
+                <li><a href="#"><Icon icon="mdi:wechat" /> 微信公众号: 宠物之家</a></li>
+              </ul>
             </div>
           </div>
 
-          <div class="footer-column">
-            <h3>快速链接</h3>
-            <ul class="footer-links">
-              <li><router-link to="/"><Icon icon="mdi:chevron-right" /> 返回首页</router-link></li>
-              <li><router-link to="/service/appointment"><Icon icon="mdi:chevron-right" /> 预约洗护</router-link></li>
-              <li><router-link to="/pets"><Icon icon="mdi:chevron-right" /> 宠物档案</router-link></li>
-            </ul>
-          </div>
-
-          <div class="footer-column">
-            <h3>联系我们</h3>
-            <ul class="footer-links">
-              <li><a href="#"><Icon icon="mdi:map-marker" /> 杭州市钱塘区宠物之家大厦</a></li>
-              <li><a href="tel:400-123-4567"><Icon icon="mdi:phone" /> 400-123-4567</a></li>
-              <li><a href="mailto:service@pethome.com"><Icon icon="mdi:email" /> PetHome@pethome.com</a></li>
-              <li><a href="#"><Icon icon="mdi:wechat" /> 微信公众号: 宠物之家</a></li>
-            </ul>
+          <div class="copyright">
+            <p>
+              <Icon icon="mdi:paw" class="paw-print" />
+              版权所有 © 2025 宠物之家 一站式宠物服务平台
+              <Icon icon="mdi:paw" class="paw-print" />
+            </p>
+            <p class="footer-slogan">让每一只宠物都感受到家的温暖</p>
           </div>
         </div>
-
-        <div class="copyright">
-          <p>
-            <Icon icon="mdi:paw" class="paw-print" />
-            版权所有 © 2025 宠物之家 一站式宠物服务平台
-            <Icon icon="mdi:paw" class="paw-print" />
-          </p>
-          <p class="footer-slogan">让每一只宠物都感受到家的温暖</p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   </div>
 </template>
 
-
 <style scoped>
+/* 全局背景样式 */
 .app {
+  background-color: #fef8f0;
+  background-image:
+    radial-gradient(#ffd7b5 1.5px, transparent 1.5px),
+    radial-gradient(#ffd7b5 1.5px, #fef8f0 1.5px);
+  background-size: 60px 60px;
+  background-position:
+    0 0,
+    30px 30px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+
+.global-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.paw-print {
+  position: absolute;
+  color: #ffb284;
+  font-size: 24px;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.paw-print :deep(svg) {
+  width: 24px;
+  height: 24px;
+  color: #ffb284;
+}
+
+.paw-print-1 {
+  top: 10%;
+  left: 5%;
+  transform: rotate(15deg);
+}
+
+.paw-print-2 {
+  top: 20%;
+  right: 8%;
+  transform: rotate(-10deg);
+}
+
+.paw-print-3 {
+  bottom: 15%;
+  left: 7%;
+  transform: rotate(30deg);
+}
+
+.paw-print-4 {
+  bottom: 25%;
+  right: 5%;
+  transform: rotate(-20deg);
+}
+
+/* 主要内容容器 */
+.app-container {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -174,16 +300,20 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  position: relative;
+  z-index: 2;
 }
 
-/* 头部样式 */
+/* 头部样式 - 恢复原有颜色 */
 .app-header {
-  background-color: var(--pet-primary-lighter);
+  background-color: #fff8e1; /* 恢复浅黄色背景 */
   padding: 15px 0;
   box-shadow: 0 4px 12px rgba(255, 200, 100, 0.2);
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 3px solid #ffecb3;
+  margin-bottom: 20px;
 }
 
 .header-content {
@@ -298,11 +428,6 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
 }
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 
 .btn {
   padding: 8px 16px;
@@ -398,17 +523,21 @@ onMounted(() => {
   color: var(--pet-text-secondary);
 }
 
+/* 主要内容区域 */
 .app-main {
   flex: 1;
+  position: relative;
+  z-index: 2;
 }
 
-/* 页脚样式 */
+/* 页脚样式 - 恢复原有颜色 */
 .app-footer {
-  background-color: #fff8e1;
+  background-color: #fff8e1; /* 恢复浅黄色背景 */
   padding: 40px 0;
   margin-top: 60px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
+  border-top: 3px solid #ffecb3;
 }
 
 .footer-content {
@@ -657,6 +786,25 @@ onMounted(() => {
   .logo-icon :deep(svg) {
     width: 1.8rem;
     height: 1.8rem;
+  }
+}
+
+/* 打印样式 - 隐藏导航栏和页脚 */
+@media print {
+  .app-header,
+  .app-footer,
+  .global-background,
+  .paw-print {
+    display: none !important;
+  }
+
+  .app-main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .app-container {
+    min-height: auto !important;
   }
 }
 </style>

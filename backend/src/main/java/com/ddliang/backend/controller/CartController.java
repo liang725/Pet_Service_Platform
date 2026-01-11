@@ -20,7 +20,8 @@ public class CartController {
     private final CartService cartService;
     
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getCartItems(@RequestAttribute("userId") Long userId) {
+    public ResponseEntity<Map<String, Object>> getCartItems(@RequestAttribute("userId") Integer userIdInt) {
+        Long userId = userIdInt.longValue();
         List<CartItemResponse> items = cartService.getCartItems(userId);
         Map<String, Object> response = new HashMap<>();
         response.put("code", 200);
@@ -31,21 +32,33 @@ public class CartController {
     
     @PostMapping
     public ResponseEntity<Map<String, Object>> addToCart(
-            @RequestAttribute("userId") Long userId,
+            @RequestAttribute("userId") Integer userIdInt,
             @Valid @RequestBody CartItemRequest request) {
-        CartItemResponse item = cartService.addToCart(userId, request);
-        Map<String, Object> response = new HashMap<>();
-        response.put("code", 200);
-        response.put("message", "添加成功");
-        response.put("data", item);
-        return ResponseEntity.ok(response);
+        try {
+            Long userId = userIdInt.longValue();
+            System.out.println("CartController - 接收到添加购物车请求: userId=" + userId + ", request=" + request);
+            CartItemResponse item = cartService.addToCart(userId, request);
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 200);
+            response.put("message", "添加成功");
+            response.put("data", item);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.err.println("CartController - 添加购物车失败: " + e.getMessage());
+            e.printStackTrace();
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 500);
+            response.put("message", "添加失败: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
     }
     
     @PutMapping("/{itemId}")
     public ResponseEntity<Map<String, Object>> updateCartItem(
-            @RequestAttribute("userId") Long userId,
+            @RequestAttribute("userId") Integer userIdInt,
             @PathVariable Long itemId,
             @RequestBody Map<String, Integer> body) {
+        Long userId = userIdInt.longValue();
         Integer quantity = body.get("quantity");
         if (quantity == null) {
             throw new RuntimeException("数量不能为空");
@@ -60,8 +73,9 @@ public class CartController {
     
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Map<String, Object>> removeCartItem(
-            @RequestAttribute("userId") Long userId,
+            @RequestAttribute("userId") Integer userIdInt,
             @PathVariable Long itemId) {
+        Long userId = userIdInt.longValue();
         cartService.removeCartItem(userId, itemId);
         Map<String, Object> response = new HashMap<>();
         response.put("code", 200);
@@ -70,7 +84,8 @@ public class CartController {
     }
     
     @DeleteMapping
-    public ResponseEntity<Map<String, Object>> clearCart(@RequestAttribute("userId") Long userId) {
+    public ResponseEntity<Map<String, Object>> clearCart(@RequestAttribute("userId") Integer userIdInt) {
+        Long userId = userIdInt.longValue();
         cartService.clearCart(userId);
         Map<String, Object> response = new HashMap<>();
         response.put("code", 200);

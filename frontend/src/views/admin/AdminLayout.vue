@@ -26,12 +26,7 @@
       </div>
 
       <ul class="nav-menu">
-        <li class="nav-item">
-          <router-link to="/admin/dashboard" class="nav-link" :class="{ active: activeNav === 'dashboard' }" @click="setActiveNav('dashboard')">
-            <Icon icon="mdi:view-dashboard" class="nav-icon" />
-            <span class="nav-text">控制面板</span>
-          </router-link>
-        </li>
+        <!-- 移除 Dashboard 菜单项，直接从用户管理开始 -->
         <li class="nav-item">
           <router-link to="/admin/users" class="nav-link" :class="{ active: activeNav === 'users' }" @click="setActiveNav('users')">
             <Icon icon="mdi:account-group" class="nav-icon" />
@@ -86,7 +81,7 @@ import { Icon } from '@iconify/vue'
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
-const activeNav = ref('dashboard')
+const activeNav = ref('users') // 默认选中用户管理
 
 const setActiveNav = (nav) => {
   activeNav.value = nav
@@ -94,8 +89,7 @@ const setActiveNav = (nav) => {
 
 // 监听路由变化，更新活动导航
 watch(() => route.name, (newRouteName) => {
-  if (newRouteName === 'adminDashboard') activeNav.value = 'dashboard'
-  else if (newRouteName === 'adminUsers') activeNav.value = 'users'
+  if (newRouteName === 'adminUsers') activeNav.value = 'users'
   else if (newRouteName === 'adminPets') activeNav.value = 'pets'
   else if (newRouteName === 'adminAppointments') activeNav.value = 'appointments'
   else if (newRouteName === 'adminProducts' || newRouteName === 'adminProductAdd' || newRouteName === 'adminProductEdit') activeNav.value = 'products'

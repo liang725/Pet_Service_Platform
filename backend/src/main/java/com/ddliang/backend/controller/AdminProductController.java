@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/admin/products")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class AdminProductController {
 
     @Autowired
@@ -118,6 +118,7 @@ public class AdminProductController {
             if (product.getStock() == null) {
                 product.setStock(0);
             }
+            // 添加销量字段的默认值
             if (product.getSales() == null) {
                 product.setSales(0);
             }
@@ -183,6 +184,7 @@ public class AdminProductController {
             if (product.getStock() == null) {
                 product.setStock(existing.getStock());
             }
+            // 添加销量字段的处理
             if (product.getSales() == null) {
                 product.setSales(existing.getSales());
             }

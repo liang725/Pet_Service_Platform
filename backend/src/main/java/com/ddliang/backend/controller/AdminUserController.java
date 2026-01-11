@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/admin/users")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class AdminUserController {
 
     @Autowired
@@ -111,17 +111,27 @@ public class AdminUserController {
         }
 
         try {
+            // 添加调试日志
+            System.out.println("AdminUserController - 创建用户请求:");
+            System.out.println("  用户名: " + user.getUsername());
+            System.out.println("  密码: " + (user.getPassword() != null ? "[已设置]" : "[未设置]"));
+            System.out.println("  角色: " + user.getRole());
+            System.out.println("  状态: " + user.getStatus());
+            
             // 验证必填字段
             if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+                System.out.println("  错误: 用户名为空");
                 return Result.error(400, "用户名不能为空");
             }
             if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+                System.out.println("  错误: 密码为空");
                 return Result.error(400, "密码不能为空");
             }
 
             // 检查用户名是否已存在
             User existingUser = userMapper.findByUsername(user.getUsername());
             if (existingUser != null) {
+                System.out.println("  错误: 用户名已存在");
                 return Result.error(400, "用户名已存在");
             }
 
@@ -136,14 +146,19 @@ public class AdminUserController {
                 user.setStatus(1);
             }
 
+            System.out.println("  准备插入用户到数据库");
             int rows = userMapper.insert(user);
             if (rows > 0) {
+                System.out.println("  用户创建成功，ID: " + user.getId());
                 // 移除密码字段
                 user.setPassword(null);
                 return Result.success(user);
             }
+            System.out.println("  错误: 数据库插入失败");
             return Result.error(500, "创建用户失败");
         } catch (Exception e) {
+            System.err.println("AdminUserController - 创建用户异常: " + e.getMessage());
+            e.printStackTrace();
             return Result.error(500, "创建用户失败：" + e.getMessage());
         }
     }
@@ -169,6 +184,14 @@ public class AdminUserController {
             // 设置用户ID
             user.setId(id);
 
+            // 如果要修改用户名，检查是否已被占用
+            if (user.getUsername() != null && !user.getUsername().equals(existing.getUsername())) {
+                User existingByUsername = userMapper.findByUsername(user.getUsername());
+                if (existingByUsername != null) {
+                    return Result.error(400, "用户名已被占用");
+                }
+            }
+
             // 如果提供了新密码，则加密
             if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
                 if (user.getPassword().length() < 6) {
@@ -176,7 +199,7 @@ public class AdminUserController {
                 }
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
             } else {
-                // 如果没有提供密码，保持原密码不变
+                // 如果没有提供密码，设为null（不更新密码）
                 user.setPassword(null);
             }
 
@@ -188,7 +211,8 @@ public class AdminUserController {
                 user.setStatus(existing.getStatus());
             }
 
-            int rows = userMapper.update(user);
+            // 使用管理端专用的更新方法
+            int rows = userMapper.updateForAdmin(user);
             if (rows > 0) {
                 // 返回更新后的用户信息
                 User updatedUser = userMapper.findById(id);

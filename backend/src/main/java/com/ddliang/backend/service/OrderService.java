@@ -42,4 +42,19 @@ public interface OrderService {
      * 确认收货
      */
     boolean confirmDelivery(Long orderId, Long userId);
+    
+    /**
+     * 删除订单（仅限已取消的订单）
+     */
+    boolean deleteOrder(Long orderId, Long userId);
+    
+    /**
+     * 批量删除用户的所有已取消订单（清空回收站）
+     */
+    int clearCancelledOrders(Long userId);
+    
+    /**
+     * 清空用户的所有订单
+     */
+    int clearAllOrders(Long userId);
 }

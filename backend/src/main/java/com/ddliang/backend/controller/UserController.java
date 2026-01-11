@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") // 注释掉跨域配置，使用nginx代理
 public class UserController {
 
     @Autowired
@@ -45,18 +45,23 @@ public class UserController {
                 return Result.error("用户信息获取失败，请重新登录");
             }
             
-            // TODO: 根据userId从数据库查询完整的用户信息
-            // 这里暂时返回基于token的用户信息
+            // 从数据库查询完整的用户信息
+            User user = userMapper.findById(userId);
+            if (user == null) {
+                return Result.error("用户不存在");
+            }
+            
             Map<String, Object> userInfo = new HashMap<>();
-            userInfo.put("id", userId);
-            userInfo.put("username", username);
-            userInfo.put("name", username);
-            userInfo.put("nickname", username);
+            userInfo.put("id", user.getId());
+            userInfo.put("username", user.getUsername());
+            userInfo.put("name", user.getUsername());
+            userInfo.put("nickname", user.getNickname() != null ? user.getNickname() : user.getUsername());
             userInfo.put("level", "黄金会员");
             userInfo.put("memberLevel", "黄金会员");
-            userInfo.put("avatar", "");
-            userInfo.put("phone", "138****8888");
-            userInfo.put("email", "user@example.com");
+            userInfo.put("avatar", user.getAvatar() != null ? user.getAvatar() : "");
+            userInfo.put("phone", user.getPhone() != null ? user.getPhone() : "");
+            userInfo.put("email", user.getEmail() != null ? user.getEmail() : "");
+            userInfo.put("role", user.getRole());
             
             return Result.success(userInfo);
         } catch (Exception e) {
@@ -66,14 +71,53 @@ public class UserController {
 
     /**
      * 更新用户信息
+     * @param request HTTP请求对象
      * @param userInfo 用户信息
      * @return 操作结果
      */
     @PutMapping("/info")
-    public Result<String> updateUserInfo(@RequestBody Map<String, Object> userInfo) {
+    public Result<String> updateUserInfo(HttpServletRequest request, @RequestBody Map<String, Object> userInfo) {
         try {
-            // TODO: 实现更新用户信息功能
-            return Result.success("更新用户信息成功");
+            // 获取当前用户ID
+            Integer userId = (Integer) request.getAttribute("userId");
+            if (userId == null) {
+                return Result.error(401, "用户未登录");
+            }
+
+            // 获取更新的字段
+            String username = userInfo.get("name") != null ? userInfo.get("name").toString() : null;
+            String nickname = userInfo.get("nickname") != null ? userInfo.get("nickname").toString() : null;
+            String avatar = userInfo.get("avatar") != null ? userInfo.get("avatar").toString() : null;
+            String phone = userInfo.get("phone") != null ? userInfo.get("phone").toString() : null;
+            String email = userInfo.get("email") != null ? userInfo.get("email").toString() : null;
+
+            // 查询当前用户信息
+            User user = userMapper.findById(userId);
+            if (user == null) {
+                return Result.error(404, "用户不存在");
+            }
+
+            // 如果要修改用户名，检查是否已被占用
+            if (username != null && !username.equals(user.getUsername())) {
+                User existingUser = userMapper.findByUsername(username);
+                if (existingUser != null) {
+                    return Result.error(400, "用户名已被占用");
+                }
+            }
+
+            // 使用现有值填充空字段
+            if (username == null) username = user.getUsername();
+            if (nickname == null) nickname = user.getNickname();
+            if (avatar == null) avatar = user.getAvatar();
+            if (phone == null) phone = user.getPhone();
+            if (email == null) email = user.getEmail();
+
+            // 更新用户信息
+            int rows = userMapper.updateUserInfo(userId, username, nickname, avatar, phone, email);
+            if (rows > 0) {
+                return Result.success("更新用户信息成功");
+            }
+            return Result.error(500, "更新用户信息失败");
         } catch (Exception e) {
             return Result.error("更新用户信息失败: " + e.getMessage());
         }

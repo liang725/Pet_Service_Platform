@@ -1,4 +1,4 @@
-// src/stores/user.js - 直接返回错误，不模拟数据
+// src/stores/user.js - 删除报错的getUserAppointments方法
 import { defineStore } from 'pinia'
 import request from '@/utils/request'
 
@@ -55,8 +55,6 @@ export const useUserStore = defineStore('user', {
         this.userInfo = userInfo
         this.userRole = userInfo.role || 'user'
         localStorage.setItem('userRole', this.userRole)
-        localStorage.setItem('userInfo', JSON.stringify(userInfo))
-        console.log('设置用户角色:', this.userRole) // 添加调试日志
       }
     },
 
@@ -68,15 +66,11 @@ export const useUserStore = defineStore('user', {
       this.isLoggedIn = false
       localStorage.removeItem('token')
       localStorage.removeItem('userRole')
-      localStorage.removeItem('userInfo')
     },
 
     // 登录
     async login(credentials) {
       try {
-        // 登录前先清除旧用户数据
-        this.clearToken()
-
         const response = await request({
           url: '/api/auth/login',
           method: 'POST',
@@ -84,11 +78,7 @@ export const useUserStore = defineStore('user', {
         })
 
         if (response.code === 200) {
-          // 确保正确传递用户信息，包括角色
-          const userInfo = response.data.userInfo || response.data
-          console.log('登录成功，用户信息:', userInfo) // 添加调试日志
-
-          this.setToken(response.data.token, userInfo)
+          this.setToken(response.data.token, response.data.userInfo || response.data)
           return { success: true, data: response.data }
         } else {
           return { success: false, message: response.message }
@@ -100,24 +90,22 @@ export const useUserStore = defineStore('user', {
     },
 
     // 注册
-    async register(credentials) {
+    async register(registerData) {
       try {
         const response = await request({
           url: '/api/auth/register',
           method: 'POST',
-          data: credentials
+          data: registerData
         })
 
         if (response.code === 200) {
-          // 注册成功后自动登录
-          this.setToken(response.data.token, response.data.userInfo || response.data)
           return { success: true, data: response.data }
         } else {
-          return { success: false, message: response.message }
+          throw new Error(response.message || '注册失败')
         }
       } catch (error) {
         console.error('注册失败:', error)
-        return { success: false, message: error.message }
+        throw new Error(error.message || '注册失败，请重试')
       }
     },
 
@@ -177,7 +165,105 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // 获取用户所有预约
+    // 获取所有护理项目
+    async getCareItems() {
+      try {
+        const response = await request({
+          url: '/api/service/care/items',
+          method: 'GET'
+        })
+
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取护理项目失败:', error)
+        return []
+      }
+    },
+
+    // 获取按分类的护理项目
+    async getCareItemsByCategory(category) {
+      try {
+        const response = await request({
+          url: `/api/service/care/items/category/${encodeURIComponent(category)}`,
+          method: 'GET'
+        })
+
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取护理项目失败:', error)
+        return []
+      }
+    },
+
+    // 获取分组护理项目
+    async getGroupedCareItems() {
+      try {
+        const response = await request({
+          url: '/api/service/care/items/grouped',
+          method: 'GET'
+        })
+
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取分组护理项目失败:', error)
+        return []
+      }
+    },
+
+    // 获取指定日期的预约次数
+    async getAppointmentCountByDate(date) {
+      try {
+        const response = await request({
+          url: '/api/service/appointments/date-count',
+          method: 'GET',
+          params: { date },
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+
+        if (response.code === 200) {
+          return response.data || { count: 0 }
+        }
+        return { count: 0 }
+      } catch (error) {
+        console.error('获取预约次数失败:', error)
+        return { count: 0 }
+      }
+    },
+
+    // 获取每日预约次数统计
+    async getDailyAppointmentCounts(startDate, endDate) {
+      try {
+        const response = await request({
+          url: '/api/service/appointments/daily-counts',
+          method: 'GET',
+          params: { startDate, endDate },
+          headers: {
+            'Authorization': `Bearer ${this.token}`
+          }
+        })
+
+        if (response.code === 200) {
+          return response.data || []
+        }
+        return []
+      } catch (error) {
+        console.error('获取每日预约统计失败:', error)
+        return []
+      }
+    },
+
+    // 获取用户所有预约 - 保留这个可以正常使用的接口
     async getAllUserAppointments() {
       try {
         const response = await request({
@@ -237,26 +323,62 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // 获取预约详情
-    async getAppointmentDetail(id) {
-      try {
-        const response = await request({
-          url: `/api/service/appointments/${id}`,
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${this.token}`
-          }
-        })
-
-        if (response.code === 200) {
-          return response.data
-        }
-        throw new Error(response.message || '获取详情失败')
-      } catch (error) {
-        console.error('获取预约详情失败:', error)
-        throw error
+   // 获取预约详情
+async getAppointmentDetail(id, type = 'detail') {
+  try {
+    // 使用新接口获取包含服务项目和护理项目的详情
+    const response = await request({
+      url: `/api/service/appointments/${id}?type=${type}`, // 使用主接口，通过type参数控制
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.token}`
       }
-    },
+    })
+
+    if (response.code === 200) {
+      console.log('获取预约详情成功:', response.data);
+      return response.data;
+    }
+    throw new Error(response.message || '获取详情失败');
+  } catch (error) {
+    console.error('获取预约详情失败:', error);
+    throw error;
+  }
+},
+
+// 辅助方法：将旧接口数据转换为新接口格式
+transformOldDataToNewFormat(oldData) {
+  // 如果已经是新格式，直接返回
+  if (oldData.services || oldData.careItems) {
+    return oldData;
+  }
+
+  // 转换逻辑
+  const newData = {
+    ...oldData,
+    services: [],
+    careItems: []
+  };
+
+  // 如果有serviceName字段，创建一个服务项
+  if (oldData.serviceName) {
+    newData.services.push({
+      serviceId: 0, // 未知ID
+      serviceName: oldData.serviceName,
+      category: oldData.serviceCategory || '洗护服务',
+      description: oldData.serviceDescription || '',
+      basePrice: oldData.orderTotalAmount || 0,
+      discountPercentage: 0,
+      discountAmount: 0,
+      finalPrice: oldData.orderTotalAmount || 0,
+      duration: 60,
+      quantity: 1,
+      thumbnailUrl: oldData.serviceImage || ''
+    });
+  }
+
+  return newData;
+},
 
     // 取消预约
     async cancelAppointment(id, reason) {
@@ -364,52 +486,39 @@ export const useUserStore = defineStore('user', {
 
     // 获取用户信息
     async fetchUserInfo() {
-      try {
-        if (!this.token) {
-          console.warn('未登录，无法获取用户信息')
-          return null
-        }
+  try {
+    if (!this.token) {
+      console.warn('未登录，无法获取用户信息')
+      return null
+    }
 
-        const response = await request({
-          url: '/api/user/info',
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${this.token}`
-          }
-        })
-
-        if (response.code === 200) {
-          this.userInfo = response.data
-          return response.data
-        } else {
-          console.warn('获取用户信息失败:', response.message)
-          return null
-        }
-      } catch (error) {
-        console.error('获取用户信息失败:', error)
-
-        // 如果是404错误，说明后端接口还没有实现，返回默认用户信息
-        if (error.message && error.message.includes('404')) {
-          console.warn('用户信息接口未实现，使用默认信息')
-          const defaultUserInfo = {
-            id: 1,
-            username: '宠物爱好者',  // 临时默认用户名
-            name: '宠物爱好者',
-            nickname: '爱宠人士',
-            level: '黄金会员',
-            memberLevel: '黄金会员'
-          }
-          this.userInfo = defaultUserInfo
-          return defaultUserInfo
-        }
-
-        // 如果是401错误，清除token
-        if (error.message && error.message.includes('401')) {
-          this.clearToken()
-        }
-        return null
+    const response = await request({
+      url: '/api/user/info',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.token}`
       }
-    },
+    })
+
+    if (response.code === 200) {
+      this.userInfo = response.data
+      this.userRole = response.data.role || 'user'  // 确保角色信息正确
+      localStorage.setItem('userRole', this.userRole)
+      return response.data
+    } else {
+      console.warn('获取用户信息失败:', response.message)
+      return null
+    }
+  } catch (error) {
+    console.error('获取用户信息失败:', error)
+
+    // 如果是401错误，清除token
+    if (error.message && error.message.includes('401')) {
+      this.clearToken()
+    }
+    return null
+  }
+},
 
     // 获取用户收藏列表
     async getUserFavorites() {

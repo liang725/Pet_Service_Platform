@@ -14,8 +14,13 @@ public interface CartMapper {
     @Select("SELECT * FROM cart_items WHERE id = #{id} AND user_id = #{userId}")
     CartItem findByIdAndUserId(@Param("id") Long id, @Param("userId") Long userId);
     
-    @Select("SELECT * FROM cart_items WHERE user_id = #{userId} AND product_id = #{productId} " +
-            "AND (spec = #{spec} OR (spec IS NULL AND #{spec} IS NULL))")
+    @Select("<script>" +
+            "SELECT * FROM cart_items WHERE user_id = #{userId} AND product_id = #{productId} " +
+            "<choose>" +
+            "<when test='spec != null'>AND spec = #{spec}</when>" +
+            "<otherwise>AND (spec IS NULL OR spec = '')</otherwise>" +
+            "</choose>" +
+            "</script>")
     CartItem findByUserIdAndProductIdAndSpec(@Param("userId") Long userId, 
                                              @Param("productId") Integer productId, 
                                              @Param("spec") String spec);
